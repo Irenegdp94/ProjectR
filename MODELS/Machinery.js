@@ -12,5 +12,5 @@ const machinerySchema = new Schema({
     timestamps: true,
 })
 
-const Machinery = mongoose.model("Company", machinerySchema);
+const Machinery = mongoose.model("Machinery", machinerySchema);
 module.exports = Machinery;

@@ -2,8 +2,12 @@
 require("dotenv").config();
 const express = require("express");
 const mongoose = require("mongoose");
+const verifyToken = require("./MIDDLEWARE/verifyToken");
 const authRoutes = require("./API/authRoutes");
+const userRoutes = require("./API/privateRoutesUser");
 const app = express();
+
+
 
 mongoose
   .connect(
@@ -19,11 +23,13 @@ mongoose
 app.use(express.json()); 
 
 //Routes
-app.use("/", authRoutes); //login route
-
+app.use("/api/auth", authRoutes); //login route
+app.use("/api/works", verifyToken, userRoutes), //user routers
 
 // montar servidor -->
-app.listen(5000, () => {
-    console.log("server listening on port 5000");
+app.listen(process.env.PORT, () => {
+  console.log(`Server listening on port ${process.env.PORT}`);
   });
+  
+
   

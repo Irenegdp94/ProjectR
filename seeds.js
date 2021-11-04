@@ -113,21 +113,21 @@ let machineries = [
     _id: "799261f9c934fb0418e42ee6",
     nameMachinery: "JD5100",
     nREF: "JD5100LR",
-    datePurchase: "12/05/2012",
+    datePurchase: 12-05-2012,
     priceH: 5.4
   },
   {
     _id: "799261f9c934fb0418e42ee7",
     nameMachinery: "Atomizador",
     nREF: "AT1100BI",
-    datePurchase: "07/05/2020",
+    datePurchase: 12-05-2012,
     priceH: 1.1
   },
   {
     _id: "799261f9c934fb0418e42ee8",
     nameMachinery: "Cadenas NH",
     nREF: "NH8800LR",
-    datePurchase: "07/12/2002",
+    datePurchase: 2012-05-12,
     priceH: 5.4
   }
 ];
@@ -150,13 +150,13 @@ let tanks = [
 let seasons = [
   {
     _id: "799261f9c934fb0418e42e11",
-    dateINI: "01/01/2021",
-    dateEND: "31/12/2021"
+    dateINI: 01-05-1994,
+    dateEND: 2012-05-12
   },
   {
     _id: "799261f9c934fb0418e42e12",
-    dateINI: "01/10/2020",
-    dateEND: "30/9/2021"
+    dateINI: 2031-12-31,
+    dateEND: 1999-11-12
   },
 
 ]
@@ -174,7 +174,7 @@ let tasks = [
   },
 
   {
-    _id: "799261f9c934fb0418e42e14",
+    _id: "799261f9c934fb0418e42e24",
     nameTask: "Mantenimiento vehículos",
     category: "Mantenimiento"
   }
@@ -184,8 +184,8 @@ let works = [
   {
     _id: "100061f9c934fb0418e42e01",
     date: "02/10/2021",
-    INItime: "8:00", //que tipo es una hora
-    FINtime: "14:00",
+    INItime: new Date('2021-12-31T13:24:00Z'), 
+    FINtime: new Date('1995-12-17T05:28:00Z'),
         
     farm: ["799261f9c934fb0418e42ee3"],
     worker: "500261f9c934fb0418e42aa3",
@@ -216,7 +216,7 @@ const createInfo = async () => {
   console.log(createdFarms);
 
   //maquinaria
-  let deletedMachineries = await Farm.deleteMany();
+  let deletedMachineries = await Machinery.deleteMany();
   console.log(deletedMachineries);
   let createdMachineries = await Machinery.create(machineries);
   console.log(createdMachineries);
@@ -224,26 +224,26 @@ const createInfo = async () => {
   //tanque
   let deletedTanks = await Tank.deleteMany();
   console.log(deletedTanks);
-  let createdTanks = await Machinery.create(tanks);
+  let createdTanks = await Tank.create(tanks);
   console.log(createdTanks);
 
   //season
   let deletedSeasons = await Season.deleteMany();
   console.log(deletedSeasons);
-  let createdSeasons = await Machinery.create(seasons);
+  let createdSeasons = await Season.create(seasons);
   console.log(createdSeasons);
 
   //tarea
-  let deletedTasks = await Season.deleteMany();
+  let deletedTasks = await Task.deleteMany();
   console.log(deletedTasks);
-  let createdTasks = await Machinery.create(tasks);
+  let createdTasks = await Task.create(tasks);
   console.log(createdTasks);
 
 //trabajos
 
-  let deletedWorks = await Season.deleteMany();
+  let deletedWorks = await Work.deleteMany();
   console.log(deletedWorks);
-  let createdWorks = await Machinery.create(works);
+  let createdWorks = await Work.create(works);
   console.log(createdWorks);
 
 
