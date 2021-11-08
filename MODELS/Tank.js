@@ -5,9 +5,9 @@ const Schema = mongoose.Schema;
 const tankSchema = new Schema({
     nameTank: {type: String, required: true},
     capacity: {type: Number, required: true},
-    litres: {type: Number},
+    currentLitres: {type: Number},
 
-    //farms: [{type: Schema.Types.ObjectId, ref: "Farm"}]
+    works: [{type: Schema.Types.ObjectId, ref: "Work"}]
 },
 {
     timestamps: true,

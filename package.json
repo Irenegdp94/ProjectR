@@ -2,7 +2,7 @@
   "name": "projectr",
   "version": "1.0.0",
   "description": "Proyecto final formacion full stack",
-  "main": "index.js",
+  "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },

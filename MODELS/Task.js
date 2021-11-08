@@ -6,7 +6,7 @@ const taskSchema = new Schema({
     category: {type: String, required: true},
     
 
-    //works: [{type: Schema.Types.ObjectId, ref: "Work"}]
+    works: [{type: Schema.Types.ObjectId, ref: "Work"}]
 },
 {
     timestamps: true,

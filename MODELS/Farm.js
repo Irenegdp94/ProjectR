@@ -7,7 +7,8 @@ const farmSchema = new Schema({
     cultivo: {type: String, required: true},
 
     season: [{type: Schema.Types.ObjectId, ref: "Season"}],
-    company: [{type: Schema.Types.ObjectId, ref: "Company"}]
+    company: [{type: Schema.Types.ObjectId, ref: "Company"}],
+    works: [{type: Schema.Types.ObjectId, ref: "Work"}]
 },
 {
     timestamps: true,

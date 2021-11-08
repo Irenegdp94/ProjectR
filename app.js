@@ -3,11 +3,11 @@ require("dotenv").config();
 const express = require("express");
 const mongoose = require("mongoose");
 const verifyToken = require("./MIDDLEWARE/verifyToken");
+const verifyInputs = require("./MIDDLEWARE/verifyInputs");
 const authRoutes = require("./API/authRoutes");
 const userRoutes = require("./API/privateRoutesUser");
+const adminRoutes = require("./API/privateRoutesADMIN");
 const app = express();
-
-
 
 mongoose
   .connect(
@@ -23,8 +23,9 @@ mongoose
 app.use(express.json()); 
 
 //Routes
-app.use("/api/auth", authRoutes); //login route
-app.use("/api/works", verifyToken, userRoutes), //user routers
+app.use("/api/auth",verifyInputs, authRoutes); //login route localhost:5000/api/auth/login
+app.use("/api/user", verifyToken, userRoutes), //user routers localhost:5000/api/user/
+app.use("/api/admin", verifyToken, adminRoutes), //admin routers localhost:5000/api/admin/
 
 // montar servidor -->
 app.listen(process.env.PORT, () => {
