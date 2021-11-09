@@ -20,6 +20,7 @@ let verifyToken = async (req, res, next) => {
       });
       return;
     } else {
+      
       req.body.info = decoded;
       next();
     }

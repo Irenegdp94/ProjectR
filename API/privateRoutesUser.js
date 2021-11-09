@@ -5,7 +5,7 @@ const jwt = require("jsonwebtoken");
 const User = require("../MODELS/User");
 const Company = require("../MODELS/Company");
 const Farm = require("../MODELS/Farm");
-const Machinery = require("../MODELS/Machinery");
+const Machine = require("../MODELS/Machine");
 const Season = require("../MODELS/Season");
 const Tank = require("../MODELS/Tank");
 const Task = require("../MODELS/Task");
@@ -72,41 +72,5 @@ router.get("/userworks", async (req, res) => {
     });
   }
 });
-
-
-//Ruta nuevo trabajo rol: USER  localhost:5000/api/user/nework
-// router.post("/nework", async (req, res) => {
-//   let { dateINI, dateFIN, farm, worker, task, machinery, tank, litres_tank, description  } = req.body;
-//  let doc;
-//   let products= [
-//     {    
-//       name_pr,
-//       litres
-//     }
-//   ];
-
-//  let nework = {dateINI, dateFIN, farm, worker, task, machinery, tank, litres_tank, products, description};
-
-//       try {
-//         doc = await Work.create(nework);
-//         console.log(doc);
-//       } catch (error) {
-//         return res.status(500).json({
-//           message: "Error del servidor",
-//         });
-//       }
-//       res.json({
-//         message: "Trabajo creado correctamente",
-//         info_work: doc
-
-//       });
-// }
-
-
-
-
-
-
-
 
 module.exports = router;

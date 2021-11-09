@@ -3,7 +3,7 @@ const mongoose = require("mongoose");
 const User = require("./MODELS/User");
 const Company = require("./MODELS/Company");
 const Farm = require("./MODELS/Farm");
-const Machinery = require("./MODELS/Machinery");
+const Machine = require("./MODELS/Machine");
 const Season = require("./MODELS/Season");
 const Tank = require("./MODELS/Tank");
 const Task = require("./MODELS/Task");
@@ -90,7 +90,7 @@ let farms = [
     nameFarm: "Zamora",
     area: 28.47,
     cultivo: "Olivo",
-    season: ["799261f9c934fb0418e42e11"],
+    season: "799261f9c934fb0418e42e11",
     company: ["799261f9c934fb0418e42ee2"],
     works: ["100061f9c934fb0418e42e01"],
   },
@@ -100,7 +100,7 @@ let farms = [
     nameFarm: "La Isla esparrago",
     area: 12.05,
     cultivo: "Esparrago",
-    season: ["799261f9c934fb0418e42e11"],
+    season: "799261f9c934fb0418e42e11",
     company: ["799261f9c934fb0418e42ee1"],
     works: [],
   },
@@ -109,7 +109,7 @@ let farms = [
     nameFarm: "La Isla olivo",
     area: 12.12,
     cultivo: "Olivo",
-    season: ["799261f9c934fb0418e42e12"],
+    season: "799261f9c934fb0418e42e12",
     company: ["799261f9c934fb0418e42ee1"],
     works: [],
   },
@@ -265,9 +265,9 @@ const createInfo = async () => {
   console.log(createdFarms);
 
   //maquinaria
-  let deletedMachineries = await Machinery.deleteMany();
+  let deletedMachineries = await Machine.deleteMany();
   console.log(deletedMachineries);
-  let createdMachineries = await Machinery.create(machineries);
+  let createdMachineries = await Machine.create(machineries);
   console.log(createdMachineries);
 
   //tanque
