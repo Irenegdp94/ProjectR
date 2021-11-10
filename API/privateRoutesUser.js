@@ -73,4 +73,39 @@ router.get("/userworks", async (req, res) => {
   }
 });
 
+
+//Ruta para ver un trabajo user
+router.get("/userwork", async (req, res) => {
+  let rol = req.body.info.rol;
+  let id_user = req.body.info.id;
+  let info_workUser;
+  let id_work = req.params.idWork;
+  console.log(id_work)
+
+  if (rol === "USER") {
+    try {
+      
+      info_workUser = await Work.findOne({ _id: id_work, worker: id_user})
+        .populate("farm", "nameFarm")
+        .populate("task", "nameTask")
+        .populate("machinery", "nameMachinery")
+        .populate("tank", "nameTank");
+    } catch (error) {
+      return res.status(500).json({
+        message: "Error de conexión",
+      });
+    }
+
+    res.json({
+      infoWorkUser: info_workUser,
+      message: "info de trabajos",
+    });
+  } else {
+    res.json({
+      infoWorkUser: null,
+      message: "Error de rol",
+    });
+  }
+});
+
 module.exports = router;

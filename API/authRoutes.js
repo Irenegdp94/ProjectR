@@ -49,7 +49,6 @@ router.post("/login", async (req, res) => {
 
 router.post("/signup", async (req, res) => {
   let { nUser, nameUser, surnameUser, pass, phone, roleUser, works } = req.body;
-  // let info_user;
   let user_found;
 
   if (!roleUser) {
@@ -96,7 +95,7 @@ router.post("/signup", async (req, res) => {
       });
     } else if (nUser.length != 9) {
       res.json({
-        message: "El número de usuario debe tener 8 digitos",
+        message: "El número de usuario debe tener 8 digitos + letra",
         nUser: null,
         nameUser: null,
         surnameUser: null,
@@ -127,7 +126,6 @@ router.post("/signup", async (req, res) => {
         roleUser,
         works: [],
       };
-      //console.log(newUser);
       try {
         doc = await User.create(newUser);
         console.log(doc);

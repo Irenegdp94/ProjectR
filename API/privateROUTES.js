@@ -1,4 +1,4 @@
-//crear nuevo trabajo (usuario y admin)
+//Rutas comunes a USER y ADMIN (crear nuevo trabajo)
 const express = require("express");
 const router = express.Router();
 const jwt = require("jsonwebtoken");

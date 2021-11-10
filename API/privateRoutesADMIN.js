@@ -1,3 +1,4 @@
+//Rutas privadas de ADMIN
 const express = require("express");
 const router = express.Router();
 const jwt = require("jsonwebtoken");
@@ -16,7 +17,6 @@ const Work = require("../MODELS/Work");
 //rutas -->
 ///home administrador:
 router.get("/homeAdmin", async (req, res) => {
-  // let token = req.headers.token;
   let id = req.body.info.id;
   let rol = req.body.info.rol;
 
@@ -48,7 +48,7 @@ router.get("/homeAdmin", async (req, res) => {
     });
   }
 });
-
+//Rutas para crear elementos en las BBDD -->
 //Ruta nueva empresa rol:ADMIN
 router.post("/newcompany", async (req, res) => {
   let rol = req.body.info.rol;
@@ -142,7 +142,6 @@ router.post("/newfarm", async (req, res) => {
       try {
         info_season = await Season.findOne({ name: nom_season });
         info_company = await Company.findOne({ nameCompany: nom_company });
-        //console.log(info_season);
       } catch (error) {
         return res.status(500).json({
           message: "Error de conexión",
@@ -188,15 +187,11 @@ router.post("/newfarm", async (req, res) => {
 });
 
 //Ruta para crear maquinaria
-
 router.post("/newmachinery", async (req, res) => {
   let rol = req.body.info.rol;
-
   if (rol === "ADMIN") {
     let find_machinery, doc;
-    //let { nameMac, nREF, day, month, year, pricePur, priceH } = req.body;
     let { nameMac, nREF, datePurchase, pricePur, priceH } = req.body;
-    //let datePurchase = new Date(year, month-1, day+1); //
     try {
       find_machinery = await Machine.findOne({ nameMachinery: nameMac });
     } catch (error) {
@@ -204,7 +199,6 @@ router.post("/newmachinery", async (req, res) => {
         message: "Error de conexión",
       });
     }
-
     if (!find_machinery) {
       let new_machinery = {
         nameMachinery: nameMac,
@@ -216,7 +210,6 @@ router.post("/newmachinery", async (req, res) => {
 
       try {
         doc = await Machine.create(new_machinery);
-
         return res.json({
           message: "Nueva maquinaria creada correctamente",
         });
@@ -238,14 +231,11 @@ router.post("/newmachinery", async (req, res) => {
 });
 
 //Ruta para crear nuevo deposito
-
 router.post("/newtank", async (req, res) => {
   let rol = req.body.info.rol;
-
   if (rol === "ADMIN") {
     let find_tank, doc;
     let { nameTank, capacity, currentLitres } = req.body;
-
     try {
       find_tank = await Tank.findOne({ nameTank });
     } catch (error) {
@@ -253,13 +243,10 @@ router.post("/newtank", async (req, res) => {
         message: "Error de conexión",
       });
     }
-
     if (!find_tank) {
       let new_tank = { nameTank, capacity, currentLitres };
-
       try {
         doc = await Tank.create(new_tank);
-
         return res.json({
           message: "Nuevo depósito creado correctamente",
         });
@@ -283,11 +270,9 @@ router.post("/newtank", async (req, res) => {
 //Ruta para crear nuevas tareas
 router.post("/newtask", async (req, res) => {
   let rol = req.body.info.rol;
-
   if (rol === "ADMIN") {
     let find_task;
     let { nomTask, cat } = req.body;
-
     try {
       find_task = await Task.findOne({ nameTask: nomTask });
       console.log(find_task);
@@ -296,7 +281,6 @@ router.post("/newtask", async (req, res) => {
         message: error,
       });
     }
-
     if (!find_task) {
       try {
         let doc;
@@ -320,10 +304,5 @@ router.post("/newtask", async (req, res) => {
     });
   }
 });
-
-
-
-
-
 
 module.exports = router;
