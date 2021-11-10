@@ -4,8 +4,8 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 const workSchema = new Schema(
   {
-    dateINI: { type: Date, required: true }, //fecha y hora
-    dateFIN: { type: Date, required: true },
+    dateINI: { type: Date}, //fecha y hora
+    dateFIN: { type: Date}, //required: true
 
     farm: [{ type: Schema.Types.ObjectId, ref: "Farm" }],
     worker: { type: Schema.Types.ObjectId, ref: "User" },
