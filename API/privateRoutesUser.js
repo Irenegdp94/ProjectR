@@ -50,7 +50,7 @@ router.get("/userworks", async (req, res) => {
   let info_workUser;
   if (rol === "USER") {
     try {
-      info_workUser = await Work.findOne({ worker: id })
+      info_workUser = await Work.find({ worker: id })
         .populate("farm", "nameFarm")
         .populate("task", "nameTask")
         .populate("machinery", "nameMachinery")
@@ -73,19 +73,16 @@ router.get("/userworks", async (req, res) => {
   }
 });
 
-
 //Ruta para ver un trabajo user
-router.get("/userwork", async (req, res) => {
+router.get("/userwork/:idWork", async (req, res) => {
   let rol = req.body.info.rol;
   let id_user = req.body.info.id;
   let info_workUser;
   let id_work = req.params.idWork;
-  console.log(id_work)
 
   if (rol === "USER") {
     try {
-      
-      info_workUser = await Work.findOne({ _id: id_work, worker: id_user})
+      info_workUser = await Work.findOne({ _id: id_work, worker: id_user })
         .populate("farm", "nameFarm")
         .populate("task", "nameTask")
         .populate("machinery", "nameMachinery")

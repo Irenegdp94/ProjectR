@@ -13,6 +13,6 @@ const farmSchema = new Schema({
 {
     timestamps: true,
 })
-
+farmSchema.plugin(require('mongoose-autopopulate'));
 const Farm = mongoose.model("Farm", farmSchema);
 module.exports = Farm;

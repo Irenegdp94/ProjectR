@@ -7,11 +7,11 @@ const workSchema = new Schema(
     dateINI: { type: Date}, //fecha y hora
     dateFIN: { type: Date}, //required: true
 
-    farm: [{ type: Schema.Types.ObjectId, ref: "Farm" }],
-    worker: { type: Schema.Types.ObjectId, ref: "User" },
-    task: { type: Schema.Types.ObjectId, ref: "Task" },
-    machinery: [{ type: Schema.Types.ObjectId, ref: "Machinery" }],
-    tank: { type: Schema.Types.ObjectId, ref: "Tank" },
+    farm: [{ type: Schema.Types.ObjectId, ref: "Farm"}],
+    worker: { type: Schema.Types.ObjectId, ref: "User"},
+    task: { type: Schema.Types.ObjectId, ref: "Task"},
+    machinery: [{ type: Schema.Types.ObjectId, ref: "Machine"}],
+    tank: { type: Schema.Types.ObjectId, ref: "Tank"},
     litres_tank: { type: Number },
     products: [
       {
@@ -27,6 +27,6 @@ const workSchema = new Schema(
     timestamps: true,
   }
 );
-
+//workSchema.plugin(require('mongoose-autopopulate'));
 const Work = mongoose.model("Work", workSchema);
 module.exports = Work;

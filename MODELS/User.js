@@ -9,11 +9,11 @@ const userSchema = new Schema({
     phone: {type: Number},
     roleUser: {type: String, required: true},
 
-    works: [{type: Schema.Types.ObjectId, ref: "Work"}]
+    works: [{type: Schema.Types.ObjectId, ref: "Work", autopopulate: true }] //
 },
 {
     timestamps: true,
 })
-
+// userSchema.plugin(require('mongoose-autopopulate'));
 const User = mongoose.model("User", userSchema);
 module.exports = User;

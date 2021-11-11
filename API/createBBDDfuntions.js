@@ -11,10 +11,11 @@ const Season = require("../MODELS/Season");
 const Tank = require("../MODELS/Tank");
 const Task = require("../MODELS/Task");
 const Work = require("../MODELS/Work");
+const { default: mongooseAutoPopulate } = require("mongoose-autopopulate");
 
 //crear nueva temporada rol:ADMIN
 
-async function newSeason (name,new_season,res) {
+async function newSeason(name, new_season, res) {
   try {
     find = await Season.findOne({ name });
   } catch (error) {
@@ -22,7 +23,7 @@ async function newSeason (name,new_season,res) {
       message: "Error de conexión",
     });
   }
-  if(!find){
+  if (!find) {
     try {
       doc = await Season.create(new_season);
     } catch (error) {
@@ -33,20 +34,37 @@ async function newSeason (name,new_season,res) {
     return res.json({
       message: "Nueva temporada creada correctamente",
     });
-  }else{
+  } else {
     return res.json({
       message: "La temporada ya existe",
     });
   }
+}
+
+const view_x = async (info_x, X, res) => {
   
+  try {
+    info_x = await X.find({},{works:0});
+  } catch (error) {
+    return res.status(500).json({
+      message: "Error de conexión",
+    });
+  }
+
+  return info_x;
 };
 
 
-
-
-
-
-
+// const view_Onex = async (info_Onex,X,id_x,res) => {
+//   try {
+//     info_Onex = await X.findOne({_id: id_x},{works:0});
+//   } catch (error) {
+//     return res.status(500).json({
+//       message: "Error de conexión",
+//     });
+//   }
+//   return info_Onex
+// }
 
 
 
@@ -54,3 +72,6 @@ async function newSeason (name,new_season,res) {
 
 
 module.exports = newSeason;
+module.exports = view_x;
+//module.exports = view_Onex;
+

@@ -3,6 +3,8 @@ const express = require("express");
 const router = express.Router();
 const jwt = require("jsonwebtoken");
 const newseason = require("./createBBDDfuntions");
+const view_x = require("./createBBDDfuntions");
+//const view_Onex = require("./createBBDDfuntions");
 
 //models -->
 const User = require("../MODELS/User");
@@ -13,6 +15,7 @@ const Season = require("../MODELS/Season");
 const Tank = require("../MODELS/Tank");
 const Task = require("../MODELS/Task");
 const Work = require("../MODELS/Work");
+const { populate } = require("../MODELS/User");
 
 //rutas -->
 ///home administrador:
@@ -28,18 +31,17 @@ router.get("/homeAdmin", async (req, res) => {
         message: "Error de conexión",
       });
     }
-    if(info_user){
+    if (info_user) {
       res.json({
         infoUser: info_user,
         message: "devuelve info",
       });
-    }else {
+    } else {
       res.json({
         infoUser: null,
         message: "El usuario no existe",
       });
     }
-    
   } else {
     res.json({
       infoWorkUser: null,
@@ -300,6 +302,300 @@ router.post("/newtask", async (req, res) => {
     }
   } else {
     return res.json({
+      message: "Error de rol",
+    });
+  }
+});
+
+//Rutas para administrar BBDD -->
+//Ver elementos:
+////Usuarios
+router.get("/viewusers", async (req, res) => {
+  let rol = req.body.info.rol;
+  let info_users;
+  if (rol === "ADMIN") {
+    try {
+      info_users = await User.find({}, { password: 0 });
+    } catch (error) {
+      return res.status(500).json({
+        message: "Error de conexión",
+      });
+    }
+    res.json({
+      infoUser: info_users,
+      message: "info de usuarios",
+    });
+  } else {
+    res.json({
+      infoUser: null,
+      message: "Error de rol",
+    });
+  }
+});
+
+////Empresas
+router.get("/viewcompanies", async (req, res) => {
+  let rol = req.body.info.rol;
+  let info_companies;
+  if (rol === "ADMIN") {
+    let info_ = await view_x(info_companies, Company, res);
+    res.json({
+      info: info_,
+      message: "info de empresas",
+    });
+  } else {
+    res.json({
+      info: null,
+      message: "Error de rol",
+    });
+  }
+});
+
+////Fincas
+router.get("/viewfarms", async (req, res) => {
+  let rol = req.body.info.rol;
+  let info_farms;
+  if (rol === "ADMIN") {
+    let info_ = await view_x(info_farms, Farm, res);
+    res.json({
+      info: info_,
+      message: "info de fincas",
+    });
+  } else {
+    res.json({
+      info: null,
+      message: "Error de rol",
+    });
+  }
+});
+
+////Maquinaria
+router.get("/viewmachines", async (req, res) => {
+  let rol = req.body.info.rol;
+  let info_machines;
+  if (rol === "ADMIN") {
+    let info_ = await view_x(info_machines, Machine, res);
+    res.json({
+      info: info_,
+      message: "info de maquinas",
+    });
+  } else {
+    res.json({
+      info: null,
+      message: "Error de rol",
+    });
+  }
+});
+
+////Campaña
+router.get("/viewseason", async (req, res) => {
+  let rol = req.body.info.rol;
+  let info_seasons;
+  if (rol === "ADMIN") {
+    let info_ = await view_x(info_seasons, Season, res);
+    res.json({
+      info: info_,
+      message: "info de campañas",
+    });
+  } else {
+    res.json({
+      info: null,
+      message: "Error de rol",
+    });
+  }
+});
+
+////Depositos
+router.get("/viewtanks", async (req, res) => {
+  let rol = req.body.info.rol;
+  let info_tanks;
+  if (rol === "ADMIN") {
+    let info_ = await view_x(info_tanks, Tank, res);
+    res.json({
+      info: info_,
+      message: "info de depositos",
+    });
+  } else {
+    res.json({
+      info: null,
+      message: "Error de rol",
+    });
+  }
+});
+
+////Tareas
+router.get("/viewtasks", async (req, res) => {
+  let rol = req.body.info.rol;
+  let info_tasks;
+  if (rol === "ADMIN") {
+    let info_ = await view_x(info_tasks, Task, res);
+    res.json({
+      info: info_,
+      message: "info de tareas",
+    });
+  } else {
+    res.json({
+      info: null,
+      message: "Error de rol",
+    });
+  }
+});
+
+//Ver elemento:
+
+//Ver usuario:
+router.get("/viewOneuser/:idUser", async (req, res) => {
+  let rol = req.body.info.rol;
+  let info_user;
+  let id_user = req.params.idUser;
+  if (rol === "ADMIN") {
+    try {
+      info_user = await User.findOne(
+        { _id: id_user },
+        { password: 0 } //, works: 0
+      );
+    } catch (error) {
+      return res.status(500).json({
+        message: "Error de conexión",
+      });
+    }
+    res.json({
+      infoUser: info_user,
+      message: "info de usuario",
+    });
+  } else {
+    res.json({
+      infoUser: null,
+      message: "Error de rol",
+    });
+  }
+});
+
+//Ver empresa:
+router.get("/viewOnecompany/:idCompany", async (req, res) => {
+  let rol = req.body.info.rol;
+  let info_company;
+  let id_company = req.params.idCompany;
+  if (rol === "ADMIN") {
+    try {
+      info_company = await Company.findOne(
+        { _id: id_company },
+        { works: 0 }
+      ).populate("farms", "nameFarm");
+    } catch (error) {
+      return res.status(500).json({
+        message: "Error de conexión",
+      });
+    }
+    res.json({
+      info: info_company,
+      message: "info empresa",
+    });
+  } else {
+    res.json({
+      info: null,
+      message: "Error de rol",
+    });
+  }
+});
+
+//Ver finca:
+router.get("/viewOnefarm/:idFarm", async (req, res) => {
+  let rol = req.body.info.rol;
+  let info_farm;
+  let id_farm = req.params.idFarm;
+  if (rol === "ADMIN") {
+    try {
+      info_farm = await Farm.findOne({ _id: id_farm }, { works: 0 })
+        .populate("season", "name")
+        .populate("company", "nameCompany");
+    } catch (error) {
+      return res.status(500).json({
+        message: "Error de conexión",
+      });
+    }
+    res.json({
+      info: info_farm,
+      message: "info finca",
+    });
+  } else {
+    res.json({
+      info: null,
+      message: "Error de rol",
+    });
+  }
+});
+
+//Ver maquinaria:
+router.get("/viewOnemachine/:idmachine", async (req, res) => {
+  let rol = req.body.info.rol;
+  let info_machine;
+  let id_machine = req.params.idmachine;
+  if (rol === "ADMIN") {
+    try {
+      info_machine = await Machine.findOne({ _id: id_machine }, { works: 0 });
+    } catch (error) {
+      return res.status(500).json({
+        message: "Error de conexión",
+      });
+    }
+    res.json({
+      info: info_machine,
+      message: "info maquina",
+    });
+  } else {
+    res.json({
+      info: null,
+      message: "Error de rol",
+    });
+  }
+});
+
+//Ver campaña:
+router.get("/viewOneseason/:idseason", async (req, res) => {
+  let rol = req.body.info.rol;
+  let info_season;
+  let id_season = req.params.idseason;
+  if (rol === "ADMIN") {
+    try {
+      info_season = await Season.findOne({ _id: id_season }, { works: 0 });
+    } catch (error) {
+      return res.status(500).json({
+        message: "Error de conexión",
+      });
+    }
+    res.json({
+      info: info_season,
+      message: "info campaña",
+    });
+  } else {
+    res.json({
+      info: null,
+      message: "Error de rol",
+    });
+  }
+});
+
+//Ver deposito:
+router.get("/viewOnetank/:idtank", async (req, res) => {
+  let rol = req.body.info.rol;
+  let info_tank;
+  let id_tank = req.params.idtank;
+  if (rol === "ADMIN") {
+    try {
+      info_tank = await Tank.findOne({ _id: id_tank }, { works: 0 });
+    } catch (error) {
+      return res.status(500).json({
+        message: "Error de conexión",
+      });
+    }
+    res.json({
+      info: info_tank,
+      message: "info deposito",
+    });
+  } else {
+    res.json({
+      info: null,
       message: "Error de rol",
     });
   }
