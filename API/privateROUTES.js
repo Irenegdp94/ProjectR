@@ -32,15 +32,18 @@ router.post("/newwork", async (req, res) => {
 
   let info_farm, info_task, info_machinery, info_tank;
   let id_farms = [];
+  let id_companies = [];
   let products = [];
   let id_machinery = [];
   let id_task, id_tank;
   let id_worker;
-
+  let id_farm;
   //añadir fincas
   for (element in nom_farms) {
     try {
       info_farm = await Farm.findOne({ nameFarm: nom_farms[element] });
+      id_farm = info_farm._id;
+      info_company = await Company.findOne({ farms: id_farm });
     } catch (error) {
       return res.status(500).json({
         message: "Error de conexión",
@@ -48,8 +51,10 @@ router.post("/newwork", async (req, res) => {
     }
     if (info_farm) {
       id_farms.push(info_farm._id);
+      id_companies.push(info_company._id);
     }
   }
+
   //añadir tarea
   try {
     info_task = await Task.findOne({ nameTask: nom_task });
@@ -98,19 +103,19 @@ router.post("/newwork", async (req, res) => {
     products[element] = new_element;
   }
 
-//trabajador
+  //trabajador
   if (rol === "ADMIN") {
     id_worker = req.body.id_worker;
   } else if (rol === "USER") {
     id_worker = req.body.info.id;
   }
 
-
   // crear trabajo en bbdd
   let new_work = {
     dateINI,
     dateFIN,
     farm: id_farms,
+    company: id_companies,
     worker: id_worker,
     task: id_task,
     machinery: id_machinery,
@@ -129,6 +134,95 @@ router.post("/newwork", async (req, res) => {
     return res.status(500).json({
       message: error,
     });
+  }
+});
+
+//MODIFICAR
+////Usuario (ADMIN y USER)
+router.put("/upuser/:iduser", async (req, res) => {
+  let rol = req.body.info.rol;
+  let id_user = req.params.iduser;
+  let { UPnUser, UPnameUser, UPsurnameUser, UPphone, UProlUser } = req.body;
+  if (rol === "ADMIN") {
+    let doc = await User.findByIdAndUpdate(
+      id_user,
+      {
+        nUser: UPnUser,
+        nameUser: UPnameUser,
+        surnameUser: UPsurnameUser,
+        phone: UPphone,
+        rolUser: UProlUser,
+      },
+      { new: true }
+    );
+
+    res.json({
+      message: "Usuario modificado",
+      up_info: doc,
+    });
+  } else if (rol === "USER") {
+    let { UPpass } = req.body;
+    let doc = await User.findByIdAndUpdate(
+      id_user,
+      {
+        nameUser: UPnameUser,
+        surnameUser: UPsurnameUser,
+        phone: UPphone,
+        password: UPpass,
+      },
+      { new: true }
+    );
+
+    res.json({
+      message: "Usuario modificado",
+      up_info: doc,
+    });
+  }
+});
+
+//modificar TRABAJO (USER y ADMIN)
+router.put("/upwork/:idwork", async (req, res) => {
+  let rol = req.body.info.rol;
+  let id_work = req.params.idwork;
+  let {
+    UPdateINI,
+    UPdateFIN,
+    UPfarm,
+    UPcompany,
+    UPtask,
+    UPmachinery,
+    UPtank,
+    UPlitres_tank,
+    UPproducts,
+    UPdescription,
+  } = req.body;
+
+  if (rol === "ADMIN") {
+    let UPworker = req.body.worker;
+    let doc = await User.findByIdAndUpdate(
+      id_work,
+      {
+        dateINI: UPdateINI,
+        dateFIN: UPdateFIN,
+        farm: UPfarm,
+        company: UPcompany,
+        worker: UPworker,
+        task: UPtask,
+        machinery: UPmachinery,
+        tank: UPtank,
+        litres_tank: UPlitres_tank,
+        products: UPproducts,
+        description: UPdescription,
+      },
+      { new: true }
+    );
+    res.json({
+      message: "Usuario modificado",
+      up_info: doc,
+    });
+  } else if (rol === "USER") {
+
+
   }
 });
 

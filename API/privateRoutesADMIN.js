@@ -441,8 +441,7 @@ router.get("/viewtasks", async (req, res) => {
   }
 });
 
-//Ver elemento:
-
+////Ver elemento:
 //Ver usuario:
 router.get("/viewOneuser/:idUser", async (req, res) => {
   let rol = req.body.info.rol;
@@ -600,5 +599,329 @@ router.get("/viewOnetank/:idtank", async (req, res) => {
     });
   }
 });
+
+//Ver tarea:
+router.get("/viewOnetask/:idtask", async (req, res) => {
+  let rol = req.body.info.rol;
+  let info_task;
+  let id_task = req.params.idtask;
+  if (rol === "ADMIN") {
+    try {
+      info_task = await Task.findOne({ _id: id_task }, { works: 0 });
+    } catch (error) {
+      return res.status(500).json({
+        message: "Error de conexión",
+      });
+    }
+    res.json({
+      info: info_task,
+      message: "info deposito",
+    });
+  } else {
+    res.json({
+      info: null,
+      message: "Error de rol",
+    });
+  }
+});
+
+/////Modificar elemento
+////UP Empresa
+router.put("/upcompany/:idcompany", async (req, res) => {
+  let id_company = req.params.idcompany;
+  let { UPnameCompany, UPfarms } = req.body;
+  let id_farms = [];
+  if (UPfarms) {
+    for (element in UPfarms) {
+      id_farm = await Farm.findOne({ nameFarm: UPfarms[element] });
+      id_farms.push(id_farm);
+    } //y si ya existe?
+  }
+  let doc = await Company.findByIdAndUpdate(
+    id_company,
+    // { nameCompany: UPnameCompany, $push: { farms: id_farms } },
+    { nameCompany: UPnameCompany, $push: { farms: id_farms } },
+    { new: true }
+  ); //hacer un popuate de company y buscar si ya esta el nombre de la finca
+
+  res.json({
+    message: "Empresa modificada",
+    up_info: doc,
+  });
+});
+
+////UP finca
+router.put("/upfarm/:idfarm", async (req, res) => {
+  let id_farm = req.params.idfarm;
+  let { UPnameFarm, UParea, UPcultivo, UPseason, UPcompany } = req.body;
+
+  if (UPseason) {
+    id_season = await Season.findOne({ name: UPseason });
+  }
+  //cambiar la empresa a la que pertenece
+  let doc = await Farm.findByIdAndUpdate(
+    id_farm,
+    {
+      nameFarm: UPnameFarm,
+      area: UParea,
+      cultivo: UPcultivo,
+      season: UPseason,
+      company: UPcompany,
+    },
+    { new: true }
+  );
+  res.json({
+    message: "Finca modificada",
+    up_info: doc,
+  });
+});
+
+
+//UP maquinaria
+router.put("/upmachine/:idmachine", async (req, res) => {
+  let id_machine = req.params.idmachine;
+  let { UPnameMachinery, UPnREF, UPdatePurchase, UPpricePurchase, UPpriceH } =
+    req.body;
+  let doc = await Machine.findByIdAndUpdate(
+    id_machine,
+    {
+      nameMachinery: UPnameMachinery,
+      nREF: UPnREF,
+      datePurchase: UPdatePurchase,
+      pricePurchase: UPpricePurchase,
+      priceH: UPpriceH,
+    },
+    { new: true }
+  );
+  res.json({
+    message: "Maquinaria modificada",
+    up_info: doc,
+  });
+});
+
+//up season
+router.put("/upseason/:idseason", async (req, res) => {
+  let id_season = req.params.idseason;
+  let { UPname, UPdateINI, UPdateEND } = req.body;
+  let doc = await Season.findByIdAndUpdate(
+    id_season,
+    {
+      name: UPname,
+      dateINI: UPdateINI,
+      dateEND: UPdateEND,
+    },
+    { new: true }
+  );
+  res.json({
+    message: "Campaña modificada",
+    up_info: doc,
+  });
+});
+
+//up deposito
+router.put("/uptank/:idtank", async (req, res) => {
+  let id_tank = req.params.idtank;
+  let { UPnameTank, UPcapacity, UPcurrentLitres } = req.body;
+  let doc = await Tank.findByIdAndUpdate(
+    id_tank,
+    {
+      nameTank: UPnameTank,
+      capacity: UPcapacity,
+      currentLitres: UPcurrentLitres,
+    },
+    { new: true }
+  );
+  res.json({
+    message: "Depósito modificado",
+    up_info: doc,
+  });
+});
+
+//up tareas
+router.put("/uptask/:idtask", async (req, res) => {
+  let id_task = req.params.idtask;
+  let { UPnametask, UPcategory } = req.body;
+  let doc = await Task.findByIdAndUpdate(
+    id_task,
+    {
+      nametask: UPnametask,
+      category: UPcategory,
+    },
+    { new: true }
+  );
+  res.json({
+    message: "Tarea modificada",
+    up_info: doc,
+  });
+});
+
+
+
+
+//Ruta BUSCAR TRABAJO POR
+router.post("/searchfor", async (req, res) => {
+  let { type_search, nom } = req.body;
+
+  //let info;
+  switch (type_search) {
+    case "trabajador":
+      info_user = await User.findOne({ nameUser: nom });
+      id_user = info_user._id;
+
+      try {
+        info_ = await Work.find({ worker: id_user })
+          .populate("farm", "nameFarm")
+          .populate("task", "nameTask")
+          .populate("machinery", "nameMachinery")
+          .populate("tank", "nameTank");
+      } catch (error) {
+        return res.status(500).json({
+          message: "Error de conexión",
+        });
+      }
+      res.json({
+        info: info_,
+        message: "info de trabajos por usuario",
+      });
+      break;
+
+    case "empresa":
+      info_company = await Company.findOne({ nameCompany: nom });
+      let id_farms = info_company.farms;
+      for (element in id_farms) {
+        try {
+          info_ = await Work.find({ farm: id_farms[element] })
+            .populate("farm", "nameFarm")
+            .populate("task", "nameTask")
+            .populate("machinery", "nameMachinery")
+            .populate("tank", "nameTank");
+        } catch (error) {
+          return res.status(500).json({
+            message: "Error de conexión",
+          });
+        }
+      }
+      res.json({
+        info: info_,
+        message: "info de trabajos por empresa",
+      });
+      break;
+
+    case "finca":
+      info_user = await Farm.findOne({ nameFarm: nom });
+      let id_farm = info_user._id;
+
+      try {
+        info_ = await Work.find({ farm: id_farm })
+          .populate("farm", "nameFarm")
+          .populate("task", "nameTask")
+          .populate("machinery", "nameMachinery")
+          .populate("tank", "nameTank");
+      } catch (error) {
+        return res.status(500).json({
+          message: "Error de conexión",
+        });
+      }
+      res.json({
+        info: info_,
+        message: "info de trabajos por finca",
+      });
+      break;
+
+    case "maquinaria":
+      info_user = await Machine.findOne({ nameMachinery: nom });
+      let id_machine = info_user._id;
+
+      try {
+        info_ = await Work.find({ machinery: id_machine })
+          .populate("farm", "nameFarm")
+          .populate("task", "nameTask")
+          .populate("machinery", "nameMachinery")
+          .populate("tank", "nameTank");
+      } catch (error) {
+        return res.status(500).json({
+          message: "Error de conexión",
+        });
+      }
+      res.json({
+        info: info_,
+        message: "info de trabajos por maquinaria",
+      });
+
+    case "tanque":
+      info_info = await Tank.findOne({ nameTank: nom });
+      let id_tank = info_info._id;
+
+      try {
+        info_ = await Work.find({ tank: id_tank })
+          .populate("farm", "nameFarm")
+          .populate("task", "nameTask")
+          .populate("machinery", "nameMachinery")
+          .populate("tank", "nameTank");
+      } catch (error) {
+        return res.status(500).json({
+          message: "Error de conexión",
+        });
+      }
+      res.json({
+        info: info_,
+        message: "info de trabajos por deposito",
+      });
+      break;
+
+    case "tarea":
+      info_info = await Task.findOne({ nameTask: nom });
+      let id_Task = info_info._id;
+
+      try {
+        info_ = await Work.find({ task: id_Task })
+          .populate("farm", "nameFarm")
+          .populate("task", "nameTask")
+          .populate("machinery", "nameMachinery")
+          .populate("tank", "nameTank");
+      } catch (error) {
+        return res.status(500).json({
+          message: "Error de conexión",
+        });
+      }
+      res.json({
+        info: info_,
+        message: "info de trabajos por tarea",
+      });
+      break;
+  }
+});
+
+//ruta mostrar 1trabajo desde buscar por
+
+router.get("/getOnework/:idWork", async (req, res) => {
+  let rol = req.body.info.rol;
+  let id_work = req.params.idWork;
+
+  if (rol === "ADMIN") {
+    try {
+      info_oneWork = await Work.findOne({ _id: id_work})
+        .populate("farm", "nameFarm")
+        .populate("task", "nameTask")
+        .populate("machinery", "nameMachinery")
+        .populate("tank", "nameTank");
+    } catch (error) {
+      return res.status(500).json({
+        message: "Error de conexión",
+      });
+    }
+
+    res.json({
+      info_: info_oneWork,
+      message: "info de trabajos",
+    });
+  } else {
+    res.json({
+      info_: null,
+      message: "Error de rol",
+    });
+  }
+});
+
 
 module.exports = router;

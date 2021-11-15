@@ -34,6 +34,7 @@ router.post("/login", async (req, res) => {
         auth: true,
         message: "Log-in correcto",
         token: token,
+        rol: info_user.roleUser
       });
       return;
     } else if (result == false) {
@@ -41,6 +42,7 @@ router.post("/login", async (req, res) => {
         auth: false,
         message: "Usuario o contraseña incorrecto",
         token: null,
+        rol: null
       });
       return;
     }
