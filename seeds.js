@@ -220,6 +220,31 @@ let products = [
 
 let works = [
   {
+    _id: "100061f9c934fb0418e42e02",
+    dateINI: new Date("2021-12-31T13:24:00Z"),
+    dateFIN: new Date("1995-12-17T05:28:00Z"),
+    farm: ["799261f9c934fb0418e42ee3"],
+    worker: "500261f9c934fb0418e42aa1",
+    task: "799261f9c934fb0418e42e13",
+    machinery: ["799261f9c934fb0418e42ee6", "799261f9c934fb0418e42ee7"],
+    tank: "799261f9c934fb0418e42ee9",
+    litres_tank: 50,
+    products: [
+      {
+        name_pr: "KASIO",
+        litres: 25,
+      },
+      {
+        name_pr: "BUFFER",
+        litres: 295,
+      }
+    ],
+    
+    // litres_product: 26,
+    description: "Echar Hebicida",
+  },
+
+  {
     _id: "100061f9c934fb0418e42e01",
     dateINI: new Date("2021-12-31T13:24:00Z"),
     dateFIN: new Date("1995-12-17T05:28:00Z"),

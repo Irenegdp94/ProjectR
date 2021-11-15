@@ -183,46 +183,89 @@ router.put("/upuser/:iduser", async (req, res) => {
 //modificar TRABAJO (USER y ADMIN)
 router.put("/upwork/:idwork", async (req, res) => {
   let rol = req.body.info.rol;
+  let id_user = req.body.info.id
   let id_work = req.params.idwork;
   let {
     UPdateINI,
     UPdateFIN,
     UPfarm,
-    UPcompany,
     UPtask,
     UPmachinery,
     UPtank,
     UPlitres_tank,
-    UPproducts,
     UPdescription,
+    UPname_pr,
+    UPlitres
   } = req.body;
+  
+  if (UPfarm) {
+    let id_farms = [];
+    for (element in UPfarm) {
+      id_farm = await Farm.findOne({ nameFarm: UPfarm[element] });
+      id_farms.push(id_farm);
+    }
+    UPfarm = id_farms;
+  }
+
+  if (UPtask) {
+    UPtask = await Task.findOne({ nameTask: UPtask });
+  }
+
+  if (UPmachinery) {
+    let id_machines = [];
+    for (element in UPmachinery) {
+      id_machine = await Machine.findOne({ nameMachinery: UPmachinery[element] });
+      id_machines.push(id_machine);
+    }
+    UPmachinery = id_machines;
+  }
+
+  if (UPtank) {
+    UPtank = await Tank.findOne({ nameTank: UPtank });
+  }
 
   if (rol === "ADMIN") {
     let UPworker = req.body.worker;
-    let doc = await User.findByIdAndUpdate(
+    let doc = await Work.findByIdAndUpdate(
       id_work,
       {
         dateINI: UPdateINI,
         dateFIN: UPdateFIN,
         farm: UPfarm,
-        company: UPcompany,
         worker: UPworker,
         task: UPtask,
         machinery: UPmachinery,
         tank: UPtank,
         litres_tank: UPlitres_tank,
-        products: UPproducts,
+        products: {name_pr:UPname_pr,litres:UPlitres},
         description: UPdescription,
       },
       { new: true }
     );
     res.json({
-      message: "Usuario modificado",
+      message: "Trabajo modificado",
       up_info: doc,
     });
   } else if (rol === "USER") {
-
-
+    let doc = await Work.findOneAndUpdate(
+      {_id: id_work, worker: id_user},
+      {
+        dateINI: UPdateINI,
+        dateFIN: UPdateFIN,
+        farm: UPfarm,
+        task: UPtask,
+        machinery: UPmachinery,
+        tank: UPtank,
+        litres_tank: UPlitres_tank,
+        products: {name_pr:UPname_pr,litres:UPlitres},
+        description: UPdescription,
+      },
+      { new: true }
+    );
+    res.json({
+      message: "Trabajo modificado",
+      up_info: doc,
+    });
   }
 });
 

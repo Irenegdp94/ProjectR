@@ -676,7 +676,6 @@ router.put("/upfarm/:idfarm", async (req, res) => {
   });
 });
 
-
 //UP maquinaria
 router.put("/upmachine/:idmachine", async (req, res) => {
   let id_machine = req.params.idmachine;
@@ -754,9 +753,6 @@ router.put("/uptask/:idtask", async (req, res) => {
     up_info: doc,
   });
 });
-
-
-
 
 //Ruta BUSCAR TRABAJO POR
 router.post("/searchfor", async (req, res) => {
@@ -900,7 +896,7 @@ router.get("/getOnework/:idWork", async (req, res) => {
 
   if (rol === "ADMIN") {
     try {
-      info_oneWork = await Work.findOne({ _id: id_work})
+      info_oneWork = await Work.findOne({ _id: id_work })
         .populate("farm", "nameFarm")
         .populate("task", "nameTask")
         .populate("machinery", "nameMachinery")
@@ -923,5 +919,46 @@ router.get("/getOnework/:idWork", async (req, res) => {
   }
 });
 
+//Borrar empresa
+router.delete("/delcompany/:idcompany", async (req, res) => {
+  let id_company = req.params.idcompany;
+  let rol = req.body.info.rol;
+  if (rol === "ADMIN") {
+    info = await Company.findById(id_company);
+    id_farms = info.farms;
+
+    await Company.findByIdAndDelete(id_company);
+    for (element in id_farms) {
+      await Farm.findByIdAndUpdate(id_farms[element], {
+        $pull: { company: id_company },
+      });
+    }
+
+    res.json({
+      message: "Empresa eliminada",
+    });
+  }
+});
+
+//Borrar finca
+router.delete("/delfarm/:idfarm", async (req, res) => {
+  let id_farm = req.params.idfarm;
+  let rol = req.body.info.rol;
+  if (rol === "ADMIN") {
+    info = await Farm.findById(id_farm);
+    id_companies = info.company;
+    await Farm.findByIdAndDelete(id_farm);
+
+    for (element in id_companies) {
+      await Company.findByIdAndUpdate(id_companies[element], {
+        $pull: { farms: id_farm },
+      });
+    }
+
+    res.json({
+      message: "Finca eliminada",
+    });
+  }
+});
 
 module.exports = router;
