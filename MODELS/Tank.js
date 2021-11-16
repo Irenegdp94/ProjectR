@@ -7,7 +7,8 @@ const tankSchema = new Schema({
     capacity: {type: Number, required: true},
     currentLitres: {type: Number},
 
-    works: [{type: Schema.Types.ObjectId, ref: "Work"}]
+    works: [{type: Schema.Types.ObjectId, ref: "Work"}],
+    deleted: {type: Boolean}
 },
 {
     timestamps: true,

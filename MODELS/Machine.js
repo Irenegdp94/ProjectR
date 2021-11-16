@@ -6,9 +6,9 @@ const machinerySchema = new Schema({
     datePurchase: {type: Date, required: true},
     pricePurchase: {type: Number, required: true},
     priceH: {type: Number, required: true},
-
-    //n: [{type: Schema.Types.ObjectId, ref: "Farm"}]
-    works: [{type: Schema.Types.ObjectId, ref: "Work"}]
+    
+    works: [{type: Schema.Types.ObjectId, ref: "Work"}],
+    deleted: {type: Boolean}
 },
 {
     timestamps: true,

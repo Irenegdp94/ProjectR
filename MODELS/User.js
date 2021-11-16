@@ -9,7 +9,8 @@ const userSchema = new Schema({
     phone: {type: Number},
     roleUser: {type: String, required: true},
 
-    works: [{type: Schema.Types.ObjectId, ref: "Work", autopopulate: true }] //
+    works: [{type: Schema.Types.ObjectId, ref: "Work", autopopulate: true }], //
+    deleted: {type: Boolean}
 },
 {
     timestamps: true,

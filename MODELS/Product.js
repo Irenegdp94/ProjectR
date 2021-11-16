@@ -5,7 +5,8 @@ const productSchema = new Schema({
     nREF: {type: String, required: true},
     pricePurchase: {type: Number, required: true},
     
-    works: [{type: Schema.Types.ObjectId, ref: "Work"}]
+    works: [{type: Schema.Types.ObjectId, ref: "Work"}],
+    deleted: {type: Boolean}
 },
 {
     timestamps: true,

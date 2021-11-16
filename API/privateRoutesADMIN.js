@@ -4,6 +4,7 @@ const router = express.Router();
 const jwt = require("jsonwebtoken");
 const newseason = require("./createBBDDfuntions");
 const view_x = require("./createBBDDfuntions");
+const deleteOneX = require("./createBBDDfuntions");
 //const view_Onex = require("./createBBDDfuntions");
 
 //models -->
@@ -71,7 +72,7 @@ router.post("/newcompany", async (req, res) => {
       for (element in farms) {
         try {
           info_farm = await Farm.findOne({ nameFarm: farms[element] });
-          console.log(info_farm);
+          // console.log(info_farm);
         } catch (error) {
           return res.status(500).json({
             message: "Error de conexión",
@@ -630,19 +631,20 @@ router.get("/viewOnetask/:idtask", async (req, res) => {
 router.put("/upcompany/:idcompany", async (req, res) => {
   let id_company = req.params.idcompany;
   let { UPnameCompany, UPfarms } = req.body;
-  let id_farms = [];
+
   if (UPfarms) {
+    let id_farms = [];
     for (element in UPfarms) {
       id_farm = await Farm.findOne({ nameFarm: UPfarms[element] });
-      id_farms.push(id_farm);
-    } //y si ya existe?
+      id_farms.push(id_farm._id);
+    }
+    UPfarms = id_farms;
   }
   let doc = await Company.findByIdAndUpdate(
     id_company,
-    // { nameCompany: UPnameCompany, $push: { farms: id_farms } },
-    { nameCompany: UPnameCompany, $push: { farms: id_farms } },
+    { nameCompany: UPnameCompany, farms: UPfarms },
     { new: true }
-  ); //hacer un popuate de company y buscar si ya esta el nombre de la finca
+  );
 
   res.json({
     message: "Empresa modificada",
@@ -656,9 +658,18 @@ router.put("/upfarm/:idfarm", async (req, res) => {
   let { UPnameFarm, UParea, UPcultivo, UPseason, UPcompany } = req.body;
 
   if (UPseason) {
-    id_season = await Season.findOne({ name: UPseason });
+    UPseason = await Season.findOne({ name: UPseason });
   }
-  //cambiar la empresa a la que pertenece
+
+  if (UPcompany) {
+    let id_companies = [];
+    for (element in UPcompany) {
+      id_company = await Company.findOne({ nameCompany: UPcompany[element] });
+      id_companies.push(id_company._id);
+    }
+    UPcompany = id_companies;
+  }
+
   let doc = await Farm.findByIdAndUpdate(
     id_farm,
     {
@@ -760,6 +771,7 @@ router.post("/searchfor", async (req, res) => {
 
   //let info;
   switch (type_search) {
+    //si no existe (info == []) poner algo
     case "trabajador":
       info_user = await User.findOne({ nameUser: nom });
       id_user = info_user._id;
@@ -775,12 +787,21 @@ router.post("/searchfor", async (req, res) => {
           message: "Error de conexión",
         });
       }
-      res.json({
-        info: info_,
-        message: "info de trabajos por usuario",
-      });
-      break;
+      
+      if (info_.length != 0){
+        res.json({
+          info: info_,
+          message: "info de trabajos por usuario",
+        });
+      }else {
+        res.json({
+          info: null,
+          message: "No hay coincidencias",
+        });
+      }
 
+      break;
+//para buscar por empresa hay que buscar en las fincas :(
     case "empresa":
       info_company = await Company.findOne({ nameCompany: nom });
       let id_farms = info_company.farms;
@@ -797,10 +818,17 @@ router.post("/searchfor", async (req, res) => {
           });
         }
       }
-      res.json({
-        info: info_,
-        message: "info de trabajos por empresa",
-      });
+      if (info_.length != 0){
+        res.json({
+          info: info_,
+          message: "info de trabajos por empresa",
+        });
+      }else {
+        res.json({
+          info: null,
+          message: "No hay coincidencias",
+        });
+      }
       break;
 
     case "finca":
@@ -818,10 +846,17 @@ router.post("/searchfor", async (req, res) => {
           message: "Error de conexión",
         });
       }
-      res.json({
-        info: info_,
-        message: "info de trabajos por finca",
-      });
+      if (info_.length != 0){
+        res.json({
+          info: info_,
+          message: "info de trabajos por finca",
+        });
+      }else {
+        res.json({
+          info: null,
+          message: "No hay coincidencias",
+        });
+      }
       break;
 
     case "maquinaria":
@@ -839,12 +874,19 @@ router.post("/searchfor", async (req, res) => {
           message: "Error de conexión",
         });
       }
-      res.json({
-        info: info_,
-        message: "info de trabajos por maquinaria",
-      });
+      if (info_.length != 0){
+        res.json({
+          info: info_,
+          message: "info de trabajos por maquinaria",
+        });
+      }else {
+        res.json({
+          info: null,
+          message: "No hay coincidencias",
+        });
+      }
 
-    case "tanque":
+    case "deposito":
       info_info = await Tank.findOne({ nameTank: nom });
       let id_tank = info_info._id;
 
@@ -859,10 +901,17 @@ router.post("/searchfor", async (req, res) => {
           message: "Error de conexión",
         });
       }
-      res.json({
-        info: info_,
-        message: "info de trabajos por deposito",
-      });
+      if (info_.length != 0){
+        res.json({
+          info: info_,
+          message: "info de trabajos por deposito",
+        });
+      }else {
+        res.json({
+          info: null,
+          message: "No hay coincidencias",
+        });
+      }
       break;
 
     case "tarea":
@@ -880,10 +929,17 @@ router.post("/searchfor", async (req, res) => {
           message: "Error de conexión",
         });
       }
-      res.json({
-        info: info_,
-        message: "info de trabajos por tarea",
-      });
+      if (info_.length != 0){
+        res.json({
+          info: info_,
+          message: "info de trabajos por tarea",
+        });
+      }else {
+        res.json({
+          info: null,
+          message: "No hay coincidencias",
+        });
+      }
       break;
   }
 });
@@ -919,46 +975,173 @@ router.get("/getOnework/:idWork", async (req, res) => {
   }
 });
 
+//Borrado falso
+//Borrar 1element0
+//Empresa
+router.put("/deletecompany/:idX", async (req, res) => {
+  let rol = req.body.info.rol;
+  let id_X = req.params.idX;
+  if (rol === "ADMIN"){
+    //estado deleted de empresa a true
+    // let info_x = await deleteOneX(Company,id_X)
+    //  // guardar array de fincas de la empresa borrada
+    //  id_x = info_x.farms
+    //  //borrar la empresa del array de empresas en finca
+    // for (element in id_x) {
+    //         await Farm.findByIdAndUpdate(id_x[element], {
+    //           $pull: { company: id_X },
+    //         });
+    //       }
+    res.json({
+      message: "Elemento eliminado",
+    });
+  }else {
+    res.json({
+      message: "Error de rol",
+    });
+  }
+});
+
+
+//Finca
+router.put("/deletefarm/:idX", async (req, res) => {
+  let rol = req.body.info.rol;
+  let id_X = req.params.idX;
+  if (rol === "ADMIN"){
+    deleteOneX(Farm,id_X)
+    res.json({
+      message: "Elemento eliminado",
+    });
+  }else {
+    res.json({
+      message: "Error de rol",
+    });
+  }
+});
+
+//Maquinaria
+router.put("/deletemachine/:idX", async (req, res) => {
+  let rol = req.body.info.rol;
+  let id_X = req.params.idX;
+  if (rol === "ADMIN"){
+    deleteOneX(Machine,id_X)
+    res.json({
+      message: "Elemento eliminado",
+    });
+  }else {
+    res.json({
+      message: "Error de rol",
+    });
+  }
+});
+
+
+//Campaña
+router.put("/deleteseason/:idX", async (req, res) => {
+  let rol = req.body.info.rol;
+  let id_X = req.params.idX;
+  if (rol === "ADMIN"){
+    deleteOneX(Season,id_X)
+    res.json({
+      message: "Elemento eliminado",
+    });
+  }else {
+    res.json({
+      message: "Error de rol",
+    });
+  }
+});
+
+//Deposito
+router.put("/deletetank/:idX", async (req, res) => {
+  let rol = req.body.info.rol;
+  let id_X = req.params.idX;
+  if (rol === "ADMIN"){
+    deleteOneX(Tank,id_X)
+    res.json({
+      message: "Elemento eliminado",
+    });
+  }else {
+    res.json({
+      message: "Error de rol",
+    });
+  }
+});
+
+//Tarea
+router.put("/deletetask/:idX", async (req, res) => {
+  let rol = req.body.info.rol;
+  let id_X = req.params.idX;
+  if (rol === "ADMIN"){
+    deleteOneX(Task,id_X)
+    res.json({
+      message: "Elemento eliminado",
+    });
+  }else {
+    res.json({
+      message: "Error de rol",
+    });
+  }
+});
+
+
+//Usuario
+router.put("/deleteuser/:idX", async (req, res) => {
+  let rol = req.body.info.rol;
+  let id_X = req.params.idX;
+  if (rol === "ADMIN"){
+    deleteOneX(User,id_X)
+    res.json({
+      message: "Elemento eliminado",
+    });
+  }else {
+    res.json({
+      message: "Error de rol",
+    });
+  }
+});
+
+//Borrado definitivo
 //Borrar empresa
-router.delete("/delcompany/:idcompany", async (req, res) => {
-  let id_company = req.params.idcompany;
-  let rol = req.body.info.rol;
-  if (rol === "ADMIN") {
-    info = await Company.findById(id_company);
-    id_farms = info.farms;
+// router.delete("/delcompany/:idcompany", async (req, res) => {
+//   let id_company = req.params.idcompany;
+//   let rol = req.body.info.rol;
+//   if (rol === "ADMIN") {
+//     info = await Company.findById(id_company);
+//     id_farms = info.farms;
 
-    await Company.findByIdAndDelete(id_company);
-    for (element in id_farms) {
-      await Farm.findByIdAndUpdate(id_farms[element], {
-        $pull: { company: id_company },
-      });
-    }
+//     await Company.findByIdAndDelete(id_company);
+//     for (element in id_farms) {
+//       await Farm.findByIdAndUpdate(id_farms[element], {
+//         $pull: { company: id_company },
+//       });
+//     }
 
-    res.json({
-      message: "Empresa eliminada",
-    });
-  }
-});
+//     res.json({
+//       message: "Empresa eliminada",
+//     });
+//   }
+// });
 
-//Borrar finca
-router.delete("/delfarm/:idfarm", async (req, res) => {
-  let id_farm = req.params.idfarm;
-  let rol = req.body.info.rol;
-  if (rol === "ADMIN") {
-    info = await Farm.findById(id_farm);
-    id_companies = info.company;
-    await Farm.findByIdAndDelete(id_farm);
+// //Borrar finca
+// router.delete("/delfarm/:idfarm", async (req, res) => {
+//   let id_farm = req.params.idfarm;
+//   let rol = req.body.info.rol;
+//   if (rol === "ADMIN") {
+//     info = await Farm.findById(id_farm);
+//     id_companies = info.company;
+//     await Farm.findByIdAndDelete(id_farm);
 
-    for (element in id_companies) {
-      await Company.findByIdAndUpdate(id_companies[element], {
-        $pull: { farms: id_farm },
-      });
-    }
+//     for (element in id_companies) {
+//       await Company.findByIdAndUpdate(id_companies[element], {
+//         $pull: { farms: id_farm },
+//       });
+//     }
 
-    res.json({
-      message: "Finca eliminada",
-    });
-  }
-});
+//     res.json({
+//       message: "Finca eliminada",
+//     });
+//   }
+// });
 
 module.exports = router;

@@ -37,6 +37,7 @@ let users = [
     phone: 924587454,
     roleUser: "USER",
     works: [],
+    deleted:false,
   },
   {
     _id: "500261f9c934fb0418e42aa2",
@@ -47,6 +48,7 @@ let users = [
     phone: 924587458,
     roleUser: "USER",
     works: [],
+    deleted:false,
   },
   {
     _id: "500261f9c934fb0418e42aa3",
@@ -57,6 +59,7 @@ let users = [
     phone: 924587459,
     roleUser: "USER",
     works: ["100061f9c934fb0418e42e01"],
+    deleted:false,
   },
   {
     _id: "500261f9c934fb0418e42aa4",
@@ -67,6 +70,7 @@ let users = [
     phone: 924587451,
     roleUser: "ADMIN",
     works: [],
+    deleted:false,
   },
 ];
 
@@ -75,12 +79,14 @@ let companies = [
     _id: "799261f9c934fb0418e42ee1",
     nameCompany: "Bioseca",
     farms: ["799261f9c934fb0418e42ee4", "799261f9c934fb0418e42ee5"],
+    deleted:false,
   },
 
   {
     _id: "799261f9c934fb0418e42ee2",
     nameCompany: "Oleodeus",
     farms: ["799261f9c934fb0418e42ee3"],
+    deleted:false,
   },
 ];
 
@@ -93,6 +99,7 @@ let farms = [
     season: "799261f9c934fb0418e42e11",
     company: ["799261f9c934fb0418e42ee2"],
     works: ["100061f9c934fb0418e42e01"],
+    deleted:false,
   },
 
   {
@@ -103,6 +110,7 @@ let farms = [
     season: "799261f9c934fb0418e42e11",
     company: ["799261f9c934fb0418e42ee1"],
     works: [],
+    deleted:false,
   },
   {
     _id: "799261f9c934fb0418e42ee5",
@@ -112,6 +120,7 @@ let farms = [
     season: "799261f9c934fb0418e42e12",
     company: ["799261f9c934fb0418e42ee1"],
     works: [],
+    deleted:false,
   },
 ];
 
@@ -124,6 +133,7 @@ let machineries = [
     pricePurchase: 5400,
     priceH: 5.4,
     works: ["100061f9c934fb0418e42e01"],
+    deleted:false,
   },
   {
     _id: "799261f9c934fb0418e42ee7",
@@ -133,6 +143,7 @@ let machineries = [
     pricePurchase: 2400,
     priceH: 1.1,
     works: ["100061f9c934fb0418e42e01"],
+    deleted:false,
   },
   {
     _id: "799261f9c934fb0418e42ee8",
@@ -142,6 +153,7 @@ let machineries = [
     pricePurchase: 2400,
     priceH: 5.4,
     works: [],
+    deleted:false,
   },
 ];
 
@@ -152,6 +164,7 @@ let tanks = [
     capacity: 2000,
     currentLitres: 2000,
     works: ["100061f9c934fb0418e42e01"],
+    deleted:false,
   },
   {
     _id: "799261f9c934fb0418e42e10",
@@ -159,6 +172,7 @@ let tanks = [
     capacity: 1000,
     currentLitres: 900,
     works: [],
+    deleted:false,
   },
 ];
 
@@ -169,6 +183,7 @@ let seasons = [
     dateINI: new Date("2019-05-25T00:00:00Z"),
     dateEND: new Date("2019-12-25T00:00:00Z"),
     works: [],
+    deleted:false,
   },
   {
     _id: "799261f9c934fb0418e42e12",
@@ -176,6 +191,7 @@ let seasons = [
     dateINI: new Date("2020-11-01T00:00:00Z"),
     dateEND: new Date("2021-09-28T00:00:00Z"),
     works: ["100061f9c934fb0418e42e01"],
+    deleted:false,
   },
 ];
 
@@ -185,12 +201,14 @@ let tasks = [
     nameTask: "Herbicida",
     category: "Tratamiento fitosanitario",
     works: ["100061f9c934fb0418e42e01"],
+    deleted:false,
   },
   {
     _id: "799261f9c934fb0418e42e14",
     nameTask: "Sulfato",
     category: "Tratamiento fitosanitario",
     works: [],
+    deleted:false,
   },
 
   {
@@ -198,6 +216,7 @@ let tasks = [
     nameTask: "Mantenimiento vehículos",
     category: "Mantenimiento",
     works: [],
+    deleted:false,
   },
 ];
 
@@ -208,6 +227,7 @@ let products = [
     nREF: "BU2547631",
     pricePurchase: 126.45,
     works: ["100061f9c934fb0418e42e01"],
+    deleted:false,
   },
   {
     _id: "799261f9c934fb0418e42e26",
@@ -215,6 +235,7 @@ let products = [
     nREF: "KA2547951",
     pricePurchase: 12.2,
     works: [],
+    deleted:false,
   },
 ];
 

@@ -11,7 +11,7 @@ const Season = require("../MODELS/Season");
 const Tank = require("../MODELS/Tank");
 const Task = require("../MODELS/Task");
 const Work = require("../MODELS/Work");
-const { default: mongooseAutoPopulate } = require("mongoose-autopopulate");
+//const { default: mongooseAutoPopulate } = require("mongoose-autopopulate");
 
 //crear nueva temporada rol:ADMIN
 
@@ -54,6 +54,19 @@ const view_x = async (info_x, X, res) => {
   return info_x;
 };
 
+//borrado falso
+const deleteOneX = async (ModelX, idX) => {
+  try {
+    info_X = await ModelX.findByIdAndUpdate(idX, {deleted:true})
+    } catch (error) {
+    return res.status(500).json({
+      message: "Error de conexión",
+    });
+};
+//return info_X
+};
+
+
 
 // const view_Onex = async (info_Onex,X,id_x,res) => {
 //   try {
@@ -73,5 +86,6 @@ const view_x = async (info_x, X, res) => {
 
 module.exports = newSeason;
 module.exports = view_x;
+module.exports = deleteOneX;
 //module.exports = view_Onex;
 

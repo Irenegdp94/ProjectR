@@ -3,7 +3,8 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 const companySchema = new Schema({
    nameCompany: {type: String, required: true},
-   farms: [{type: Schema.Types.ObjectId, ref: "Farm"}]
+   farms: [{type: Schema.Types.ObjectId, ref: "Farm"}],
+   deleted: {type: Boolean}
 },
 {
     timestamps: true,

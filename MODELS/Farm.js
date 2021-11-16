@@ -8,7 +8,8 @@ const farmSchema = new Schema({
 
     season: {type: Schema.Types.ObjectId, ref: "Season"},
     company: [{type: Schema.Types.ObjectId, ref: "Company"}],
-    works: [{type: Schema.Types.ObjectId, ref: "Work"}]
+    works: [{type: Schema.Types.ObjectId, ref: "Work"}],
+    deleted: {type: Boolean}
 },
 {
     timestamps: true,

@@ -181,9 +181,10 @@ router.put("/upuser/:iduser", async (req, res) => {
 });
 
 //modificar TRABAJO (USER y ADMIN)
+
 router.put("/upwork/:idwork", async (req, res) => {
   let rol = req.body.info.rol;
-  let id_user = req.body.info.id
+  let id_user = req.body.info.id;
   let id_work = req.params.idwork;
   let {
     UPdateINI,
@@ -194,10 +195,9 @@ router.put("/upwork/:idwork", async (req, res) => {
     UPtank,
     UPlitres_tank,
     UPdescription,
-    UPname_pr,
-    UPlitres
+    UPproducts, //array de objetos
   } = req.body;
-  
+
   if (UPfarm) {
     let id_farms = [];
     for (element in UPfarm) {
@@ -214,7 +214,9 @@ router.put("/upwork/:idwork", async (req, res) => {
   if (UPmachinery) {
     let id_machines = [];
     for (element in UPmachinery) {
-      id_machine = await Machine.findOne({ nameMachinery: UPmachinery[element] });
+      id_machine = await Machine.findOne({
+        nameMachinery: UPmachinery[element],
+      });
       id_machines.push(id_machine);
     }
     UPmachinery = id_machines;
@@ -226,6 +228,7 @@ router.put("/upwork/:idwork", async (req, res) => {
 
   if (rol === "ADMIN") {
     let UPworker = req.body.worker;
+
     let doc = await Work.findByIdAndUpdate(
       id_work,
       {
@@ -237,7 +240,7 @@ router.put("/upwork/:idwork", async (req, res) => {
         machinery: UPmachinery,
         tank: UPtank,
         litres_tank: UPlitres_tank,
-        products: {name_pr:UPname_pr,litres:UPlitres},
+        products: UPproducts,
         description: UPdescription,
       },
       { new: true }
@@ -248,7 +251,7 @@ router.put("/upwork/:idwork", async (req, res) => {
     });
   } else if (rol === "USER") {
     let doc = await Work.findOneAndUpdate(
-      {_id: id_work, worker: id_user},
+      { _id: id_work, worker: id_user },
       {
         dateINI: UPdateINI,
         dateFIN: UPdateFIN,
@@ -257,7 +260,7 @@ router.put("/upwork/:idwork", async (req, res) => {
         machinery: UPmachinery,
         tank: UPtank,
         litres_tank: UPlitres_tank,
-        products: {name_pr:UPname_pr,litres:UPlitres},
+        products: UPproducts,
         description: UPdescription,
       },
       { new: true }
