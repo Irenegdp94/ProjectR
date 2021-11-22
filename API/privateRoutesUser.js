@@ -51,7 +51,9 @@ router.get("/userworks", async (req, res) => {
   if (rol === "USER") {
     try {
       info_workUser = await Work.find({ worker: id })
+        .populate("worker", "nameUser")
         .populate("farm", "nameFarm")
+        .populate("company", "nameCompany")
         .populate("task", "nameTask")
         .populate("machinery", "nameMachinery")
         .populate("tank", "nameTank");
@@ -83,10 +85,12 @@ router.get("/userwork/:idWork", async (req, res) => {
   if (rol === "USER") {
     try {
       info_workUser = await Work.findOne({ _id: id_work, worker: id_user })
-        .populate("farm", "nameFarm")
-        .populate("task", "nameTask")
-        .populate("machinery", "nameMachinery")
-        .populate("tank", "nameTank");
+      .populate("worker", "nameUser")
+      .populate("farm", "nameFarm")
+      .populate("company", "nameCompany")
+      .populate("task", "nameTask")
+      .populate("machinery", "nameMachinery")
+      .populate("tank", "nameTank");
     } catch (error) {
       return res.status(500).json({
         message: "Error de conexión",

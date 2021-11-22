@@ -9,6 +9,7 @@ const userRoutes = require("./API/privateRoutesUser");
 const adminRoutes = require("./API/privateRoutesADMIN");
 const bothRoutes = require("./API/privateROUTES");
 const app = express();
+const cors = require("cors")
 
 mongoose
   .connect(
@@ -21,9 +22,12 @@ mongoose
     console.log(`Ha ocurrido el siguiente error: ${error}`);
   });
 
+app.use(cors())
 app.use(express.json());
+app.use(express.urlencoded({extended:true}));
 
 //Routes
+
 app.use("/api/auth", verifyInputs, authRoutes); //login route localhost:5000/api/auth/
 app.use("/api/user", verifyToken, userRoutes); //user routers localhost:5000/api/user/
 app.use("/api/admin", verifyToken, adminRoutes); //admin routers localhost:5000/api/admin/

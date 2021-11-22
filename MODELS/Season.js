@@ -7,7 +7,7 @@ const seasonSchema = new Schema({
     dateEND: {type: Date, required: true},
 
     works: [{type: Schema.Types.ObjectId, ref: "Work"}],
-    deleted: {type: Boolean}
+    deleted: {type: Boolean, default:false}
 
 },
 {

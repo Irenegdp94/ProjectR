@@ -6,7 +6,7 @@ const workSchema = new Schema(
   {
     dateINI: { type: Date}, //fecha y hora
     dateFIN: { type: Date}, //required: true
-
+    company: [{type: Schema.Types.ObjectId, ref: "Company"}],
     farm: [{ type: Schema.Types.ObjectId, ref: "Farm"}],
     worker: { type: Schema.Types.ObjectId, ref: "User"},
     task: { type: Schema.Types.ObjectId, ref: "Task"},

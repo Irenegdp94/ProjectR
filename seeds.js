@@ -36,7 +36,7 @@ let users = [
     password: hashes[0], //hola
     phone: 924587454,
     roleUser: "USER",
-    works: [],
+    works: ["100061f9c934fb0418e42e02"],
     deleted:false,
   },
   {
@@ -226,7 +226,7 @@ let products = [
     nameProduct: "BUFFER",
     nREF: "BU2547631",
     pricePurchase: 126.45,
-    works: ["100061f9c934fb0418e42e01"],
+    works: ["100061f9c934fb0418e42e01","100061f9c934fb0418e42e02"],
     deleted:false,
   },
   {
@@ -234,7 +234,7 @@ let products = [
     nameProduct: "KASIO",
     nREF: "KA2547951",
     pricePurchase: 12.2,
-    works: [],
+    works: ["100061f9c934fb0418e42e01","100061f9c934fb0418e42e02"],
     deleted:false,
   },
 ];
@@ -244,6 +244,7 @@ let works = [
     _id: "100061f9c934fb0418e42e02",
     dateINI: new Date("2021-12-31T13:24:00Z"),
     dateFIN: new Date("1995-12-17T05:28:00Z"),
+    company: ["799261f9c934fb0418e42ee2"],
     farm: ["799261f9c934fb0418e42ee3"],
     worker: "500261f9c934fb0418e42aa1",
     task: "799261f9c934fb0418e42e13",
@@ -269,6 +270,7 @@ let works = [
     _id: "100061f9c934fb0418e42e01",
     dateINI: new Date("2021-12-31T13:24:00Z"),
     dateFIN: new Date("1995-12-17T05:28:00Z"),
+    company: ["799261f9c934fb0418e42ee2"],
     farm: ["799261f9c934fb0418e42ee3"],
     worker: "500261f9c934fb0418e42aa3",
     task: "799261f9c934fb0418e42e13",

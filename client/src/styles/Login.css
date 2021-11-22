@@ -1,0 +1,18 @@
+form{
+    background-color:rgb(255, 209, 209);
+    font-family: Georgia, 'Times New Roman', Times, serif;
+    padding: 10%;
+}
+
+label{
+    padding: 10px;
+}
+
+
+
+div{
+    display: flex;
+    justify-content: center;
+    padding: 10px;
+
+}

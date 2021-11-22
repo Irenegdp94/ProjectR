@@ -6,7 +6,7 @@ const productSchema = new Schema({
     pricePurchase: {type: Number, required: true},
     
     works: [{type: Schema.Types.ObjectId, ref: "Work"}],
-    deleted: {type: Boolean}
+    deleted: {type: Boolean, default:false}
 },
 {
     timestamps: true,

@@ -10,7 +10,7 @@ const userSchema = new Schema({
     roleUser: {type: String, required: true},
 
     works: [{type: Schema.Types.ObjectId, ref: "Work", autopopulate: true }], //
-    deleted: {type: Boolean}
+    deleted: {type: Boolean, default:false}
 },
 {
     timestamps: true,

@@ -9,21 +9,22 @@ const jwt = require("jsonwebtoken");
 router.post("/login", async (req, res) => {
   let { nUser, pass } = req.body;
   let info_user;
-
+  // console.log(req.body,"body")
   try {
     info_user = await User.findOne({ nUser: nUser });
   } catch (error) {
-    return res.status(500).json({
+    return res.json({
       message: "Error de conexión",
     });
   }
   if (!info_user) {
-    return res.status(403).json({
+    return res.json({
       message: "Número de usuario no encontrado",
     });
   }
 
   bcrypt.compare(pass, info_user.password, (err, result) => {
+    
     if (result == true) {
       let token = jwt.sign(
         { id: info_user._id, rol: info_user.roleUser },
@@ -38,7 +39,7 @@ router.post("/login", async (req, res) => {
       });
       return;
     } else if (result == false) {
-      res.status(403).json({
+      res.json({
         auth: false,
         message: "Usuario o contraseña incorrecto",
         token: null,
@@ -54,7 +55,7 @@ router.post("/signup", async (req, res) => {
   let user_found;
 
   if (!roleUser) {
-    return res.status(403).json({
+    return res.json({
       message: "Introduce todos los datos",
       nUser: null,
       nameUser: null,
@@ -68,7 +69,7 @@ router.post("/signup", async (req, res) => {
   try {
     user_found = await User.find({ nUser: nUser });
   } catch (error) {
-    return res.status(500).json({
+    return res.json({
       message: "error conexion",
     });
   }
@@ -132,7 +133,7 @@ router.post("/signup", async (req, res) => {
         doc = await User.create(newUser);
         console.log(doc);
       } catch (error) {
-        return res.status(500).json({
+        return res.json({
           message: "Error del servidor",
         });
       }

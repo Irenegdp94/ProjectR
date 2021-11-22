@@ -2,10 +2,7 @@
 const express = require("express");
 const router = express.Router();
 const jwt = require("jsonwebtoken");
-const newseason = require("./createBBDDfuntions");
-const view_x = require("./createBBDDfuntions");
-const deleteOneX = require("./createBBDDfuntions");
-//const view_Onex = require("./createBBDDfuntions");
+const functions = require("./funtions");
 
 //models -->
 const User = require("../MODELS/User");
@@ -16,7 +13,7 @@ const Season = require("../MODELS/Season");
 const Tank = require("../MODELS/Tank");
 const Task = require("../MODELS/Task");
 const Work = require("../MODELS/Work");
-const { populate } = require("../MODELS/User");
+const Product = require("../MODELS/Product");
 
 //rutas -->
 ///home administrador:
@@ -26,10 +23,13 @@ router.get("/homeAdmin", async (req, res) => {
 
   if (rol === "ADMIN") {
     try {
-      info_user = await User.findOne({ _id: id });
+      info_user = await User.findOne(
+        { _id: id },
+        { password: 0, deleted: 0, works: 0 }
+      );
     } catch (error) {
       return res.status(500).json({
-        message: "Error de conexión",
+        message: "Error de conexión bbdd: USER",
       });
     }
     if (info_user) {
@@ -63,7 +63,7 @@ router.post("/newcompany", async (req, res) => {
       find_company = await Company.findOne({ nameCompany });
     } catch (error) {
       return res.status(500).json({
-        message: "Error de conexión",
+        message: "Error de conexión bbdd:Company",
       });
     }
 
@@ -72,13 +72,11 @@ router.post("/newcompany", async (req, res) => {
       for (element in farms) {
         try {
           info_farm = await Farm.findOne({ nameFarm: farms[element] });
-          // console.log(info_farm);
         } catch (error) {
           return res.status(500).json({
-            message: "Error de conexión",
+            message: "Error de conexión bbdd:Farm",
           });
         }
-
         if (info_farm) {
           farms_id.push(info_farm._id);
         }
@@ -93,7 +91,7 @@ router.post("/newcompany", async (req, res) => {
         });
       } catch (error) {
         return res.status(500).json({
-          message: "Error del servidor",
+          message: "Error del servidor bbdd:Company",
         });
       }
     } else {
@@ -116,7 +114,7 @@ router.post("/newseason", async (req, res) => {
 
   if (rol === "ADMIN") {
     new_season = { name, dateINI, dateEND };
-    newseason(name, new_season, res);
+    functions.newseason(name, new_season, res);
   } else {
     return res.json({
       message: "Error de rol",
@@ -218,7 +216,7 @@ router.post("/newmachinery", async (req, res) => {
         });
       } catch (error) {
         return res.status(500).json({
-          message: "Error del servidor",
+          message: "Error del servidor bbdd:machine",
         });
       }
     } else {
@@ -243,7 +241,7 @@ router.post("/newtank", async (req, res) => {
       find_tank = await Tank.findOne({ nameTank });
     } catch (error) {
       return res.status(500).json({
-        message: "Error de conexión",
+        message: "Error de conexión bbdd:tank",
       });
     }
     if (!find_tank) {
@@ -255,7 +253,7 @@ router.post("/newtank", async (req, res) => {
         });
       } catch (error) {
         return res.status(500).json({
-          message: "Error del servidor",
+          message: "Error del servidor bbdd:tank",
         });
       }
     } else {
@@ -281,7 +279,7 @@ router.post("/newtask", async (req, res) => {
       console.log(find_task);
     } catch (error) {
       return res.status(500).json({
-        message: error,
+        message: "Error del servidor bbdd:Task",
       });
     }
     if (!find_task) {
@@ -293,12 +291,49 @@ router.post("/newtask", async (req, res) => {
         });
       } catch (error) {
         return res.status(500).json({
-          message: error,
+          message: "Error del servidor bbdd:Task",
         });
       }
     } else {
       return res.json({
         message: "La tarea ya existe",
+      });
+    }
+  } else {
+    return res.json({
+      message: "Error de rol",
+    });
+  }
+});
+
+//ruta nuevo producto
+router.post("/newproduct", async (req, res) => {
+  let rol = req.body.info.rol;
+  if (rol === "ADMIN") {
+    let find_product;
+    let { nameProduct, nREF, pricePurchase } = req.body;
+    try {
+      find_product = await Product.findOne({ nameProduct: nameProduct });
+    } catch (error) {
+      return res.status(500).json({
+        message: "Error del servidor bbdd:product",
+      });
+    }
+    if (!find_product) {
+      try {
+        let doc;
+        doc = await Product.create({ nameProduct, nREF, pricePurchase });
+        return res.json({
+          message: "Nuevo producto creado correctamente",
+        });
+      } catch (error) {
+        return res.status(500).json({
+          message: "Error del servidor bbdd:product",
+        });
+      }
+    } else {
+      return res.json({
+        message: "el producto ya existe",
       });
     }
   } else {
@@ -316,10 +351,13 @@ router.get("/viewusers", async (req, res) => {
   let info_users;
   if (rol === "ADMIN") {
     try {
-      info_users = await User.find({}, { password: 0 });
+      info_users = await User.find(
+        { deleted: false },
+        { password: 0, deleted: 0, works: 0 }
+      );
     } catch (error) {
       return res.status(500).json({
-        message: "Error de conexión",
+        message: "Error de conexión bbdd:User",
       });
     }
     res.json({
@@ -337,10 +375,20 @@ router.get("/viewusers", async (req, res) => {
 ////Empresas
 router.get("/viewcompanies", async (req, res) => {
   let rol = req.body.info.rol;
-  let info_companies;
+  let info_;
+
   if (rol === "ADMIN") {
-    let info_ = await view_x(info_companies, Company, res);
-    res.json({
+    try {
+      info_ = await Company.find({ delete: false }, { works: 0, deleted: 0 })
+      .populate("farms","nameFarm");
+    } catch (error) {
+      return res.status(500).json({
+        message: "Error de conexión",
+      });
+    }
+    //let info_ = await functions.view_x(info_companies, Company, res); 
+
+    return res.json({
       info: info_,
       message: "info de empresas",
     });
@@ -355,9 +403,19 @@ router.get("/viewcompanies", async (req, res) => {
 ////Fincas
 router.get("/viewfarms", async (req, res) => {
   let rol = req.body.info.rol;
-  let info_farms;
+  let info_;
   if (rol === "ADMIN") {
-    let info_ = await view_x(info_farms, Farm, res);
+    try {
+      info_ = await Farm.find({ delete: false }, { works: 0, deleted: 0 })
+      .populate("season","name")
+      .populate("company","nameCompany");
+    } catch (error) {
+      return res.status(500).json({
+        message: "Error de conexión",
+      });
+    }
+    //let info_ = await functions.view_x(info_farms, Farm, res);
+
     res.json({
       info: info_,
       message: "info de fincas",
@@ -373,9 +431,16 @@ router.get("/viewfarms", async (req, res) => {
 ////Maquinaria
 router.get("/viewmachines", async (req, res) => {
   let rol = req.body.info.rol;
-  let info_machines;
+  let info_;
   if (rol === "ADMIN") {
-    let info_ = await view_x(info_machines, Machine, res);
+    //let info_ = await functions.view_x(info_machines, Machine, res);
+    try {
+      info_ = await Machine.find({ delete: false }, { works: 0, deleted: 0 });
+    } catch (error) {
+      return res.status(500).json({
+        message: "Error de conexión",
+      });
+    }
     res.json({
       info: info_,
       message: "info de maquinas",
@@ -391,9 +456,20 @@ router.get("/viewmachines", async (req, res) => {
 ////Campaña
 router.get("/viewseason", async (req, res) => {
   let rol = req.body.info.rol;
-  let info_seasons;
+  let info_;
   if (rol === "ADMIN") {
-    let info_ = await view_x(info_seasons, Season, res);
+    //let info_ = await functions.view_x(info_seasons, Season, res);
+    try {
+      info_ = await Season.find({ delete: false }, { works: 0, deleted: 0 });
+    } catch (error) {
+      return res.status(500).json({
+        message: "Error de conexión",
+      });
+    }
+    res.json({
+      info: info_,
+      message: "info de maquinas",
+    });
     res.json({
       info: info_,
       message: "info de campañas",
@@ -411,7 +487,14 @@ router.get("/viewtanks", async (req, res) => {
   let rol = req.body.info.rol;
   let info_tanks;
   if (rol === "ADMIN") {
-    let info_ = await view_x(info_tanks, Tank, res);
+    //let info_ = await functions.view_x(info_tanks, Tank, res);
+    try {
+      info_ = await Tank.find({ delete: false }, { works: 0, deleted: 0 });
+    } catch (error) {
+      return res.status(500).json({
+        message: "Error de conexión",
+      });
+    }
     res.json({
       info: info_,
       message: "info de depositos",
@@ -429,10 +512,42 @@ router.get("/viewtasks", async (req, res) => {
   let rol = req.body.info.rol;
   let info_tasks;
   if (rol === "ADMIN") {
-    let info_ = await view_x(info_tasks, Task, res);
+    //let info_ = await functions.view_x(info_tasks, Task, res);
+    try {
+      info_ = await Task.find({ delete: false }, { works: 0, deleted: 0 });
+    } catch (error) {
+      return res.status(500).json({
+        message: "Error de conexión",
+      });
+    }
     res.json({
       info: info_,
       message: "info de tareas",
+    });
+  } else {
+    res.json({
+      info: null,
+      message: "Error de rol",
+    });
+  }
+});
+
+////pRODUCTOS
+router.get("/viewproducts", async (req, res) => {
+  let rol = req.body.info.rol;
+  let info_;
+  if (rol === "ADMIN") {
+    //let info_ = await functions.view_x(info_products, Product, res);
+    try {
+      info_ = await Product.find({ delete: false }, { works: 0, deleted: 0 });
+    } catch (error) {
+      return res.status(500).json({
+        message: "Error de conexión",
+      });
+    }
+    res.json({
+      info: info_,
+      message: "info de productos",
     });
   } else {
     res.json({
@@ -452,7 +567,7 @@ router.get("/viewOneuser/:idUser", async (req, res) => {
     try {
       info_user = await User.findOne(
         { _id: id_user },
-        { password: 0 } //, works: 0
+        { password: 0, works: 0, deleted: 0 } //
       );
     } catch (error) {
       return res.status(500).json({
@@ -480,7 +595,7 @@ router.get("/viewOnecompany/:idCompany", async (req, res) => {
     try {
       info_company = await Company.findOne(
         { _id: id_company },
-        { works: 0 }
+        { works: 0, deleted: 0 }
       ).populate("farms", "nameFarm");
     } catch (error) {
       return res.status(500).json({
@@ -506,7 +621,7 @@ router.get("/viewOnefarm/:idFarm", async (req, res) => {
   let id_farm = req.params.idFarm;
   if (rol === "ADMIN") {
     try {
-      info_farm = await Farm.findOne({ _id: id_farm }, { works: 0 })
+      info_farm = await Farm.findOne({ _id: id_farm }, { works: 0, deleted: 0 })
         .populate("season", "name")
         .populate("company", "nameCompany");
     } catch (error) {
@@ -533,7 +648,10 @@ router.get("/viewOnemachine/:idmachine", async (req, res) => {
   let id_machine = req.params.idmachine;
   if (rol === "ADMIN") {
     try {
-      info_machine = await Machine.findOne({ _id: id_machine }, { works: 0 });
+      info_machine = await Machine.findOne(
+        { _id: id_machine },
+        { works: 0, deleted: 0 }
+      );
     } catch (error) {
       return res.status(500).json({
         message: "Error de conexión",
@@ -558,7 +676,10 @@ router.get("/viewOneseason/:idseason", async (req, res) => {
   let id_season = req.params.idseason;
   if (rol === "ADMIN") {
     try {
-      info_season = await Season.findOne({ _id: id_season }, { works: 0 });
+      info_season = await Season.findOne(
+        { _id: id_season },
+        { works: 0, deleted: 0 }
+      );
     } catch (error) {
       return res.status(500).json({
         message: "Error de conexión",
@@ -583,7 +704,10 @@ router.get("/viewOnetank/:idtank", async (req, res) => {
   let id_tank = req.params.idtank;
   if (rol === "ADMIN") {
     try {
-      info_tank = await Tank.findOne({ _id: id_tank }, { works: 0 });
+      info_tank = await Tank.findOne(
+        { _id: id_tank },
+        { works: 0, deleted: 0 }
+      );
     } catch (error) {
       return res.status(500).json({
         message: "Error de conexión",
@@ -608,7 +732,10 @@ router.get("/viewOnetask/:idtask", async (req, res) => {
   let id_task = req.params.idtask;
   if (rol === "ADMIN") {
     try {
-      info_task = await Task.findOne({ _id: id_task }, { works: 0 });
+      info_task = await Task.findOne(
+        { _id: id_task },
+        { works: 0, deleted: 0 }
+      );
     } catch (error) {
       return res.status(500).json({
         message: "Error de conexión",
@@ -617,6 +744,34 @@ router.get("/viewOnetask/:idtask", async (req, res) => {
     res.json({
       info: info_task,
       message: "info deposito",
+    });
+  } else {
+    res.json({
+      info: null,
+      message: "Error de rol",
+    });
+  }
+});
+
+//Ver producto
+router.get("/viewOneproduct/:idproduct", async (req, res) => {
+  let rol = req.body.info.rol;
+  let info_product;
+  let id_product = req.params.idproduct;
+  if (rol === "ADMIN") {
+    try {
+      info_product = await Product.findOne(
+        { _id: id_product },
+        { works: 0, deleted: 0 }
+      );
+    } catch (error) {
+      return res.status(500).json({
+        message: "Error de conexión",
+      });
+    }
+    res.json({
+      info: info_product,
+      message: "info producto",
     });
   } else {
     res.json({
@@ -765,19 +920,39 @@ router.put("/uptask/:idtask", async (req, res) => {
   });
 });
 
+//up producto
+router.put("/upproduct/:idproduct", async (req, res) => {
+  let id_product = req.params.idproduct;
+  let { UPnameProduct, UPnREF, UPpricePurchase } = req.body;
+  let doc = await Product.findByIdAndUpdate(
+    id_product,
+    {
+      nameProduct: UPnameProduct,
+      nREF: UPnREF,
+      pricePurchase: UPpricePurchase,
+    },
+    { new: true }
+  );
+  res.json({
+    message: "Produto modificado",
+    up_info: doc,
+  });
+});
+
 //Ruta BUSCAR TRABAJO POR
 router.post("/searchfor", async (req, res) => {
   let { type_search, nom } = req.body;
 
   //let info;
   switch (type_search) {
-    //si no existe (info == []) poner algo
     case "trabajador":
       info_user = await User.findOne({ nameUser: nom });
       id_user = info_user._id;
 
       try {
         info_ = await Work.find({ worker: id_user })
+          .populate("worker", "nUser")
+          .populate("company", "nameCompany")
           .populate("farm", "nameFarm")
           .populate("task", "nameTask")
           .populate("machinery", "nameMachinery")
@@ -787,13 +962,13 @@ router.post("/searchfor", async (req, res) => {
           message: "Error de conexión",
         });
       }
-      
-      if (info_.length != 0){
+
+      if (info_.length != 0) {
         res.json({
           info: info_,
           message: "info de trabajos por usuario",
         });
-      }else {
+      } else {
         res.json({
           info: null,
           message: "No hay coincidencias",
@@ -801,29 +976,30 @@ router.post("/searchfor", async (req, res) => {
       }
 
       break;
-//para buscar por empresa hay que buscar en las fincas :(
+
     case "empresa":
       info_company = await Company.findOne({ nameCompany: nom });
-      let id_farms = info_company.farms;
-      for (element in id_farms) {
-        try {
-          info_ = await Work.find({ farm: id_farms[element] })
-            .populate("farm", "nameFarm")
-            .populate("task", "nameTask")
-            .populate("machinery", "nameMachinery")
-            .populate("tank", "nameTank");
-        } catch (error) {
-          return res.status(500).json({
-            message: "Error de conexión",
-          });
-        }
+      let id_company = info_company._id;
+      try {
+        info_ = await Work.find({ company: id_company })
+          .populate("worker", "nUser")
+          .populate("company", "nameCompany")
+          .populate("farm", "nameFarm")
+          .populate("task", "nameTask")
+          .populate("machinery", "nameMachinery")
+          .populate("tank", "nameTank");
+      } catch (error) {
+        return res.status(500).json({
+          message: "Error de conexión",
+        });
       }
-      if (info_.length != 0){
+
+      if (info_.length != 0) {
         res.json({
           info: info_,
           message: "info de trabajos por empresa",
         });
-      }else {
+      } else {
         res.json({
           info: null,
           message: "No hay coincidencias",
@@ -837,6 +1013,8 @@ router.post("/searchfor", async (req, res) => {
 
       try {
         info_ = await Work.find({ farm: id_farm })
+          .populate("worker", "nUser")
+          .populate("company", "nameCompany")
           .populate("farm", "nameFarm")
           .populate("task", "nameTask")
           .populate("machinery", "nameMachinery")
@@ -846,12 +1024,12 @@ router.post("/searchfor", async (req, res) => {
           message: "Error de conexión",
         });
       }
-      if (info_.length != 0){
+      if (info_.length != 0) {
         res.json({
           info: info_,
           message: "info de trabajos por finca",
         });
-      }else {
+      } else {
         res.json({
           info: null,
           message: "No hay coincidencias",
@@ -865,6 +1043,8 @@ router.post("/searchfor", async (req, res) => {
 
       try {
         info_ = await Work.find({ machinery: id_machine })
+          .populate("worker", "nUser")
+          .populate("company", "nameCompany")
           .populate("farm", "nameFarm")
           .populate("task", "nameTask")
           .populate("machinery", "nameMachinery")
@@ -874,12 +1054,12 @@ router.post("/searchfor", async (req, res) => {
           message: "Error de conexión",
         });
       }
-      if (info_.length != 0){
+      if (info_.length != 0) {
         res.json({
           info: info_,
           message: "info de trabajos por maquinaria",
         });
-      }else {
+      } else {
         res.json({
           info: null,
           message: "No hay coincidencias",
@@ -892,6 +1072,8 @@ router.post("/searchfor", async (req, res) => {
 
       try {
         info_ = await Work.find({ tank: id_tank })
+          .populate("worker", "nUser")
+          .populate("company", "nameCompany")
           .populate("farm", "nameFarm")
           .populate("task", "nameTask")
           .populate("machinery", "nameMachinery")
@@ -901,12 +1083,12 @@ router.post("/searchfor", async (req, res) => {
           message: "Error de conexión",
         });
       }
-      if (info_.length != 0){
+      if (info_.length != 0) {
         res.json({
           info: info_,
           message: "info de trabajos por deposito",
         });
-      }else {
+      } else {
         res.json({
           info: null,
           message: "No hay coincidencias",
@@ -920,6 +1102,8 @@ router.post("/searchfor", async (req, res) => {
 
       try {
         info_ = await Work.find({ task: id_Task })
+          .populate("worker", "nUser")
+          .populate("company", "nameCompany")
           .populate("farm", "nameFarm")
           .populate("task", "nameTask")
           .populate("machinery", "nameMachinery")
@@ -929,17 +1113,47 @@ router.post("/searchfor", async (req, res) => {
           message: "Error de conexión",
         });
       }
-      if (info_.length != 0){
+      if (info_.length != 0) {
         res.json({
           info: info_,
           message: "info de trabajos por tarea",
         });
-      }else {
+      } else {
         res.json({
           info: null,
           message: "No hay coincidencias",
         });
       }
+      break;
+
+    case "producto":
+      //info_info = await Product.findOne({ nameTask: nom });
+      //info_ = await Work.getReadFilterKeys("name_pr")
+
+      // try {
+      //   info_ = await Work.find({ task: id_Task })
+      //   .populate("worker", "nUser")
+      //   .populate("company", "nameCompany")
+      //   .populate("farm", "nameFarm")
+      //   .populate("task", "nameTask")
+      //   .populate("machinery", "nameMachinery")
+      //   .populate("tank", "nameTank");
+      // } catch (error) {
+      //   return res.status(500).json({
+      //     message: "Error de conexión",
+      //   });
+      // }
+      // if (info_.length != 0) {
+      res.json({
+        info: info_,
+        message: "info de trabajos por producto",
+      });
+      // } else {
+      //   res.json({
+      //     info: null,
+      //     message: "No hay coincidencias",
+      //   });
+      // }
       break;
   }
 });
@@ -953,6 +1167,8 @@ router.get("/getOnework/:idWork", async (req, res) => {
   if (rol === "ADMIN") {
     try {
       info_oneWork = await Work.findOne({ _id: id_work })
+        .populate("worker", "nUser")
+        .populate("company", "nameCompany")
         .populate("farm", "nameFarm")
         .populate("task", "nameTask")
         .populate("machinery", "nameMachinery")
@@ -981,12 +1197,12 @@ router.get("/getOnework/:idWork", async (req, res) => {
 router.put("/deletecompany/:idX", async (req, res) => {
   let rol = req.body.info.rol;
   let id_X = req.params.idX;
-  if (rol === "ADMIN"){
+  if (rol === "ADMIN") {
     //estado deleted de empresa a true
-    // let info_x = await deleteOneX(Company,id_X)
-    //  // guardar array de fincas de la empresa borrada
-    //  id_x = info_x.farms
-    //  //borrar la empresa del array de empresas en finca
+    let info_x = await functions.deleteOneX(Company,id_X,res)
+     // guardar array de fincas de la empresa borrada
+    // id_x = info_x.farms
+     //borrar la empresa del array de empresas en finca
     // for (element in id_x) {
     //         await Farm.findByIdAndUpdate(id_x[element], {
     //           $pull: { company: id_X },
@@ -995,24 +1211,23 @@ router.put("/deletecompany/:idX", async (req, res) => {
     res.json({
       message: "Elemento eliminado",
     });
-  }else {
+  } else {
     res.json({
       message: "Error de rol",
     });
   }
 });
 
-
 //Finca
 router.put("/deletefarm/:idX", async (req, res) => {
   let rol = req.body.info.rol;
   let id_X = req.params.idX;
-  if (rol === "ADMIN"){
-    deleteOneX(Farm,id_X)
+  if (rol === "ADMIN") {
+    functions.deleteOneX(Farm, id_X, res);
     res.json({
       message: "Elemento eliminado",
     });
-  }else {
+  } else {
     res.json({
       message: "Error de rol",
     });
@@ -1023,29 +1238,28 @@ router.put("/deletefarm/:idX", async (req, res) => {
 router.put("/deletemachine/:idX", async (req, res) => {
   let rol = req.body.info.rol;
   let id_X = req.params.idX;
-  if (rol === "ADMIN"){
-    deleteOneX(Machine,id_X)
+  if (rol === "ADMIN") {
+    functions.deleteOneX(Machine, id_X, res);
     res.json({
       message: "Elemento eliminado",
     });
-  }else {
+  } else {
     res.json({
       message: "Error de rol",
     });
   }
 });
 
-
 //Campaña
 router.put("/deleteseason/:idX", async (req, res) => {
   let rol = req.body.info.rol;
   let id_X = req.params.idX;
-  if (rol === "ADMIN"){
-    deleteOneX(Season,id_X)
+  if (rol === "ADMIN") {
+    functions.deleteOneX(Season, id_X, res);
     res.json({
       message: "Elemento eliminado",
     });
-  }else {
+  } else {
     res.json({
       message: "Error de rol",
     });
@@ -1056,12 +1270,12 @@ router.put("/deleteseason/:idX", async (req, res) => {
 router.put("/deletetank/:idX", async (req, res) => {
   let rol = req.body.info.rol;
   let id_X = req.params.idX;
-  if (rol === "ADMIN"){
-    deleteOneX(Tank,id_X)
+  if (rol === "ADMIN") {
+    functions.deleteOneX(Tank, id_X, res);
     res.json({
       message: "Elemento eliminado",
     });
-  }else {
+  } else {
     res.json({
       message: "Error de rol",
     });
@@ -1072,29 +1286,109 @@ router.put("/deletetank/:idX", async (req, res) => {
 router.put("/deletetask/:idX", async (req, res) => {
   let rol = req.body.info.rol;
   let id_X = req.params.idX;
-  if (rol === "ADMIN"){
-    deleteOneX(Task,id_X)
+  if (rol === "ADMIN") {
+    functions.deleteOneX(Task, id_X, res);
     res.json({
       message: "Elemento eliminado",
     });
-  }else {
+  } else {
     res.json({
       message: "Error de rol",
     });
   }
 });
 
+//Producto
+router.put("/deleteproduct/:idX", async (req, res) => {
+  let rol = req.body.info.rol;
+  let id_X = req.params.idX;
+  if (rol === "ADMIN") {
+    functions.deleteOneX(Product, id_X, res);
+    res.json({
+      message: "Elemento eliminado",
+    });
+  } else {
+    res.json({
+      message: "Error de rol",
+    });
+  }
+});
 
 //Usuario
 router.put("/deleteuser/:idX", async (req, res) => {
   let rol = req.body.info.rol;
   let id_X = req.params.idX;
-  if (rol === "ADMIN"){
-    deleteOneX(User,id_X)
+  if (rol === "ADMIN") {
+    functions.deleteOneX(User, id_X, res);
     res.json({
       message: "Elemento eliminado",
     });
-  }else {
+  } else {
+    res.json({
+      message: "Error de rol",
+    });
+  }
+});
+//Borrado definitivo de trabajo
+router.delete("/deletework/:idwork", async (req, res) => {
+  let id_work = req.params.idwork;
+  let rol = req.body.info.rol;
+  if (rol === "ADMIN") {
+    info_work = await Work.findByIdAndDelete(id_work);
+
+    if (info_work) {
+      let id_farm = info_work.farm;
+      let id_worker = info_work.worker;
+      let id_task = info_work.task;
+      let id_machinery = info_work.machinery;
+      let id_tank = info_work.tank;
+      let id_products = info_work.products;
+
+      if (id_farm) {
+        for (element in id_farm) {
+          let id = id_farm[element]._id;
+          await Farm.findByIdAndUpdate(id, { $pull: { works: id_work } });
+        }
+      }
+      if (id_task) {
+        let id = id_task._id;
+        await Task.findByIdAndUpdate(id, { $pull: { works: id_work } });
+      }
+      if (id_worker) {
+        let id = id_worker._id;
+        await User.findByIdAndUpdate(id, { $pull: { works: id_work } });
+      }
+      if (id_machinery) {
+        for (element in id_machinery) {
+          let id = id_machinery[element]._id;
+          await Machine.findByIdAndUpdate(id, { $pull: { works: id_work } });
+        }
+      }
+      if (id_tank) {
+        let id = id_tank._id;
+        await Tank.findByIdAndUpdate(id, { $pull: { works: id_work } });
+      }
+      if (id_products) {
+        for (element in id_products) {
+          let name = id_products[element].name_pr;
+          
+          let variable = await Product.findOneAndUpdate(
+            { nameProduct: name },
+            { $pull: { works: id_work } },
+            { new: true }
+          );
+          console.log(variable)
+        }
+      }
+      res.json({
+        message: "Trabajo eliminado",
+      });
+    } else {
+      res.json({
+        message: "No existe",
+      });
+    }
+  } else {
     res.json({
       message: "Error de rol",
     });
