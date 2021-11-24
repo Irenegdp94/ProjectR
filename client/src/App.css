@@ -1,4 +1,9 @@
-.App {
+*{
+  margin: 0;
+  padding: 0;
+}
+
+/* .App {
   text-align: center;
 }
 
@@ -36,3 +41,7 @@
     transform: rotate(360deg);
   }
 }
+
+.Navbar{
+  width: 100%;
+} */

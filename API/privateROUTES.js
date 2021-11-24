@@ -14,6 +14,14 @@ const Task = require("../MODELS/Task");
 const Work = require("../MODELS/Work");
 
 //rutas -->
+
+router.get('/validate', (req, res) => {
+	res.json({
+		auth: true,
+		message: 'Token has been validated'
+	});
+});
+
 //Crear nuevo trabajo (admin y user)
 router.post("/newwork", async (req, res) => {
   let rol = req.body.info.rol;
@@ -180,8 +188,9 @@ router.put("/upuser/:iduser", async (req, res) => {
   }
 });
 
-//modificar TRABAJO (USER y ADMIN)
 
+
+//modificar TRABAJO (USER y ADMIN)
 router.put("/upwork/:idwork", async (req, res) => {
   let rol = req.body.info.rol;
   let id_user = req.body.info.id;

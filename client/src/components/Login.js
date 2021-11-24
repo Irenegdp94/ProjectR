@@ -21,12 +21,12 @@ const Login = () => {
     let { auth, message, token, rol } = response.data;
 
     if (auth & (rol === "ADMIN")) {
+      localStorage.setItem("token", token);
       history.push("/homeAdmin");
-      localStorage.setItem("token", token);
-      console.log("entrada ok admin");
+      console.log("entrada ok admin", token);
     } else if (auth & (rol === "USER")) {
-      history.push("/homeUser");
       localStorage.setItem("token", token);
+      history.push("/homeUser");
       console.log("entrada ok user");
     } else if (!auth) {
       setMessage({ message_info: message });

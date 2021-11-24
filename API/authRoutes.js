@@ -6,6 +6,8 @@ const bcrypt = require("bcrypt");
 const salt = bcrypt.genSaltSync(10);
 const jwt = require("jsonwebtoken");
 
+
+
 router.post("/login", async (req, res) => {
   let { nUser, pass } = req.body;
   let info_user;
