@@ -8,9 +8,10 @@ const Login = () => {
   // let setInfo = state[1];
   //las tres lineas de arriba es igual que la de abajo:
   let [info, setInfo] = useState({ nUser: "", pass: "" });
-  let [message_info, setMessage] = useState({ message_info: "" });
+  let [message_info, setMessage] = useState({ message_info: window.localStorage.message });
+  window.localStorage.message = "";
   let history = useHistory();
-  //   console.log(info.nUser)
+
   const handle_submit = async (event) => {
     event.preventDefault();
     //axios.post("http://localhost:5000/api/auth/login",body, headers)
@@ -22,10 +23,12 @@ const Login = () => {
 
     if (auth & (rol === "ADMIN")) {
       localStorage.setItem("token", token);
+      window.localStorage.message = "";
       history.push("/homeAdmin");
       console.log("entrada ok admin", token);
     } else if (auth & (rol === "USER")) {
       localStorage.setItem("token", token);
+      window.localStorage.message = "";
       history.push("/homeUser");
       console.log("entrada ok user");
     } else if (!auth) {
@@ -38,7 +41,8 @@ const Login = () => {
   };
 
   return (
-    <form onSubmit={handle_submit}>
+    <form onSubmit={handle_submit} className="login-box">
+      <img src="../tractor.png" class="avatar" alt="Avatar Image"/>
       <div>
         <label>Número de usuario</label>
         <input type="text" name="nUser" onChange={handle_change} />
@@ -51,7 +55,7 @@ const Login = () => {
         <input type="submit" value="Submit" />
       </div>
       <div>
-        <p id="message_info">{message_info.message_info}</p>
+        <p className="error" id="message_info">{message_info.message_info}</p>
       </div>
     </form>
   );

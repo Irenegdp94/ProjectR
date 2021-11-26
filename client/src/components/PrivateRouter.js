@@ -2,11 +2,11 @@ import { Redirect, Route } from "react-router";
 import { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 import axios from "axios";
+import Loading from './Loading';
 
 const PrivateRoute = ({ render: Render, ...rest }) => {
-  console.log(window.localStorage.token)
+  
   let token = localStorage.getItem("token");
-  console.log(token)
   let [loading, setLoading] = useState({ loading: true });
   // let [message, setMessage] = useState({ message: "" });
   let history = useHistory();
@@ -21,8 +21,8 @@ const PrivateRoute = ({ render: Render, ...rest }) => {
       if (response.data.auth === false) {
         // setMessage({ message:  });
         window.localStorage.clear();
-        let message = response.data.message;
-        console.log(message)
+        window.localStorage.message = response.data.message;
+
         history.push("/");
       }
 
@@ -32,7 +32,6 @@ const PrivateRoute = ({ render: Render, ...rest }) => {
  
     } catch (error) {
       // setMessage({ message: "Server error" });
-      // setLoading({ loading: false });
       history.push("/");
       return;
     }
@@ -47,11 +46,11 @@ const PrivateRoute = ({ render: Render, ...rest }) => {
 
   return (
     <Route {...rest}>
-      {loading.loading === true ? <h1>loading true</h1> : <Render />}
+     
+       {loading.loading === true ? <Loading/> : <Render />}
     </Route>
   );
 };
 
 export default PrivateRoute;
 
-//loading.loading === true ? <h1>loading true</h1> :<Render />

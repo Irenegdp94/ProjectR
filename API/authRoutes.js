@@ -131,9 +131,10 @@ router.post("/signup", async (req, res) => {
         roleUser,
         works: [],
       };
+      console.log(newUser)
       try {
         doc = await User.create(newUser);
-        console.log(doc);
+        // console.log(doc);
       } catch (error) {
         return res.json({
           message: "Error del servidor",

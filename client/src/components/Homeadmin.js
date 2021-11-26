@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import Nav from "./Navbar";
 // import { useHistory } from "react-router-dom";
 import axios from "axios";
+import Loading from './Loading';
 const Homeadmin = () => {
   let token = localStorage.getItem("token");
   
@@ -27,8 +28,7 @@ const Homeadmin = () => {
     <div>
       
       {info_state.loading === true ?
-         (<h1>Loading</h1>)
-         :
+          <Loading/>         :
          (<Nav roluser={info_state.rol}/>)
       }
       

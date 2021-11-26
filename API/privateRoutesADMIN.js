@@ -57,7 +57,7 @@ router.post("/newcompany", async (req, res) => {
   let rol = req.body.info.rol;
   let new_company, find_company;
   let { nameCompany, farms } = req.body;
-
+//cambiar para coger directamente los id de las fincas
   if (rol === "ADMIN") {
     try {
       find_company = await Company.findOne({ nameCompany });

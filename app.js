@@ -8,6 +8,7 @@ const authRoutes = require("./API/authRoutes");
 const userRoutes = require("./API/privateRoutesUser");
 const adminRoutes = require("./API/privateRoutesADMIN");
 const bothRoutes = require("./API/privateROUTES");
+const searchRoutes = require("./API/privateSearch");
 const app = express();
 const cors = require("cors")
 
@@ -32,6 +33,7 @@ app.use("/api/auth", verifyInputs, authRoutes); //login route localhost:5000/api
 app.use("/api/user", verifyToken, userRoutes); //user routers localhost:5000/api/user/
 app.use("/api/admin", verifyToken, adminRoutes); //admin routers localhost:5000/api/admin/
 app.use("/api/both", verifyToken, bothRoutes); // localhost:5000/api/both/
+app.use("/api/search", verifyToken, searchRoutes); // localhost:5000/api/search
 // montar servidor -->
 app.listen(process.env.PORT, () => {
   console.log(`Server listening on port ${process.env.PORT}`);
