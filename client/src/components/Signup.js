@@ -87,7 +87,7 @@ function Signup() {
                 placeholder="Nombre"
                 name="nameUser"
                 onChange={handle_change}
-                //   defaultValue="Otto"
+                
               />
               <Form.Control.Feedback type="invalid">
                 *Campo requerido

@@ -63,44 +63,49 @@ router.post("/newcompany", async (req, res) => {
       find_company = await Company.findOne({ nameCompany });
     } catch (error) {
       return res.status(500).json({
+        success: false,
         message: "Error de conexión bbdd:Company",
       });
     }
 
     if (!find_company) {
-      let farms_id = [];
-      for (element in farms) {
-        try {
-          info_farm = await Farm.findOne({ nameFarm: farms[element] });
-        } catch (error) {
-          return res.status(500).json({
-            message: "Error de conexión bbdd:Farm",
-          });
-        }
-        if (info_farm) {
-          farms_id.push(info_farm._id);
-        }
-      } //end for
+      // let farms_id = [];
+      // for (element in farms) {
+      //   try {
+      //     info_farm = await Farm.findOne({ nameFarm: farms[element] });
+      //   } catch (error) {
+      //     return res.status(500).json({
+      //       message: "Error de conexión bbdd:Farm",
+      //     });
+      //   }
+      //   if (info_farm) {
+      //     farms_id.push(info_farm._id);
+      //   }
+      // } //end for
 
-      new_company = { nameCompany, farms: farms_id };
-
+      // new_company = { nameCompany, farms: farms_id };
+      new_company = { nameCompany, farms};
       try {
         let doc = await Company.create(new_company);
         return res.json({
+          success: true,
           message: "Nueva empresa creada correctamente",
         });
       } catch (error) {
         return res.status(500).json({
+          success: false,
           message: "Error del servidor bbdd:Company",
         });
       }
     } else {
       return res.json({
+        success: false,
         message: "La empresa ya existe",
       });
     }
   } else {
     return res.json({
+      success: false,
       message: "Error de rol",
     });
   }
@@ -276,7 +281,6 @@ router.post("/newtask", async (req, res) => {
     let { nomTask, cat } = req.body;
     try {
       find_task = await Task.findOne({ nameTask: nomTask });
-      console.log(find_task);
     } catch (error) {
       return res.status(500).json({
         message: "Error del servidor bbdd:Task",

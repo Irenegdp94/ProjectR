@@ -58,6 +58,7 @@ router.post("/signup", async (req, res) => {
 
   if (!roleUser) {
     return res.json({
+      success: false,
       message: "Introduce todos los datos",
       nUser: null,
       nameUser: null,
@@ -72,12 +73,14 @@ router.post("/signup", async (req, res) => {
     user_found = await User.find({ nUser: nUser });
   } catch (error) {
     return res.json({
+      success: false,
       message: "error conexion",
     });
   }
 
   if (user_found.length != 0) {
     return res.json({
+      success: false,
       message: "El usuario ya existe",
       nUser: null,
       nameUser: null,
@@ -90,6 +93,7 @@ router.post("/signup", async (req, res) => {
     if (pass.length < 8) {
       //comprobar si la contraseña es buena
       res.json({
+        success: false,
         message: "La contraseña es demasiado corta",
         nUser: null,
         nameUser: null,
@@ -100,6 +104,7 @@ router.post("/signup", async (req, res) => {
       });
     } else if (nUser.length != 9) {
       res.json({
+        success: false,
         message: "El número de usuario debe tener 8 digitos + letra",
         nUser: null,
         nameUser: null,
@@ -110,6 +115,7 @@ router.post("/signup", async (req, res) => {
       });
     } else if (!roleUser === "USER" || !roleUser === "ADMIN") {
       res.json({
+        success: false,
         message: "El rol de usuario debe ser USER o ADMIN",
         nUser: null,
         nameUser: null,
@@ -137,10 +143,12 @@ router.post("/signup", async (req, res) => {
         // console.log(doc);
       } catch (error) {
         return res.json({
+          success: false,
           message: "Error del servidor",
         });
       }
       res.json({
+        success: true,
         message: "Usuario creado correctamente",
         nUser: nUser,
         nameUser: nameUser,
