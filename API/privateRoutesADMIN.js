@@ -132,61 +132,67 @@ router.post("/newfarm", async (req, res) => {
   let rol = req.body.info.rol;
   if (rol === "ADMIN") {
     let find_farm;
-    let { nameFarm, area, cultivo, nom_season, nom_company } = req.body;
-    let season_id, info_season;
-    let company_id, info_company;
+    // let { nameFarm, area, cultivo, nom_season, nom_company } = req.body;
+    let { nameFarm, area, cultivo, season, company } = req.body;
+    // let season_id, info_season;
+    // let company_id, info_company;
 
     try {
       find_farm = await Farm.findOne({ nameFarm });
     } catch (error) {
       return res.status(500).json({
+        success: false,
         message: "Error de conexión",
       });
     }
 
     if (!find_farm) {
-      try {
-        info_season = await Season.findOne({ name: nom_season });
-        info_company = await Company.findOne({ nameCompany: nom_company });
-      } catch (error) {
-        return res.status(500).json({
-          message: "Error de conexión",
-        });
-      }
+      // try {
+      //   info_season = await Season.findOne({ name: nom_season });
+      //   info_company = await Company.findOne({ nameCompany: nom_company });
+      // } catch (error) {
+      //   return res.status(500).json({
+      //     message: "Error de conexión",
+      //   });
+      // }
 
-      if (info_season) {
-        season_id = info_season._id;
-      }
+      // if (info_season) {
+      //   season_id = info_season._id;
+      // }
 
-      if (info_company) {
-        company_id = info_company._id;
-      }
+      // if (info_company) {
+      //   company_id = info_company._id;
+      // }
 
       new_farm = {
         nameFarm,
         area,
         cultivo,
-        season: season_id,
-        company: company_id,
+        season,
+        company,
       };
 
       try {
         doc = await Farm.create(new_farm);
         return res.json({
+          success: true,
           message: "Nueva finca creada correctamente",
         });
       } catch (error) {
         return res.status(500).json({
+          success: false,
           message: "Error del servidor",
         });
       }
     } else {
       return res.json({
+        success: false,
         message: "La finca ya existe",
       });
     }
   } else {
     return res.json({
+      success: false,
       message: "Error de rol",
     });
   }

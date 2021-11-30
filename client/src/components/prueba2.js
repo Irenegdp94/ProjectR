@@ -1,4 +1,5 @@
 import * as React from "react";
+import { useHistory } from "react-router-dom";
 import TextField from "@mui/material/TextField";
 import Autocomplete from "@mui/material/Autocomplete";
 import CircularProgress from "@mui/material/CircularProgress";
@@ -14,7 +15,7 @@ export default function Asynchronous() {
   const [options, setOptions] = React.useState([]);
   const loading = open && options.length === 0;
   const [inputValue, setInputValue] = React.useState({}); //para capturar valor
-
+  let history = useHistory();
   const [open2, setOpen2] = React.useState(false);
   const [options2, setOptions2] = React.useState([]);
   const loading2 = open2 && options2.length === 0;
@@ -113,20 +114,20 @@ export default function Asynchronous() {
  
         info.company = array_id_company;
         info.season = inputValue._id;
-    //     let response = await axios.post(
-    //       "http://localhost:5000/api/admin/newcompany",
-    //       info,
-    //       {
-    //         headers: { token: token },
-    //       }
-    //     );
-    //     setMessage({ message_info: response.data.message });
-    //     if (response.data.success === true) {
-    //       window.localStorage.message = response.data.message;
-    //       history.push("/homeAdmin");
-    //     }
+        let response = await axios.post(
+          "http://localhost:5000/api/admin/newfarm",
+          info,
+          {
+            headers: { token: token },
+          }
+        );
+        setMessage({ message_info: response.data.message });
+        if (response.data.success === true) {
+          window.localStorage.message = response.data.message;
+          history.push("/homeAdmin");
+        }
       } catch (error) {
-        window.localStorage.message = error;
+        window.localStorage.message = "error catch";
       }
     }
   };
