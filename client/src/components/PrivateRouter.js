@@ -16,7 +16,7 @@ const PrivateRoute = ({ render: Render, ...rest }) => {
       response = await axios.get("http://localhost:5000/api/both/validate", {
         headers: { token: token },
       });
-      console.log(response)
+    
       if (response.data.auth === false) {
         // setMessage({ message:  });
         window.localStorage.clear();

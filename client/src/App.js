@@ -11,6 +11,7 @@ import Signup from './components/Signup';
 import Newcompany from './components/Newcompany';
 import Newfarm from './components/Newfarm';
 import Viewusers from './components/Viewusers'
+import Viewuser from './components/Account'
 
 
 
@@ -26,7 +27,7 @@ function App() {
         <PrivateRoute exact path="/newcompany" render={()=>{return <Newcompany/>}}/>
         <PrivateRoute exact path="/newfarm" render={()=>{return <Newfarm/>}}/>
         <PrivateRoute exact path="/viewusers" render={()=>{return <Viewusers/>}}/>
-          
+        <PrivateRoute exact path="/viewuser/:id" render={()=>{return <Viewuser/>}}/>
       </Switch>
     </div>
   );
