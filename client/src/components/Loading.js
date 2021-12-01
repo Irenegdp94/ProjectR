@@ -1,3 +1,4 @@
+//CARGANDO...
 import React from "react";
 import "../styles/Loading.css";
 

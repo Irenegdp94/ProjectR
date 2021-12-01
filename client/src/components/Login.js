@@ -1,3 +1,4 @@
+//INICIO DE SESION
 import "../styles/Login.css";
 import { useState } from "react";
 import { useHistory } from "react-router-dom";
@@ -25,12 +26,10 @@ const Login = () => {
       localStorage.setItem("token", token);
       window.localStorage.message = "";
       history.push("/homeAdmin");
-      console.log("entrada ok admin", token);
     } else if (auth & (rol === "USER")) {
       localStorage.setItem("token", token);
       window.localStorage.message = "";
       history.push("/homeUser");
-      console.log("entrada ok user");
     } else if (!auth) {
       setMessage({ message_info: message });
     }

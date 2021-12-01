@@ -1,3 +1,4 @@
+//HOME USUARIO
 //import "../styles/Homeuser.css";
 
 import { useState, useEffect } from "react";
@@ -26,7 +27,6 @@ const Homeuser = () => {
   useEffect(() => {
     response();
   }, []);
-  console.log(info_state);
   return (
     
     <div className="main-container flex-center title-container">

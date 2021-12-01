@@ -8,8 +8,9 @@ import PrivateRoute from './components/PrivateRouter';
 import Homeadmin from './components/Homeadmin';
 import Homeuser from './components/HomeUser';
 import Signup from './components/Signup';
-import Newcompany from './components/CustomizeHookDelay';
-import Newfarm from './components/prueba2';
+import Newcompany from './components/Newcompany';
+import Newfarm from './components/Newfarm';
+import Viewusers from './components/Viewusers'
 
 
 
@@ -24,6 +25,7 @@ function App() {
         <PrivateRoute exact path="/signup" render={()=>{return <Signup/>}}/>
         <PrivateRoute exact path="/newcompany" render={()=>{return <Newcompany/>}}/>
         <PrivateRoute exact path="/newfarm" render={()=>{return <Newfarm/>}}/>
+        <PrivateRoute exact path="/viewusers" render={()=>{return <Viewusers/>}}/>
           
       </Switch>
     </div>

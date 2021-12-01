@@ -136,7 +136,7 @@ router.post("/newfarm", async (req, res) => {
     let { nameFarm, area, cultivo, season, company } = req.body;
     // let season_id, info_season;
     // let company_id, info_company;
-
+    // console.log(req.body)
     try {
       find_farm = await Farm.findOne({ nameFarm });
     } catch (error) {
@@ -174,6 +174,15 @@ router.post("/newfarm", async (req, res) => {
 
       try {
         doc = await Farm.create(new_farm);
+        console.log(company)
+        for (element in company){
+          console.log("element", element)
+          console.log("company[element]", company[element])
+          console.log("doc._id",doc._id)
+          let mira = await Company.findByIdAndUpdate(company[element], {$push:{farms:doc._id}}, { new: true })
+          console.log(mira)
+        }
+        
         return res.json({
           success: true,
           message: "Nueva finca creada correctamente",

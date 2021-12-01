@@ -1,3 +1,4 @@
+//BARRA DE NAVEGACION HOME
 import "bootstrap/dist/css/bootstrap.min.css";
 import "../styles/Navbar.css";
 import Navbar from "react-bootstrap/Navbar";
@@ -8,17 +9,13 @@ import NavDropdown from "react-bootstrap/NavDropdown";
 import { useState } from "react";
 
 const NavBar = (props) => {
-  console.log(props.roluser);
-
   if (props.roluser === "ADMIN") {
     return (
-      
         <Navbar className="navbar navbar-expand-lg padding">
           <div className="container-fluid">
           <Navbar.Brand>
             <img src="/Logotipo.png" width="80" height="80" />
           </Navbar.Brand>
-
 
           <Navbar.Toggle aria-controls="responsive-navbar-nav" className="navbar-toggler"/>
           <Navbar.Collapse id="responsive-navbar-nav" className="text-danger ">
@@ -60,10 +57,8 @@ const NavBar = (props) => {
 
             <Nav.Link href="/" key="22">Nuevo trabajo</Nav.Link>
           </Navbar.Collapse>
-
 </div>
 <div>
-
           <Navbar.Collapse>
             <NavDropdown  title={<img
                       src="../user.png"
@@ -79,11 +74,7 @@ const NavBar = (props) => {
      
             </NavDropdown>
           </Navbar.Collapse>
-
-
-
           </div>
-          
         </Navbar>
      
     );
@@ -108,5 +99,4 @@ const NavBar = (props) => {
     );
   }
 };
-
 export default NavBar;

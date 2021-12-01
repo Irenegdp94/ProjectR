@@ -55,7 +55,7 @@ router.post("/login", async (req, res) => {
 router.post("/signup", async (req, res) => {
   let { nUser, nameUser, surnameUser, pass, phone, roleUser, works } = req.body;
   let user_found;
-
+  console.log(req.body)
   if (!roleUser) {
     return res.json({
       success: false,
@@ -103,6 +103,7 @@ router.post("/signup", async (req, res) => {
         roleUser: null,
       });
     } else if (nUser.length != 9) {
+      //cambiar para comprobar DNI
       res.json({
         success: false,
         message: "El número de usuario debe tener 8 digitos + letra",
@@ -113,7 +114,7 @@ router.post("/signup", async (req, res) => {
         phone: null,
         roleUser: null,
       });
-    } else if (!roleUser === "USER" || !roleUser === "ADMIN") {
+    } else if (roleUser != "USER" || roleUser != "ADMIN") {
       res.json({
         success: false,
         message: "El rol de usuario debe ser USER o ADMIN",
@@ -137,10 +138,8 @@ router.post("/signup", async (req, res) => {
         roleUser,
         works: [],
       };
-      console.log(newUser)
       try {
         doc = await User.create(newUser);
-        // console.log(doc);
       } catch (error) {
         return res.json({
           success: false,

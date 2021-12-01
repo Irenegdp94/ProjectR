@@ -23,6 +23,7 @@ function Signup() {
   });
 
   const handleSubmit = async (event) => {
+    window.localStorage.message = "";
     const form = event.currentTarget;
     event.preventDefault();
     if (form.checkValidity() === false) {
