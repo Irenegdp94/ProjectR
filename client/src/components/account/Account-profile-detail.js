@@ -12,20 +12,17 @@ import {
 
 const states = [
   {
-    value: 'alabama',
-    label: 'Alabama'
+    value: 'USER',
+    label: 'USER'
   },
   {
-    value: 'new-york',
-    label: 'New York'
-  },
-  {
-    value: 'san-francisco',
-    label: 'San Francisco'
+    value: 'ADMIN',
+    label: 'ADMIN'
   }
 ];
 
 export const AccountProfileDetails = (props) => {
+  console.log(props)
   const [values, setValues] = useState({
     firstName: 'Katarina',
     lastName: 'Smith',
@@ -50,8 +47,8 @@ export const AccountProfileDetails = (props) => {
     >
       <Card>
         <CardHeader
-          subheader="The information can be edited"
-          title="Profile"
+          // subheader="The information can be edited"
+          title="Información"
         />
         <Divider />
         <CardContent>
@@ -66,13 +63,14 @@ export const AccountProfileDetails = (props) => {
             >
               <TextField
                 fullWidth
-                helperText="Please specify the first name"
+                helperText="DNI del usuario"
                 label="Número de usuario"
                 name="nUser"
                 onChange={handleChange}
                 required
                 value={values.firstName}
                 variant="outlined"
+                
               />
             </Grid>
             <Grid
@@ -82,14 +80,15 @@ export const AccountProfileDetails = (props) => {
             >
               <TextField
                 fullWidth
-                label="Last name"
-                name="lastName"
+                label="Nombre"
+                name="nameUser"
                 onChange={handleChange}
                 required
                 value={values.lastName}
                 variant="outlined"
               />
             </Grid>
+
             <Grid
               item
               md={6}
@@ -97,8 +96,24 @@ export const AccountProfileDetails = (props) => {
             >
               <TextField
                 fullWidth
-                label="Email Address"
-                name="email"
+                label="Apellido"
+                name="surnameUser"
+                onChange={handleChange}
+                required
+                value={values.lastName}
+                variant="outlined"
+              />
+              </Grid>
+
+            <Grid
+              item
+              md={6}
+              xs={12}
+            >
+              <TextField
+                fullWidth
+                label="Rol"
+                name="roleUser"
                 onChange={handleChange}
                 required
                 value={values.email}
@@ -112,7 +127,7 @@ export const AccountProfileDetails = (props) => {
             >
               <TextField
                 fullWidth
-                label="Phone Number"
+                label="Telefono"
                 name="phone"
                 onChange={handleChange}
                 type="number"
@@ -120,6 +135,7 @@ export const AccountProfileDetails = (props) => {
                 variant="outlined"
               />
             </Grid>
+            
             <Grid
               item
               md={6}
@@ -127,22 +143,7 @@ export const AccountProfileDetails = (props) => {
             >
               <TextField
                 fullWidth
-                label="Country"
-                name="country"
-                onChange={handleChange}
-                required
-                value={values.country}
-                variant="outlined"
-              />
-            </Grid>
-            <Grid
-              item
-              md={6}
-              xs={12}
-            >
-              <TextField
-                fullWidth
-                label="Select State"
+                label="Rol usuario"
                 name="state"
                 onChange={handleChange}
                 required

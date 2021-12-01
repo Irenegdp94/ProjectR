@@ -42,7 +42,7 @@ const Account = () => {
             md={6}
             xs={12}
           >
-            <AccountProfileDetails />
+            <AccountProfileDetails  id={id_user} />
           </Grid>
         </Grid>
       </Container>
