@@ -7,7 +7,7 @@ import { useParams } from 'react-router';
 
 const Account = () => {
   let id_user = useParams().id;
-  console.log(id_user)
+  // console.log(id_user)
   return(
     <Box
       component="main"

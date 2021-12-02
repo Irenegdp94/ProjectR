@@ -22,7 +22,7 @@ const user = {
 
 export const AccountProfile = (props) => {
   let id_user = props.id
-  console.log(id_user)
+  // console.log(id_user)
   let [info, setInfo] = useState({ data: {} , loading: true });
   let token = localStorage.getItem("token");
   const fresponse = async () => {
@@ -32,7 +32,7 @@ export const AccountProfile = (props) => {
     
     let user_data = response.data.infoUser
     setInfo({data: user_data ,loading: false});
-    console.log(info.data)
+    // console.log(info.data)
   }
   useEffect(() => {
     fresponse();
