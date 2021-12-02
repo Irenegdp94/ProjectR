@@ -11,9 +11,12 @@ import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
+import { useHistory } from "react-router-dom";
 
-const pages = ['Products', 'Pricing', 'Blog'];
-const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
+
+
+const pages = ['Ver', 'Crear', 'Buscar por'];
+// const settings = ['Home', 'Logout'];
 
 const ResponsiveAppBar = () => {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
@@ -35,16 +38,17 @@ const ResponsiveAppBar = () => {
   };
 
   return (
-    <AppBar position="static">
+    <AppBar position="static" style={{ background: '#2E3B55' }}>
       <Container maxWidth="xl">
         <Toolbar disableGutters>
+
           <Typography
             variant="h6"
             noWrap
             component="div"
             sx={{ mr: 2, display: { xs: 'none', md: 'flex' } }}
           >
-            LOGO
+            <img src="/Logotipo.png" width="50" height="50" />
           </Typography>
 
           <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
@@ -54,10 +58,12 @@ const ResponsiveAppBar = () => {
               aria-controls="menu-appbar"
               aria-haspopup="true"
               onClick={handleOpenNavMenu}
-              color='secondary'
+              // color='primary'
             >
-              <MenuIcon />
+              <img src="/Logotipo.png" width="40" height="40" />
+              {/* <MenuIcon /> */}
             </IconButton>
+
             <Menu
               id="menu-appbar"
               anchorEl={anchorElNav}
@@ -76,6 +82,7 @@ const ResponsiveAppBar = () => {
                 display: { xs: 'block', md: 'none' },
               }}
             >
+              {/* aqui va el menu desplegable en version movil */}
               {pages.map((page) => (
                 <MenuItem key={page} onClick={handleCloseNavMenu}>
                   <Typography textAlign="center">{page}</Typography>
@@ -83,14 +90,16 @@ const ResponsiveAppBar = () => {
               ))}
             </Menu>
           </Box>
-          <Typography
+           
+          {/* <Typography
             variant="h6"
             noWrap
             component="div"
             sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}
           >
-            LOGO
-          </Typography>
+            hola
+          </Typography> */}
+
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
             {pages.map((page) => (
               <Button
@@ -103,10 +112,13 @@ const ResponsiveAppBar = () => {
             ))}
           </Box>
 
+          
+{/* icono usuario: */}
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
+                <Avatar alt="Remy Sharp" src="../user.png"/> 
+                {/* /static/images/avatar/2.jpg */}
               </IconButton>
             </Tooltip>
             <Menu
@@ -125,11 +137,16 @@ const ResponsiveAppBar = () => {
               open={Boolean(anchorElUser)}
               onClose={handleCloseUserMenu}
             >
-              {settings.map((setting) => (
-                <MenuItem key={setting} onClick={handleCloseNavMenu}>
-                  <Typography textAlign="center">{setting}</Typography>
+              {/* menu desplegable user */}
+
+              
+                <MenuItem onClick={handleCloseNavMenu}>
+                <Button style={{ color: '#2E3B55' }} size="small" href="/homeAdmin"><Typography>{<img align="center" src="../home.png" height="15"/>} Home</Typography></Button>
                 </MenuItem>
-              ))}
+                <MenuItem onClick={handleCloseNavMenu}>
+                  <Button style={{ color: '#2E3B55' }} href="/">{<img src="../logout.png" height="15"/>}  Log Out</Button>
+                </MenuItem>
+              
             </Menu>
           </Box>
         </Toolbar>

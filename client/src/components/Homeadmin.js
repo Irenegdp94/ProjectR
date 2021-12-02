@@ -9,7 +9,8 @@ import Button from "@mui/material/Button";
 import CloseIcon from "@mui/icons-material/Close";
 
 // import Nav from "./Navbar";
-import Nav from "../components/NavAdmin/OtherNav"
+import Nav from "../components/NavAdmin/Nav32"
+
 // import { useHistory } from "react-router-dom";
 import axios from "axios";
 import Loading from "./Loading";
@@ -40,6 +41,7 @@ const Homeadmin = () => {
         <Loading />
       ) : (
         <Nav roluser={info_state.rol} />
+        
         
       )}
 

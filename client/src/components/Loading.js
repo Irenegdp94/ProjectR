@@ -13,18 +13,22 @@ const Loading = () => {
   //   </div>
   // );
   return (
-    
     <div class="d-flex justify-content-center">
       <div class="m-5">
-    <div class="spinner1 spinnerMax">
-      <div class="spinner1 spinnerMid">
       
-        <div class="spinner1 spinnerMin"></div>
+        <div class="spinner1 spinnerMax">
+          <div class="spinner1 spinnerMid">
+            <div class="spinner1 spinnerMin">
+              
+            </div>
+          </div>
+          
+        </div>
+       
       </div>
-      </div>
+      
     </div>
-  </div>
-    
+
     // <div class="d-flex justify-content-center">
     //   <div class="m-5">
 
