@@ -1,5 +1,5 @@
 //HOME ADMINISTRADOR
-//import "../styles/Homeadmin.css";
+import "../styles/Homeadmin.css";
 import { useState, useEffect } from "react";
 import Box from "@mui/material/Box";
 import Alert from "@mui/material/Alert";
@@ -8,7 +8,8 @@ import Collapse from "@mui/material/Collapse";
 import Button from "@mui/material/Button";
 import CloseIcon from "@mui/icons-material/Close";
 
-import Nav from "./Navbar";
+// import Nav from "./Navbar";
+import Nav from "../components/NavAdmin/OtherNav"
 // import { useHistory } from "react-router-dom";
 import axios from "axios";
 import Loading from "./Loading";
@@ -39,6 +40,7 @@ const Homeadmin = () => {
         <Loading />
       ) : (
         <Nav roluser={info_state.rol} />
+        
       )}
 
       <Box sx={{ width: "100%" }}>

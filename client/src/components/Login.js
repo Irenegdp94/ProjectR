@@ -40,6 +40,7 @@ const Login = () => {
   };
 
   return (
+    <body className="body-login">
     <form onSubmit={handle_submit} className="login-box">
       <img src="../tractor.png" class="avatar" alt="Avatar Image"/>
       <div>
@@ -57,6 +58,7 @@ const Login = () => {
         <p className="error" id="message_info">{message_info.message_info}</p>
       </div>
     </form>
+    </body>
   );
 };
 

@@ -5,7 +5,9 @@
 
 /* CSS Navbar */
 .navbar{
-  background-color:#3d6c6f;
+  background-color:#609e72;
+  text-decoration: none;
+  color: black;
   
 }
 
@@ -36,8 +38,9 @@
 }
 
 .App-link {
-  color: #61dafb;
+  color: #fb6161;
 }
+
 
 @keyframes App-logo-spin {
   from {
