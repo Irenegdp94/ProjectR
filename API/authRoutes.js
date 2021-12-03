@@ -55,7 +55,7 @@ router.post("/login", async (req, res) => {
 router.post("/signup", async (req, res) => {
   let { nUser, nameUser, surnameUser, pass, phone, roleUser, works } = req.body;
   let user_found;
-  console.log(req.body)
+  // console.log(req.body)
   if (!roleUser) {
     return res.json({
       success: false,

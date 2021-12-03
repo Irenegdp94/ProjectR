@@ -6,16 +6,22 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
-import Button from '@mui/material/Button';
+import Button from "@mui/material/Button";
 import axios from "axios";
 import Nav from "./Navbar-basic";
 import { useState, useEffect } from "react";
 import Loading from "./Loading";
-import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
-
+import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
+import Alert from "@mui/material/Alert";
+import IconButton from "@mui/material/IconButton";
+import Collapse from "@mui/material/Collapse";
+import CloseIcon from "@mui/icons-material/Close";
+import Box from "@mui/material/Box";
 
 export default function DenseTable() {
   let [info, setInfo] = useState({ data: [], loading: true });
+  let [open, setOpen] = useState(true);
+
   const fresponse = async () => {
     let token = localStorage.getItem("token");
     let response = await axios.get(
@@ -43,6 +49,34 @@ export default function DenseTable() {
         <div>
           <Nav />
           <h1>Usuarios</h1>
+
+          <Box sx={{ width: "100%" }}>
+        {window.localStorage.message != "" ? (
+          <Collapse in={open}>
+            <Alert
+              action={
+                <IconButton
+                  aria-label="close"
+                  color="inherit"
+                  size="small"
+                  onClick={() => {
+                    setOpen(false);
+                    window.localStorage.message = "";
+                  }}
+                >
+                  <CloseIcon fontSize="inherit" />
+                </IconButton>
+              }
+              sx={{ mb: 2 }}
+            >
+              {window.localStorage.message}
+            </Alert>
+          </Collapse>
+        ) : (
+          (window.localStorage.message = "")
+        )}
+      </Box>
+
           <TableContainer component={Paper}>
             <Table
               sx={{ minWidth: 650 }}
@@ -72,7 +106,11 @@ export default function DenseTable() {
                     <TableCell align="right">{row.surnameUser}</TableCell>
                     <TableCell align="right">{row.phone}</TableCell>
                     <TableCell align="right">{row.roleUser}</TableCell>
-                    <TableCell align="right"><Button href={`/viewuser/${row._id}`}><InfoOutlinedIcon color="secondary"/></Button></TableCell>
+                    <TableCell align="right">
+                      <Button href={`/viewuser/${row._id}`}>
+                        <InfoOutlinedIcon color="secondary" />
+                      </Button>
+                    </TableCell>
                   </TableRow>
                 ))}
               </TableBody>
@@ -80,6 +118,7 @@ export default function DenseTable() {
           </TableContainer>
         </div>
       )}
+      
     </div>
   );
 }

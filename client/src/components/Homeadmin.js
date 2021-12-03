@@ -8,12 +8,12 @@ import Collapse from "@mui/material/Collapse";
 import Button from "@mui/material/Button";
 import CloseIcon from "@mui/icons-material/Close";
 
-// import Nav from "./Navbar";
-import Nav from "../components/NavAdmin/Nav32"
+import Nav from "./Navbar";
+// import Nav from "../components/NavAdmin/Nav32"
 
 // import { useHistory } from "react-router-dom";
 import axios from "axios";
-import Loading from "./Loading";
+import Loading from "../components/Loading";
 const Homeadmin = () => {
   let token = localStorage.getItem("token");
   const [open, setOpen] = useState(true);

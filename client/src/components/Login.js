@@ -16,10 +16,13 @@ const Login = () => {
   const handle_submit = async (event) => {
     event.preventDefault();
     //axios.post("http://localhost:5000/api/auth/login",body, headers)
+    try {
     let response = await axios.post(
       "http://localhost:5000/api/auth/login",
       info
     ); //hace lo mismo que el fetch
+    
+
     let { auth, message, token, rol } = response.data;
 
     if (auth & (rol === "ADMIN")) {
@@ -33,6 +36,11 @@ const Login = () => {
     } else if (!auth) {
       setMessage({ message_info: message });
     }
+  }catch (error) {
+   
+    setMessage({ message_info: "Error conexion bbdd" });
+    
+  }
   };
 
   const handle_change = (event) => {

@@ -4,11 +4,14 @@ import { AccountProfile } from '../components/account/Accoun-profile'
 import { AccountProfileDetails } from '../components/account/Account-profile-detail';
 import { DashboardLayout } from '../components/account/Dashboard-layout';
 import { useParams } from 'react-router';
+import { useState, useEffect } from "react";
 
 const Account = () => {
   let id_user = useParams().id;
+
   // console.log(id_user)
   return(
+    <div>
     <Box
       component="main"
       sx={{
@@ -47,7 +50,8 @@ const Account = () => {
         </Grid>
       </Container>
     </Box>
-  
+
+</div>
   )
      
 

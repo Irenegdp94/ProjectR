@@ -15,11 +15,11 @@ const Work = require("../MODELS/Work");
 
 //rutas -->
 
-router.get('/validate', (req, res) => {
-	res.json({
-		auth: true,
-		message: 'Token has been validated'
-	});
+router.get("/validate", (req, res) => {
+  res.json({
+    auth: true,
+    message: "Token has been validated",
+  });
 });
 
 //Crear nuevo trabajo (admin y user)
@@ -150,45 +150,110 @@ router.post("/newwork", async (req, res) => {
 router.put("/upuser/:iduser", async (req, res) => {
   let rol = req.body.info.rol;
   let id_user = req.params.iduser;
-  let { UPnUser, UPnameUser, UPsurnameUser, UPphone, UProlUser } = req.body;
-  if (rol === "ADMIN") {
-    let doc = await User.findByIdAndUpdate(
-      id_user,
-      {
-        nUser: UPnUser,
-        nameUser: UPnameUser,
-        surnameUser: UPsurnameUser,
-        phone: UPphone,
-        rolUser: UProlUser,
-      },
-      { new: true }
-    );
+  let { nUser, nameUser, surnameUser, phone, roleUser } = req.body;
+  let doc_rep = await User.find({ nUser: nUser });
 
-    res.json({
-      message: "Usuario modificado",
-      up_info: doc,
-    });
-  } else if (rol === "USER") {
-    let { UPpass } = req.body;
-    let doc = await User.findByIdAndUpdate(
-      id_user,
-      {
-        nameUser: UPnameUser,
-        surnameUser: UPsurnameUser,
-        phone: UPphone,
-        password: UPpass,
-      },
-      { new: true }
-    );
+  if (doc_rep.length === 1 && doc_rep[0]._id == id_user) {
+    if (!nUser || !nameUser || !surnameUser || !roleUser) {
+      return res.json({
+        success: false,
+        message: "Introduce todos los datos",
+        nUser: null,
+        nameUser: null,
+        surnameUser: null,
+        pass: null,
+        phone: null,
+        roleUser: null,
+      });
+      // }
+      // else if (nUser.length != 9) {
+      //   //cambiar para comprobar DNI
+      //   res.json({
+      //     success: false,
+      //     message: "El número de usuario debe tener 8 digitos + letra",
+      //     nUser: null,
+      //     nameUser: null,
+      //     surnameUser: null,
+      //     pass: null,
+      //     phone: null,
+      //     roleUser: null,
+      //   });
+      // } else if(){
+    } else {
+      if (rol === "ADMIN") {
+        let doc = await User.findByIdAndUpdate(
+          id_user,
+          {
+            nUser,
+            nameUser,
+            surnameUser,
+            phone,
+            roleUser,
+          },
+          { new: true }
+        );
+        // console.log("doc",doc)
+        res.json({
+          success: true,
+          message: "Usuario modificado correctamente",
+          nUser: nUser,
+          nameUser: nameUser,
+          surnameUser: surnameUser,
+          pass: null,
+          phone: phone,
+          roleUser: roleUser,
+        });
+      } else if (rol === "USER") {
+        let { pass } = req.body;
+        if (pass.length < 8) {
+          //comprobar si la contraseña es buena
+          res.json({
+            success: false,
+            message: "La contraseña es demasiado corta",
+            nUser: null,
+            nameUser: null,
+            surnameUser: null,
+            pass: null,
+            phone: null,
+            roleUser: null,
+          });
+        }
+        let doc = await User.findByIdAndUpdate(
+          id_user,
+          {
+            nameUser,
+            surnameUser,
+            phone,
+            password:pass,
+          },
+          { new: true }
+        );
 
+        res.json({
+          success: true,
+          message: "Usuario modificado correctamente",
+          nUser: nUser,
+          nameUser: nameUser,
+          surnameUser: surnameUser,
+          pass: pass,
+          phone: phone,
+          roleUser: roleUser,
+        });
+      }
+    }
+  }else{
     res.json({
-      message: "Usuario modificado",
-      up_info: doc,
+      success: false,
+      message: "El usuario ya existe",
+      nUser: null,
+      nameUser: null,
+      surnameUser: null,
+      pass: null,
+      phone: null,
+      roleUser: null,
     });
   }
 });
-
-
 
 //modificar TRABAJO (USER y ADMIN)
 router.put("/upwork/:idwork", async (req, res) => {

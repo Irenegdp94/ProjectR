@@ -11,6 +11,12 @@
   
 }
 
+.error{
+  color: red;
+  text-align: center;
+  
+}
+
 /* .App {
   text-align: center;
 }
