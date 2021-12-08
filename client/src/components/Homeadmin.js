@@ -5,13 +5,10 @@ import Box from "@mui/material/Box";
 import Alert from "@mui/material/Alert";
 import IconButton from "@mui/material/IconButton";
 import Collapse from "@mui/material/Collapse";
-import Button from "@mui/material/Button";
 import CloseIcon from "@mui/icons-material/Close";
 
-import Nav from "./Navbar";
-// import Nav from "../components/NavAdmin/Nav32"
-
-// import { useHistory } from "react-router-dom";
+// import Nav from "./Navbar";
+import Nav from "../components/NavAdmin/Nav32";
 import axios from "axios";
 import Loading from "../components/Loading";
 const Homeadmin = () => {
@@ -40,16 +37,12 @@ const Homeadmin = () => {
       {info_state.loading === true ? (
         <Loading />
       ) : (
+       
         <Nav roluser={info_state.rol} />
-        
-        
       )}
-
       <Box sx={{ width: "100%" }}>
         {window.localStorage.message != "" ? (
-          
           <Collapse in={open}>
-            
             <Alert
               action={
                 <IconButton

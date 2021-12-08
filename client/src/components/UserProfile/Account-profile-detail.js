@@ -12,16 +12,6 @@ import {
   TextField,
 } from "@mui/material";
 import Loading from "../Loading";
-const states = [
-  {
-    value: "USER",
-    label: "USER",
-  },
-  {
-    value: "ADMIN",
-    label: "ADMIN",
-  },
-];
 
 export const AccountProfileDetails = (props) => {
   let history = useHistory();
@@ -37,27 +27,66 @@ export const AccountProfileDetails = (props) => {
     phone: "",
     roleUser: "",
     loading: true,
+    states: [
+      {
+        value: "USER",
+        label: "USER",
+      },
+      {
+        value: "ADMIN",
+        label: "ADMIN",
+      },
+    ],
   });
- 
+
   const fresponse = async () => {
-    
     let response = await axios.get(
       `http://localhost:5000/api/admin/viewOneuser/${id_user}`,
       {
         headers: { token: token },
       }
     );
-
     let user_data = response.data.infoUser;
 
-    setValues({
-      nUser: user_data.nUser,
-      nameUser: user_data.nameUser,
-      surnameUser: user_data.surnameUser,
-      phone: user_data.phone,
-      roleUser: user_data.roleUser,
-      loading: false,
-    });
+    if (response.data.infoUser.roleUser === "ADMIN") {
+      setValues({
+        nUser: user_data.nUser,
+        nameUser: user_data.nameUser,
+        surnameUser: user_data.surnameUser,
+        phone: user_data.phone,
+        roleUser: user_data.roleUser,
+        loading: false,
+        states: [
+          {
+            value: "ADMIN",
+            label: "ADMIN",
+          },
+          {
+            value: "USER",
+            label: "USER",
+          },
+        ],
+      });
+    } else {
+      setValues({
+        nUser: user_data.nUser,
+        nameUser: user_data.nameUser,
+        surnameUser: user_data.surnameUser,
+        phone: user_data.phone,
+        roleUser: user_data.roleUser,
+        loading: false,
+        states: [
+          {
+            value: "USER",
+            label: "USER",
+          },
+          {
+            value: "ADMIN",
+            label: "ADMIN",
+          },
+        ],
+      });
+    }
   };
   useEffect(() => {
     fresponse();
@@ -75,7 +104,6 @@ export const AccountProfileDetails = (props) => {
     event.preventDefault();
 
     try {
-      console.log(token)
       let response_up = await axios.put(
         `http://localhost:5000/api/both/upuser/${id_user}`,
         values,
@@ -83,7 +111,8 @@ export const AccountProfileDetails = (props) => {
           headers: { token: token },
         }
       );
-      setMessage({message_info: response_up.data.message})
+
+      setMessage({ message_info: response_up.data.message });
       if (response_up.data.success === true) {
         window.localStorage.message = response_up.data.message;
         history.push("/viewusers");
@@ -100,13 +129,10 @@ export const AccountProfileDetails = (props) => {
       ) : (
         <form autoComplete="off" noValidate {...props}>
           <Card>
-            <CardHeader
-              // subheader="The information can be edited"
-              title="Información"
-            />
-            <Divider />
+            <CardHeader title="Información" />
+
             <CardContent>
-              <Grid container spacing={3}>
+              <Grid container spacing={2}>
                 <Grid item md={6} xs={12}>
                   <TextField
                     fullWidth
@@ -167,7 +193,7 @@ export const AccountProfileDetails = (props) => {
                     value={values.rolUser}
                     variant="outlined"
                   >
-                    {states.map((option) => (
+                    {values.states.map((option) => (
                       <option key={option.value} value={option.value}>
                         {option.label}
                       </option>
@@ -196,8 +222,6 @@ export const AccountProfileDetails = (props) => {
           </Card>
         </form>
       )}
-
-      
     </div>
   );
 };

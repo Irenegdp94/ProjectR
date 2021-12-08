@@ -24,13 +24,13 @@
   }
   
   /* Spinner 1 starts here */
-  .spinner1 {
+  /* .spinner1 {
     align-items: center;
     border: .1em solid transparent;
     border-top: .4em solid #7700ff;
     border-right: .4em solid #7700ff;
-    /* border-radius: 100%; */
-    /* display: flex; */
+    border-radius: 100%;
+    display: flex;
     justify-content: center;
     position: absolute;
     top: 33%;
@@ -61,11 +61,11 @@
     100% {
       transform: rotate(360deg)
     }
-  }
+  } */
   /* Spinner 1 ends here */
   
   /* Spinner 2 starts here */
-  /* .canvas2 {
+  .canvas2 {
     position: relative;
   }
   
@@ -105,7 +105,7 @@
     100% {
       transform: rotate(360deg)
     }
-  } */
+  }
   /* Spinner 2 ends here */
   
   /* Spinner 3 starts here */

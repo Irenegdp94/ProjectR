@@ -11,7 +11,7 @@ import Signup from './components/Signup';
 import Newcompany from './components/Newcompany';
 import Newfarm from './components/Newfarm';
 import Viewusers from './components/Viewusers'
-import Viewuser from './components/Account'
+import Viewuser from './components/UserProfile/Account'
 
 
 
