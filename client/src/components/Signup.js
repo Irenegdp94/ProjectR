@@ -1,6 +1,6 @@
 import { useState } from "react";
 import axios from "axios";
-import Nav from "./Navbar-basic";
+import Nav from "../components/Nav32-basic";
 import Form from "react-bootstrap/Form";
 import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";

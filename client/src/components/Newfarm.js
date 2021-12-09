@@ -5,7 +5,7 @@ import TextField from "@mui/material/TextField";
 import Autocomplete from "@mui/material/Autocomplete";
 import CircularProgress from "@mui/material/CircularProgress";
 import axios from "axios";
-import Nav from "./Navbar-basic";
+import Nav from "../components/Nav32-basic";
 import Box from "@mui/material/Box";
 import FormControl, { useFormControl } from "@mui/material/FormControl";
 import Stack from "@mui/material/Stack";

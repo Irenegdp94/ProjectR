@@ -4,14 +4,14 @@ import { AccountProfile } from "./Accoun-profile";
 import { AccountProfileDetails } from "./Account-profile-detail";
 // import { DashboardLayout } from '../components/account/Dashboard-layout';
 import { useParams } from "react-router";
-import { useState, useEffect } from "react";
-import Loading from "../Loading";
+import Nav from "../Nav32-basic"
 const Account = () => {
   let id_user = useParams().id;
   window.localStorage.message = "";
 
   return (
     <div>
+      <Nav/>
       <Box
         component="main"
         sx={{

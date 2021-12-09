@@ -3,5 +3,7 @@
     color: chartreuse !important; 
     border: solid 1px !important;
     border-color: #7fff00 !important;
+    font-size: small !important;
+    padding: 0px 30px 0px 25px !important;
     
   }

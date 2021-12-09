@@ -8,7 +8,7 @@ import Box from "@mui/material/Box";
 import Stack from "@mui/material/Stack";
 import Button from "@mui/material/Button";
 import FormControl, { useFormControl } from "@mui/material/FormControl";
-import Nav from "./Navbar-basic";
+import Nav from "../components/Nav32-basic";
 import axios from "axios";
 
 // function sleep(delay = 0) {

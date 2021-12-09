@@ -8,7 +8,7 @@ import Alert from '@mui/material/Alert';
 import Stack from '@mui/material/Stack';
 // import { Route } from "react-router-dom";
 // import { BrowserRouter } from "react-router-dom";
-import Nav from "./Navbar";
+import Nav from "../borrar/Navbar-basic";
 
 const Homeuser = () => {
   let token = localStorage.getItem("token");

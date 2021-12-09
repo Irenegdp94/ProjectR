@@ -7,6 +7,8 @@ import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
 import Tooltip from "@mui/material/Tooltip";
 import Button from "@mui/material/Button";
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import Divider from '@mui/material/Divider';
 export default function AccountMenu() {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
@@ -58,6 +60,17 @@ export default function AccountMenu() {
           <Button style={{ color: "#2E3B55" }} href="/">
             {<img src="../logout.png" height="15" />} Log Out
           </Button>
+        </MenuItem>
+        <Divider />
+        <MenuItem onClick={handleCloseNavMenu}>
+            <Button
+                style={{ color: "#2E3B55" }} 
+                size="small"
+                href="javascript: history.go(-1)"
+              >
+               <ArrowBackIcon />Back
+              </Button>
+              
         </MenuItem>
       </Menu>
     </Box>

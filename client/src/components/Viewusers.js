@@ -8,7 +8,7 @@ import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import Button from "@mui/material/Button";
 import axios from "axios";
-import Nav from "./Navbar-basic";
+import Nav from "./Nav32-basic";
 import { useState, useEffect } from "react";
 import Loading from "./Loading";
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
@@ -51,7 +51,7 @@ export default function DenseTable() {
           <h1>Usuarios</h1>
 
           <Box sx={{ width: "100%" }}>
-        {window.localStorage.message != "" ? (
+        {window.localStorage.message !== "" ? (
           <Collapse in={open}>
             <Alert
               action={

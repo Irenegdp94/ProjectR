@@ -46,15 +46,36 @@ const ResponsiveAppBar = () => {
   };
 
   // menu pc
-  const [anchorEl, setAnchorEl] = React.useState(null);
-  const openM = Boolean(anchorEl);
+  ///////ver:
+  const [anchorElView, setAnchorElView] = React.useState(null);
+  const openView = Boolean(anchorElView);
+  const handleOpenView = (event) => {
+    setAnchorElView(event.currentTarget);
+  };
+  const handleCloseView = () => {
+    setAnchorElView(null);
+  };
 
-  const handleClick = (event) => {
-    setAnchorEl(event.currentTarget);
+ ///////crear:
+  const [anchorElNew, setAnchorElNew] = React.useState(null);
+  const openNew = Boolean(anchorElNew);
+  const handleOpenNew = (event) => {
+    setAnchorElNew(event.currentTarget);
   };
-  const handleClose = () => {
-    setAnchorEl(null);
+  const handleCloseNew = () => {
+    setAnchorElNew(null);
   };
+
+
+   ///////buscar por:
+   const [anchorElSearch, setAnchorElSearch] = React.useState(null);
+   const openSearch = Boolean(anchorElSearch);
+   const handleOpenSearch = (event) => {
+     setAnchorElSearch(event.currentTarget);
+   };
+   const handleCloseSearch = () => {
+     setAnchorElSearch(null);
+   };
 
   return (
     <Box>
@@ -83,7 +104,7 @@ const ResponsiveAppBar = () => {
                 {/* <MenuIcon /> */}
               </IconButton>
 
-              <Menu
+              {/* <Menu
                 id="menu-appbar"
                 anchorEl={anchorElNav}
                 anchorOrigin={{
@@ -100,7 +121,7 @@ const ResponsiveAppBar = () => {
                 sx={{
                   display: { xs: "block", md: "none" },
                 }}
-              ></Menu>
+              ></Menu> */}
             </Box>
 
             <Box
@@ -117,17 +138,17 @@ const ResponsiveAppBar = () => {
                   id="basic-button"
                   aria-controls="basic-menu"
                   aria-haspopup="true"
-                  aria-expanded={openM ? "true" : undefined}
-                  onMouseEnter={handleClick}
-                  onClick={handleClose}
+                  aria-expanded={openView ? "true" : undefined}
+                  onMouseEnter={handleOpenView}
+                  onClick={handleCloseView}
                 >
                   Ver
                 </ListItemText>
                 <Menu
                   id="basic-menu"
-                  anchorEl={anchorEl}
-                  open={openM}
-                  onClose={handleClose}
+                  anchorEl={anchorElView}
+                  open={openView}
+                  onClose={handleCloseView}
                   MenuListProps={{
                     "aria-labelledby": "basic-button",
                   }}
@@ -157,45 +178,47 @@ const ResponsiveAppBar = () => {
               </div>
 
               <div>
-                <ListItemText
+              <ListItemText
                   sx={{ pr: 8 }}
                   id="basic-button"
                   aria-controls="basic-menu"
                   aria-haspopup="true"
-                  aria-expanded={openM ? "true" : undefined}
-                  onMouseEnter={handleClick}
+                  aria-expanded={openNew ? "true" : undefined}
+                  onMouseEnter={handleOpenNew}
+                  onClose={handleCloseNew}
                 >
                   Crear
                 </ListItemText>
-                <Menu
+
+                  <Menu
                   id="basic-menu"
-                  anchorEl={anchorEl}
-                  open={openM}
-                  onClose={handleClose}
+                  anchorEl={anchorElNew}
+                  open={openNew}
+                  onClose={handleCloseNew}
                   MenuListProps={{
                     "aria-labelledby": "basic-button",
                   }}
                 >
-                  <ListItemButton component="a" href="/viewusers">
-                    Usuarios
+                  <ListItemButton component="a" href="/signup">
+                    Usuario
                   </ListItemButton>
-                  <ListItemButton component="a" href="/viewcompanies">
-                    Empresas
+                  <ListItemButton component="a" href="/newcompany">
+                    Empresa
                   </ListItemButton>
-                  <ListItemButton component="a" href="/viewfarms">
-                    Fincas
+                  <ListItemButton component="a" href="/newfarm">
+                    Finca
                   </ListItemButton>
-                  <ListItemButton component="a" href="/viewmachines">
+                  <ListItemButton component="a" href="/">
                     Maquinaria
                   </ListItemButton>
-                  <ListItemButton component="a" href="/viewtanks">
-                    Depósitos
+                  <ListItemButton component="a" href="/">
+                    Depósito
                   </ListItemButton>
-                  <ListItemButton component="a" href="/viewtask">
-                    Tareas
+                  <ListItemButton component="a" href="/">
+                    Tarea
                   </ListItemButton>
-                  <ListItemButton component="a" href="/viewproducts">
-                    Productos
+                  <ListItemButton component="a" href="/">
+                    Producto
                   </ListItemButton>
                 </Menu>
               </div>
@@ -206,53 +229,56 @@ const ResponsiveAppBar = () => {
                   id="basic-button"
                   aria-controls="basic-menu"
                   aria-haspopup="true"
-                  aria-expanded={openM ? "true" : undefined}
-                  onMouseEnter={handleClick}
+                  aria-expanded={openSearch ? "true" : undefined}
+                  onMouseEnter={handleOpenSearch}
                 >
                   Buscar por
                 </ListItemText>
                 <Menu
                   id="basic-menu"
-                  anchorEl={anchorEl}
-                  open={openM}
-                  onClose={handleClose}
+                  anchorEl={anchorElSearch}
+                  open={openSearch}
+                  onClose={handleCloseSearch}
                   MenuListProps={{
                     "aria-labelledby": "basic-button",
                   }}
                 >
-                  <ListItemButton component="a" href="/viewusers">
-                    Usuarios
+                  <ListItemButton component="a" href="/">
+                    Usuario
                   </ListItemButton>
-                  <ListItemButton component="a" href="/viewcompanies">
-                    Empresas
+                  <ListItemButton component="a" href="/">
+                    Empresa
                   </ListItemButton>
-                  <ListItemButton component="a" href="/viewfarms">
-                    Fincas
+                  <ListItemButton component="a" href="/">
+                    Finca
                   </ListItemButton>
-                  <ListItemButton component="a" href="/viewmachines">
+                  <ListItemButton component="a" href="/">
                     Maquinaria
                   </ListItemButton>
-                  <ListItemButton component="a" href="/viewtanks">
-                    Depósitos
+                  <ListItemButton component="a" href="/">
+                    Depósito
                   </ListItemButton>
-                  <ListItemButton component="a" href="/viewtask">
-                    Tareas
+                  <ListItemButton component="a" href="/">
+                    Tarea
                   </ListItemButton>
-                  <ListItemButton component="a" href="/viewproducts">
-                    Productos
+                  <ListItemButton component="a" href="/">
+                    Producto
                   </ListItemButton>
                 </Menu>
-              </div>
-              
-              
-                <Button className="boton-verde" sx={{ml:'60%'}}  component="a" href="/" >
-                  Nuevo trabajo
-                </Button>
-                
+
+</div>
+
+              <Button
+                className="boton-verde"
+                sx={{ ml: "60%" }}
+                component="a"
+                href="/"
+              >
+                Nuevo trabajo
+              </Button>
             </Box>
 
             {/* icono usuario: */}
-
             <AccountMenu />
           </Toolbar>
         </Container>
@@ -285,7 +311,6 @@ const ResponsiveAppBar = () => {
         <ListSubheader component="div" id="nested-list-subheader">
           Menu
         </ListSubheader>
-
         <Divider />
         <NestedList />
       </Drawer>
