@@ -208,10 +208,10 @@ const ResponsiveAppBar = () => {
                   <ListItemButton component="a" href="/newfarm">
                     Finca
                   </ListItemButton>
-                  <ListItemButton component="a" href="/">
+                  <ListItemButton component="a" href="/newmachine">
                     Maquinaria
                   </ListItemButton>
-                  <ListItemButton component="a" href="/">
+                  <ListItemButton component="a" href="/newtank">
                     Depósito
                   </ListItemButton>
                   <ListItemButton component="a" href="/">
@@ -223,16 +223,16 @@ const ResponsiveAppBar = () => {
                 </Menu>
               </div>
 
-              <div>
+              {/* <div>
                 <ListItemText
-                  sx={{ pr: 8 }}
+                  sx={{ pr: 7 }}
                   id="basic-button"
                   aria-controls="basic-menu"
                   aria-haspopup="true"
                   aria-expanded={openSearch ? "true" : undefined}
                   onMouseEnter={handleOpenSearch}
                 >
-                  Buscar por
+                  Buscar trabajo por
                 </ListItemText>
                 <Menu
                   id="basic-menu"
@@ -266,11 +266,19 @@ const ResponsiveAppBar = () => {
                   </ListItemButton>
                 </Menu>
 
-</div>
-
+</div> */}
               <Button
                 className="boton-verde"
-                sx={{ ml: "60%" }}
+                // sx={{ ml: "60%" }}
+                component="a"
+                href="/searchfor"
+              >
+                Buscar trabajo por
+              </Button>
+              <Box sx={{width:20}}/>
+              <Button
+                className="boton-verde"
+                // sx={{ ml: "60%" }}
                 component="a"
                 href="/"
               >

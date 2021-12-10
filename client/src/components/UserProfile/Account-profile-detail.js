@@ -11,6 +11,8 @@ import {
   Grid,
   TextField,
 } from "@mui/material";
+import BinIcon from "@mui/icons-material/DeleteOutlineRounded";
+import { red } from '@mui/material/colors';
 import Loading from "../Loading";
 
 export const AccountProfileDetails = (props) => {
@@ -122,6 +124,27 @@ export const AccountProfileDetails = (props) => {
     }
   };
 
+  const handle_erasing = async () => {
+    try {
+      let response_del = await axios.put(
+        `http://localhost:5000/api/admin/deleteuser/${id_user}`,
+        values,
+        {
+          headers: { token: token },
+        }
+      );
+
+      setMessage({ message_info: response_del.data.message });
+      console.log(message_info)
+      console.log(response_del)
+      if (response_del.data.success === true) {
+        window.localStorage.message = response_del.data.message;
+        history.push("/viewusers");
+      }
+    } catch (error) {
+      setMessage({ message_info: "Error conexion bbdd" });
+    }
+  }
   return (
     <div>
       {values.loading === true ? (
@@ -210,7 +233,15 @@ export const AccountProfileDetails = (props) => {
                 p: 2,
               }}
             >
-              <p className="error">{message_info.message_info}</p>
+              <Button
+                color="primary"
+                variant="text"
+                onClick={handle_erasing}
+              >
+                <BinIcon sx={{ fontSize: 30, color: red[700] }} />
+              </Button>
+              
+
               <Button
                 color="primary"
                 variant="contained"
@@ -220,6 +251,8 @@ export const AccountProfileDetails = (props) => {
               </Button>
             </Box>
           </Card>
+          <Box sx={{height: 20}}/>
+          <p className="error">{message_info.message_info}</p>
         </form>
       )}
     </div>

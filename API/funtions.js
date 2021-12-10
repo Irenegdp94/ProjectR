@@ -18,6 +18,7 @@ async function newseason(name, new_season, res) {
     find = await Season.findOne({ name });
   } catch (error) {
     return res.status(500).json({
+      success: false,
       message: "Error de conexión bbdd:season",
     });
   }
@@ -26,14 +27,17 @@ async function newseason(name, new_season, res) {
       doc = await Season.create(new_season);
     } catch (error) {
       return res.status(500).json({
+        success: false,
         message: "Error del servidor bbdd:season",
       });
     }
     return res.json({
+      success: true,
       message: "Nueva temporada creada correctamente",
     });
   } else {
     return res.json({
+      success: false,
       message: "La temporada ya existe",
     });
   }
@@ -70,6 +74,7 @@ const deleteOneX = async (ModelX, idX, res) => {
     info_X = await ModelX.findByIdAndUpdate(idX, { deleted: true });
   } catch (error) {
     return res.status(500).json({
+      success: false,
       message: "Error de conexión",
     });
   }

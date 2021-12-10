@@ -209,43 +209,53 @@ router.post("/newfarm", async (req, res) => {
 
 //Ruta para crear maquinaria
 router.post("/newmachinery", async (req, res) => {
+  
   let rol = req.body.info.rol;
+  
   if (rol === "ADMIN") {
     let find_machinery, doc;
-    let { nameMac, nREF, datePurchase, pricePur, priceH } = req.body;
+    let { nameMachinery, nREF, datePurchase, pricePurchase, priceH } = req.body;
+    
     try {
-      find_machinery = await Machine.findOne({ nameMachinery: nameMac });
+      find_machinery = await Machine.findOne({ nameMachinery});
+      
     } catch (error) {
       return res.status(500).json({
         message: "Error de conexión",
       });
     }
     if (!find_machinery) {
+      
       let new_machinery = {
-        nameMachinery: nameMac,
+        nameMachinery,
         nREF,
         datePurchase,
-        pricePurchase: pricePur,
+        pricePurchase,
         priceH,
       };
 
       try {
-        doc = await Machine.create(new_machinery);
+        
+        await Machine.create(new_machinery);
         return res.json({
+          success: true,
           message: "Nueva maquinaria creada correctamente",
         });
       } catch (error) {
-        return res.status(500).json({
-          message: "Error del servidor bbdd:machine",
+        return res.json({
+          success: false,
+          message: "Error al crear. Intentelo de nuevo",
         });
       }
     } else {
       return res.json({
+        success: false,
         message: "La maquinaria ya existe",
       });
     }
   } else {
     return res.json({
+      success: false,
       message: "Error de rol",
     });
   }
@@ -261,6 +271,7 @@ router.post("/newtank", async (req, res) => {
       find_tank = await Tank.findOne({ nameTank });
     } catch (error) {
       return res.status(500).json({
+        success: false,
         message: "Error de conexión bbdd:tank",
       });
     }
@@ -269,20 +280,24 @@ router.post("/newtank", async (req, res) => {
       try {
         doc = await Tank.create(new_tank);
         return res.json({
+          success: true,
           message: "Nuevo depósito creado correctamente",
         });
       } catch (error) {
         return res.status(500).json({
+          success: false,
           message: "Error del servidor bbdd:tank",
         });
       }
     } else {
       return res.json({
+        success: false,
         message: "El depósito ya existe",
       });
     }
   } else {
     return res.json({
+      success: false,
       message: "Error de rol",
     });
   }
@@ -1340,10 +1355,12 @@ router.put("/deleteuser/:idX", async (req, res) => {
   if (rol === "ADMIN") {
     functions.deleteOneX(User, id_X, res);
     res.json({
+      success: true,
       message: "Elemento eliminado",
     });
   } else {
     res.json({
+      success: false,
       message: "Error de rol",
     });
   }

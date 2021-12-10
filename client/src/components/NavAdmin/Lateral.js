@@ -73,38 +73,38 @@ export default function NestedList() {
       </ListItemButton>
       <Collapse in={openCreate} timeout="auto" unmountOnExit>
         <List component="div" disablePadding>
-          <ListItemButton component="a" href="/viewusers">
-            <ListItemText sx={{ pl: 4 }}>Usuarios</ListItemText>
+          <ListItemButton component="a" href="/signup">
+            <ListItemText sx={{ pl: 4 }}>Usuario</ListItemText>
           </ListItemButton>
 
-          <ListItemButton component="a" href="/viewcompanies">
-            <ListItemText sx={{ pl: 4 }}>Empresas</ListItemText>
+          <ListItemButton component="a" href="/newcompany">
+            <ListItemText sx={{ pl: 4 }}>Empresa</ListItemText>
           </ListItemButton>
 
-          <ListItemButton component="a" href="/viewfarms">
-            <ListItemText sx={{ pl: 4 }}>Fincas</ListItemText>
+          <ListItemButton component="a" href="/newfarm">
+            <ListItemText sx={{ pl: 4 }}>Finca</ListItemText>
           </ListItemButton>
 
-          <ListItemButton component="a" href="/viewmachines">
+          <ListItemButton component="a" href="/newmachine">
             <ListItemText sx={{ pl: 4 }}>Maquinaria</ListItemText>
           </ListItemButton>
 
-          <ListItemButton component="a" href="/viewtanks">
-            <ListItemText sx={{ pl: 4 }}>Dépositos</ListItemText>
+          <ListItemButton component="a" href="/newtank">
+            <ListItemText sx={{ pl: 4 }}>Déposito</ListItemText>
           </ListItemButton>
 
-          <ListItemButton component="a" href="/viewtask">
-            <ListItemText sx={{ pl: 4 }}>Tareas</ListItemText>
+          <ListItemButton component="a" href="/">
+            <ListItemText sx={{ pl: 4 }}>Tarea</ListItemText>
           </ListItemButton>
 
-          <ListItemButton component="a" href="/viewtanks">
-            <ListItemText sx={{ pl: 4 }}>Productos</ListItemText>
+          <ListItemButton component="a" href="/">
+            <ListItemText sx={{ pl: 4 }}>Producto</ListItemText>
           </ListItemButton>
         </List>
       </Collapse>
 
       <ListItemButton onClick={handleClickSearch}>
-        <ListItemText primary="Buscar por" />
+        <ListItemText primary="Buscar trabajo por" />
         {openSearch ? <ExpandLess /> : <ExpandMore />}
       </ListItemButton>
       <Collapse in={openSearch} timeout="auto" unmountOnExit>

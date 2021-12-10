@@ -12,6 +12,9 @@ import Newcompany from './components/Newcompany';
 import Newfarm from './components/Newfarm';
 import Viewusers from './components/Viewusers'
 import Viewuser from './components/UserProfile/Account'
+import Newmachine from "./components/Newmachine"
+import Newtank from "./components/Newtank"
+import Searchfor from "./components/SearchFor"
 
 
 
@@ -28,6 +31,9 @@ function App() {
         <PrivateRoute exact path="/newfarm" render={()=>{return <Newfarm/>}}/>
         <PrivateRoute exact path="/viewusers" render={()=>{return <Viewusers/>}}/>
         <PrivateRoute exact path="/viewuser/:id" render={()=>{return <Viewuser/>}}/>
+        <PrivateRoute exact path="/newmachine" render={()=>{return <Newmachine/>}}/>
+        <PrivateRoute exact path="/newtank" render={()=>{return <Newtank/>}}/>
+        <PrivateRoute exact path="/searchfor" render={()=>{return <Searchfor/>}}/>
       </Switch>
     </div>
   );
