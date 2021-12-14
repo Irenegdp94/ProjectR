@@ -4,7 +4,9 @@ import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import Collapse from "@mui/material/Collapse";
-import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
+import AddOutlinedIcon from '@mui/icons-material/AddOutlined';
+import SearchIcon from '@mui/icons-material/Search';
+import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined';
 import ExpandLess from "@mui/icons-material/ExpandLess";
 import ExpandMore from "@mui/icons-material/ExpandMore";
 
@@ -32,6 +34,9 @@ export default function NestedList() {
       aria-labelledby="nested-list-subheader"
     >
       <ListItemButton onClick={handleClickView}>
+      <ListItemIcon>
+          <VisibilityOutlinedIcon />
+        </ListItemIcon>
         <ListItemText primary="Ver" />
         {openView ? <ExpandLess /> : <ExpandMore />}
       </ListItemButton>
@@ -61,13 +66,16 @@ export default function NestedList() {
             <ListItemText sx={{ pl: 4 }}>Tareas</ListItemText>
           </ListItemButton>
 
-          <ListItemButton component="a" href="/viewtanks">
+          <ListItemButton component="a" href="/viewproducts">
             <ListItemText sx={{ pl: 4 }}>Productos</ListItemText>
           </ListItemButton>
         </List>
       </Collapse>
 
       <ListItemButton onClick={handleClickCreate}>
+      <ListItemIcon>
+          <AddOutlinedIcon />
+        </ListItemIcon>
         <ListItemText primary="Crear" />
         {openCreate ? <ExpandLess /> : <ExpandMore />}
       </ListItemButton>
@@ -93,17 +101,17 @@ export default function NestedList() {
             <ListItemText sx={{ pl: 4 }}>Déposito</ListItemText>
           </ListItemButton>
 
-          <ListItemButton component="a" href="/">
+          <ListItemButton component="a" href="/newtask">
             <ListItemText sx={{ pl: 4 }}>Tarea</ListItemText>
           </ListItemButton>
 
-          <ListItemButton component="a" href="/">
+          <ListItemButton component="a" href="/newproduct">
             <ListItemText sx={{ pl: 4 }}>Producto</ListItemText>
           </ListItemButton>
         </List>
       </Collapse>
 
-      <ListItemButton onClick={handleClickSearch}>
+      {/* <ListItemButton onClick={handleClickSearch}>
         <ListItemText primary="Buscar trabajo por" />
         {openSearch ? <ExpandLess /> : <ExpandMore />}
       </ListItemButton>
@@ -137,11 +145,18 @@ export default function NestedList() {
             <ListItemText sx={{ pl: 4 }}>Productos</ListItemText>
           </ListItemButton>
         </List>
-      </Collapse>
+      </Collapse> */}
 
-      <ListItemButton component="a" href="/">
+<ListItemButton component="a" href="/searchfor">
         <ListItemIcon>
-          <AddCircleOutlineIcon />
+          <SearchIcon />
+        </ListItemIcon>
+        <ListItemText primary="Buscar trabajo" />
+      </ListItemButton>
+
+      <ListItemButton component="a" href="/nework">
+        <ListItemIcon>
+          <AddOutlinedIcon />
         </ListItemIcon>
         <ListItemText primary="Nuevo trabajo" />
       </ListItemButton>

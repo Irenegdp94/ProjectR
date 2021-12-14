@@ -1,8 +1,6 @@
+// https://mui.com/components/tables/#main-content
+
 import * as React from "react";
-import axios from "axios";
-import { useState, useEffect } from "react";
-import Nav from "./Nav32-basic";
-// import Resultsearch from "./Resultsearch";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
@@ -11,87 +9,75 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import Button from "@mui/material/Button";
+import axios from "axios";
+import Nav from "../Nav32-basic";
+import { useState, useEffect } from "react";
+import Loading from "../Loading";
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
+import Alert from "@mui/material/Alert";
+import IconButton from "@mui/material/IconButton";
+import Collapse from "@mui/material/Collapse";
+import CloseIcon from "@mui/icons-material/Close";
+import Box from "@mui/material/Box";
 
-const Searchfor = () => {
-  const [criteria, setCriteria] = React.useState({
-    type_search: "",
-    nom: "",
-  });
-//   const [submit, setSubmit] = React.useState({submit:false})
-let [info, setInfo] = useState({ data: [], loading: true });
-const [message_info, setMessage] = useState({
-    message_info: "",
-  });
+export default function DenseTable() {
+  let [info, setInfo] = useState({ data: [], loading: true });
+  let [open, setOpen] = useState(true);
 
-  
-  const handle_change = (event) => {
-    setCriteria({ ...criteria, [event.target.id]: event.target.value });
+  const fresponse = async () => {
+    let token = localStorage.getItem("token");
+    let response = await axios.get("http://localhost:5000/api/user/userworks", {
+      headers: { token: token },
+    });
+
+    let datas = response.data.infoWorkUser;
+    console.log(datas);
+    setInfo({ data: datas, loading: false });
   };
-
-  const handle_submit = async (event) => {
-    event.preventDefault();
-    console.log("boton");
-    // setSubmit({submit:true})
-console.log(criteria)
-    try {
-        let token = localStorage.getItem("token");
-
-        let response = await axios.post(
-          "http://localhost:5000/api/admin/searchfor",
-          criteria,
-          {
-            headers: { token: token },
-          }
-        );
-        let datas = response.data.info
-        setInfo({ data: datas, loading: false });
-        setMessage({ message_info: response.data.message });
-        // console.log("response", response.data.info)
-        // console.log("info", info)
-        console.log(datas)
-      } catch (error) {
-        window.localStorage.message = "Error del servidor";
-      }
-
-  };
+  useEffect(() => {
+    fresponse();
+  }, []);
 
   return (
-    //   <h1>principal</h1>
     <div>
-       {/* {console.log(submit, criteria)} */}
-      <Nav />
-      <h1>Buscar trabajo por</h1>
-      <form onSubmit={handle_submit}>
-        <select id="type_search" onChange={handle_change}>
-          <option selected="true" disabled="disabled">
-            Seleccione criterio de busqueda
-          </option>
-          <option name="trabajador" value="trabajador">
-            Trabajador
-          </option>
-          <option name="empresa" value="empresa">
-            Empresa
-          </option>
-          <option value="finca">Finca</option>
-          <option value="maquinaria">Maquinaria</option>
-          <option value="deposito">Depósito</option>
-          <option value="tarea">Tarea</option>
-          <option value="producto">Producto</option>
-          <option value="campaña">Campaña</option>
-        </select>
-
-        <input id="nom" onChange={handle_change}></input>
-        <button>Buscar</button>
-      </form>
-      <h1>Tabla</h1>
-      {/* {submit.submit === false ? (
-        <p>hola</p>
+      {info.loading === true ? (
+        <div>
+          <Nav />
+          <Loading />
+        </div>
       ) : (
-        <Resultsearch info_search={criteria} />
-      )} */}
+        <div>
+          <Nav />
+          <h1>Trabajos</h1>
 
-<TableContainer component={Paper}>
+          <Box sx={{ width: "100%" }}>
+            {window.localStorage.message !== "" ? (
+              <Collapse in={open}>
+                <Alert
+                  action={
+                    <IconButton
+                      aria-label="close"
+                      color="inherit"
+                      size="small"
+                      onClick={() => {
+                        setOpen(false);
+                        window.localStorage.message = "";
+                      }}
+                    >
+                      <CloseIcon fontSize="inherit" />
+                    </IconButton>
+                  }
+                  sx={{ mb: 2 }}
+                >
+                  {window.localStorage.message}
+                </Alert>
+              </Collapse>
+            ) : (
+              (window.localStorage.message = "")
+            )}
+          </Box>
+
+          <TableContainer component={Paper}>
             <Table
               sx={{ minWidth: 650 }}
               size="small"
@@ -115,9 +101,7 @@ console.log(criteria)
                 </TableRow>
               </TableHead>
               <TableBody>
-              
-              {info.data.map((work) => {
-                console.log(work)
+                {info.data.map((work) => {
                   let dateINI = new Date(work.dateINI);
                   let fecha = new Intl.DateTimeFormat("es", {
                     day: "2-digit",
@@ -149,7 +133,9 @@ console.log(criteria)
                       </TableCell>
                       <TableCell align="right">
                         {work.company.map((empresa) => {
-                        
+                          {
+                            console.log(empresa);
+                          }
                           return (
                             <TableRow align="right">
                               {empresa.nameCompany}
@@ -159,7 +145,9 @@ console.log(criteria)
                       </TableCell>
                       <TableCell align="right">
                         {work.farm.map((finca) => {
-                      
+                          {
+                            console.log(finca);
+                          }
                           return (
                             <TableRow align="right">{finca.nameFarm}</TableRow>
                           );
@@ -177,7 +165,9 @@ console.log(criteria)
                       <TableCell align="right">{work.litres_tank}</TableCell>
                       <TableCell align="right">
                         {work.products.map((producto) => {
-                     
+                          {
+                            console.log(producto);
+                          }
                           return (
                             <TableRow align="right">
                               <TableCell align="right">
@@ -196,9 +186,8 @@ console.log(criteria)
               </TableBody>
             </Table>
           </TableContainer>
-      
+        </div>
+      )}
     </div>
   );
-};
-
-export default Searchfor;
+}

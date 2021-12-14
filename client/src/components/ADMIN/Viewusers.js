@@ -1,4 +1,7 @@
 import * as React from "react";
+import axios from "axios";
+import { useState, useEffect } from "react";
+
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
@@ -7,16 +10,17 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import Button from "@mui/material/Button";
-import axios from "axios";
-import Nav from "./Nav32-basic";
-import { useState, useEffect } from "react";
-import Loading from "./Loading";
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 import Alert from "@mui/material/Alert";
 import IconButton from "@mui/material/IconButton";
 import Collapse from "@mui/material/Collapse";
 import CloseIcon from "@mui/icons-material/Close";
 import Box from "@mui/material/Box";
+
+import Nav from "../Nav32-basic";
+import Loading from "../Loading";
+
+
 
 export default function DenseTable() {
   let [info, setInfo] = useState({ data: [], loading: true });
@@ -42,7 +46,7 @@ export default function DenseTable() {
     <div>
       {info.loading === true ? (
         <div>
-          <Nav />
+          <Nav/>
           <Loading />
         </div>
       ) : (

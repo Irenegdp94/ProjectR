@@ -6,9 +6,9 @@ import axios from "axios";
 import React from "react";
 import Alert from '@mui/material/Alert';
 import Stack from '@mui/material/Stack';
-// import { Route } from "react-router-dom";
-// import { BrowserRouter } from "react-router-dom";
-import Nav from "../borrar/Navbar-basic";
+
+import Nav from "./NavUser/Nav32User";
+import Loading from "./Loading"
 
 const Homeuser = () => {
   let token = localStorage.getItem("token");
@@ -31,9 +31,9 @@ const Homeuser = () => {
     
     <div className="main-container flex-center title-container">
       {info_state.loading === true ? (
-        <h1>Loading</h1>
+        <Loading/>
       ) : (
-        <Nav roluser={info_state.rol} />
+        <Nav roluser={info_state.rol}></Nav>
       )}
 
 </div>

@@ -308,33 +308,38 @@ router.post("/newtask", async (req, res) => {
   let rol = req.body.info.rol;
   if (rol === "ADMIN") {
     let find_task;
-    let { nomTask, cat } = req.body;
+    let { nameTask, category } = req.body;
     try {
-      find_task = await Task.findOne({ nameTask: nomTask });
+      find_task = await Task.findOne({ nameTask });
     } catch (error) {
       return res.status(500).json({
+        success: false,
         message: "Error del servidor bbdd:Task",
       });
     }
     if (!find_task) {
       try {
         let doc;
-        doc = await Task.create({ nameTask: nomTask, category: cat });
+        doc = await Task.create({ nameTask, category });
         return res.json({
+          success: true,
           message: "Nueva tarea creada correctamente",
         });
       } catch (error) {
         return res.status(500).json({
+          success: false,
           message: "Error del servidor bbdd:Task",
         });
       }
     } else {
       return res.json({
+        success: false,
         message: "La tarea ya existe",
       });
     }
   } else {
     return res.json({
+      success: false,
       message: "Error de rol",
     });
   }
@@ -349,7 +354,8 @@ router.post("/newproduct", async (req, res) => {
     try {
       find_product = await Product.findOne({ nameProduct: nameProduct });
     } catch (error) {
-      return res.status(500).json({
+      return res.json({
+        success: false,
         message: "Error del servidor bbdd:product",
       });
     }
@@ -358,20 +364,24 @@ router.post("/newproduct", async (req, res) => {
         let doc;
         doc = await Product.create({ nameProduct, nREF, pricePurchase });
         return res.json({
+          success: true,
           message: "Nuevo producto creado correctamente",
         });
       } catch (error) {
-        return res.status(500).json({
+        return res.json({
+          success: false,
           message: "Error del servidor bbdd:product",
         });
       }
     } else {
       return res.json({
+        success: false,
         message: "el producto ya existe",
       });
     }
   } else {
     return res.json({
+      success: false,
       message: "Error de rol",
     });
   }
@@ -985,7 +995,7 @@ router.post("/searchfor", async (req, res) => {
 
       try {
         info_ = await Work.find({ worker: id_user })
-          .populate("worker", "nUser")
+          .populate("worker", "nameUser")
           .populate("company", "nameCompany")
           .populate("farm", "nameFarm")
           .populate("task", "nameTask")
@@ -1016,7 +1026,7 @@ router.post("/searchfor", async (req, res) => {
       let id_company = info_company._id;
       try {
         info_ = await Work.find({ company: id_company })
-          .populate("worker", "nUser")
+          .populate("worker", "nameUser")
           .populate("company", "nameCompany")
           .populate("farm", "nameFarm")
           .populate("task", "nameTask")
@@ -1047,7 +1057,7 @@ router.post("/searchfor", async (req, res) => {
 
       try {
         info_ = await Work.find({ farm: id_farm })
-          .populate("worker", "nUser")
+          .populate("worker", "nameUser")
           .populate("company", "nameCompany")
           .populate("farm", "nameFarm")
           .populate("task", "nameTask")
@@ -1077,7 +1087,7 @@ router.post("/searchfor", async (req, res) => {
 
       try {
         info_ = await Work.find({ machinery: id_machine })
-          .populate("worker", "nUser")
+          .populate("worker", "nameUser")
           .populate("company", "nameCompany")
           .populate("farm", "nameFarm")
           .populate("task", "nameTask")
@@ -1106,7 +1116,7 @@ router.post("/searchfor", async (req, res) => {
 
       try {
         info_ = await Work.find({ tank: id_tank })
-          .populate("worker", "nUser")
+          .populate("worker", "nameUser")
           .populate("company", "nameCompany")
           .populate("farm", "nameFarm")
           .populate("task", "nameTask")
@@ -1136,7 +1146,7 @@ router.post("/searchfor", async (req, res) => {
 
       try {
         info_ = await Work.find({ task: id_Task })
-          .populate("worker", "nUser")
+          .populate("worker", "nameUser")
           .populate("company", "nameCompany")
           .populate("farm", "nameFarm")
           .populate("task", "nameTask")
@@ -1166,7 +1176,7 @@ router.post("/searchfor", async (req, res) => {
 
       // try {
       //   info_ = await Work.find({ task: id_Task })
-      //   .populate("worker", "nUser")
+      //   .populate("worker", "nameUser")
       //   .populate("company", "nameCompany")
       //   .populate("farm", "nameFarm")
       //   .populate("task", "nameTask")

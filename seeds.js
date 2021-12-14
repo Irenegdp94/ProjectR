@@ -58,7 +58,7 @@ let users = [
     password: hashes[2], //gato
     phone: 924587459,
     roleUser: "USER",
-    works: ["100061f9c934fb0418e42e01"],
+    works: ["100061f9c934fb0418e42e01","100061f9c934fb0418e42e08","100061f9c934fb0418e42e07","100061f9c934fb0418e42e06"],
     deleted:false,
   },
   {
@@ -98,7 +98,7 @@ let farms = [
     cultivo: "Olivo",
     season: "799261f9c934fb0418e42e11",
     company: ["799261f9c934fb0418e42ee2"],
-    works: ["100061f9c934fb0418e42e01"],
+    works: ["100061f9c934fb0418e42e01","100061f9c934fb0418e42e08","100061f9c934fb0418e42e06","100061f9c934fb0418e42e07"],
     deleted:false,
   },
 
@@ -108,7 +108,7 @@ let farms = [
     area: 12.05,
     cultivo: "Esparrago",
     season: "799261f9c934fb0418e42e11",
-    company: ["799261f9c934fb0418e42ee1"],
+    company: ["799261f9c934fb0418e42ee1","100061f9c934fb0418e42e08"],
     works: [],
     deleted:false,
   },
@@ -132,7 +132,7 @@ let machineries = [
     datePurchase: new Date("2020-12-31T00:00:00Z"),
     pricePurchase: 5400,
     priceH: 5.4,
-    works: ["100061f9c934fb0418e42e01"],
+    works: ["100061f9c934fb0418e42e01","100061f9c934fb0418e42e08","100061f9c934fb0418e42e06","100061f9c934fb0418e42e07"],
     deleted:false,
   },
   {
@@ -142,7 +142,7 @@ let machineries = [
     datePurchase: new Date("2019-09-25T00:00:00Z"),
     pricePurchase: 2400,
     priceH: 1.1,
-    works: ["100061f9c934fb0418e42e01"],
+    works: ["100061f9c934fb0418e42e01","100061f9c934fb0418e42e08","100061f9c934fb0418e42e06"],
     deleted:false,
   },
   {
@@ -163,7 +163,7 @@ let tanks = [
     nameTank: "Bioseca tractores",
     capacity: 2000,
     currentLitres: 2000,
-    works: ["100061f9c934fb0418e42e01"],
+    works: ["100061f9c934fb0418e42e01","100061f9c934fb0418e42e08","100061f9c934fb0418e42e06","100061f9c934fb0418e42e07"],
     deleted:false,
   },
   {
@@ -200,14 +200,14 @@ let tasks = [
     _id: "799261f9c934fb0418e42e13",
     nameTask: "Herbicida",
     category: "Tratamiento fitosanitario",
-    works: ["100061f9c934fb0418e42e01"],
+    works: ["100061f9c934fb0418e42e01","100061f9c934fb0418e42e07"],
     deleted:false,
   },
   {
     _id: "799261f9c934fb0418e42e14",
     nameTask: "Sulfato",
     category: "Tratamiento fitosanitario",
-    works: [],
+    works: ["100061f9c934fb0418e42e08","100061f9c934fb0418e42e06"],
     deleted:false,
   },
 
@@ -226,7 +226,7 @@ let products = [
     nameProduct: "BUFFER",
     nREF: "BU2547631",
     pricePurchase: 126.45,
-    works: ["100061f9c934fb0418e42e01","100061f9c934fb0418e42e02"],
+    works: ["100061f9c934fb0418e42e01","100061f9c934fb0418e42e02","100061f9c934fb0418e42e08","100061f9c934fb0418e42e06","100061f9c934fb0418e42e07"],
     deleted:false,
   },
   {
@@ -234,7 +234,7 @@ let products = [
     nameProduct: "KASIO",
     nREF: "KA2547951",
     pricePurchase: 12.2,
-    works: ["100061f9c934fb0418e42e01","100061f9c934fb0418e42e02"],
+    works: ["100061f9c934fb0418e42e01","100061f9c934fb0418e42e02","100061f9c934fb0418e42e08","100061f9c934fb0418e42e06","100061f9c934fb0418e42e07"],
     deleted:false,
   },
 ];
@@ -290,6 +290,84 @@ let works = [
     
     // litres_product: 26,
     description: "Echar Hebicida",
+  },
+
+  {
+    _id: "100061f9c934fb0418e42e06",
+    dateINI: new Date("2021-12-14T13:24:00Z"),
+    dateFIN: new Date("2021-12-14T23:28:00Z"),
+    company: ["799261f9c934fb0418e42ee2"],
+    farm: ["799261f9c934fb0418e42ee3"],
+    worker: "500261f9c934fb0418e42aa3",
+    task: "799261f9c934fb0418e42e14",
+    machinery: ["799261f9c934fb0418e42ee6", "799261f9c934fb0418e42ee7"],
+    tank: "799261f9c934fb0418e42ee9",
+    litres_tank: 156,
+    products: [
+      {
+        name_pr: "KASIO",
+        litres: 12,
+      },
+      {
+        name_pr: "BUFFER",
+        litres: 98,
+      }
+    ],
+    
+    // litres_product: 26,
+    description: "SUlfatar cosas",
+  },
+
+  {
+    _id: "100061f9c934fb0418e42e07",
+    dateINI: new Date("2021-12-31T13:24:00Z"),
+    dateFIN: new Date("1995-12-17T05:28:00Z"),
+    company: ["799261f9c934fb0418e42ee2"],
+    farm: ["799261f9c934fb0418e42ee3"],
+    worker: "500261f9c934fb0418e42aa3",
+    task: "799261f9c934fb0418e42e13",
+    machinery: ["799261f9c934fb0418e42ee6", "799261f9c934fb0418e42ee7"],
+    tank: "799261f9c934fb0418e42ee9",
+    litres_tank: 50,
+    products: [
+      {
+        name_pr: "KASIO",
+        litres: 25,
+      },
+      {
+        name_pr: "BUFFER",
+        litres: 295,
+      }
+    ],
+    
+    // litres_product: 26,
+    description: "Echar Hebicida",
+  },
+
+  {
+    _id: "100061f9c934fb0418e42e08",
+    dateINI: new Date("2021-12-14T08:24:00Z"),
+    dateFIN: new Date("2021-12-14T15:28:00Z"),
+    company: ["799261f9c934fb0418e42ee2", "799261f9c934fb0418e42ee1"],
+    farm: ["799261f9c934fb0418e42ee3", "799261f9c934fb0418e42ee4"],
+    worker: "500261f9c934fb0418e42aa3",
+    task: "799261f9c934fb0418e42e14",
+    machinery: ["799261f9c934fb0418e42ee6", "799261f9c934fb0418e42ee7"],
+    tank: "799261f9c934fb0418e42ee9",
+    litres_tank: 156,
+    products: [
+      {
+        name_pr: "KASIO",
+        litres: 12,
+      },
+      {
+        name_pr: "BUFFER",
+        litres: 98,
+      }
+    ],
+    
+    // litres_product: 26,
+    description: "SUlfatar cosasicas",
   },
 ];
 
@@ -353,3 +431,5 @@ const createInfo = async () => {
   console.log("disconnect");
 };
 createInfo();
+
+

@@ -6,7 +6,6 @@ import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
 import InputGroup from "react-bootstrap/InputGroup";
 import Button from "react-bootstrap/Button";
-import Container from "react-bootstrap/Container";
 
 function Signup() {
   const [validated, setValidated] = useState(false);
@@ -50,7 +49,7 @@ function Signup() {
   };
 
   return (
-    <Container fluid>
+    <div>
       <Nav></Nav>
 
       <Row className="mb-5"></Row>
@@ -88,7 +87,6 @@ function Signup() {
                 placeholder="Nombre"
                 name="nameUser"
                 onChange={handle_change}
-                
               />
               <Form.Control.Feedback type="invalid">
                 *Campo requerido
@@ -163,7 +161,7 @@ function Signup() {
           </p>
         </div>
       </Form>
-      </Container>
+    </div>
   );
 }
 
