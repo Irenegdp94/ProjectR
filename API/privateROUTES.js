@@ -28,92 +28,92 @@ router.post("/newwork", async (req, res) => {
   let {
     dateINI,
     dateFIN,
-    nom_farms,
-    nom_task,
-    nom_machinerys,
-    nom_tank,
+    farm,
+    company,
+    task,
+    machinery,
+    tank,
     litres_tank,
-    nom_products,
-    litres_products,
+    products,
     description,
   } = req.body;
-
-  let info_farm, info_task, info_machinery, info_tank;
-  let id_farms = [];
-  let id_companies = [];
-  let products = [];
-  let id_machinery = [];
-  let id_task, id_tank;
+// console.log(req.body)
+  // let info_farm, info_task, info_machinery, info_tank;
+  // let id_farms = [];
+  // let id_companies = [];
+  // let products = [];
+  // let id_machinery = [];
+  // let id_task, id_tank;
   let id_worker;
-  let id_farm;
+  // let id_farm;
   //añadir fincas
-  for (element in nom_farms) {
-    try {
-      info_farm = await Farm.findOne({ nameFarm: nom_farms[element] });
-      id_farm = info_farm._id;
-      info_company = await Company.findOne({ farms: id_farm });
-    } catch (error) {
-      return res.status(500).json({
-        message: "Error de conexión",
-      });
-    }
-    if (info_farm) {
-      id_farms.push(info_farm._id);
-      id_companies.push(info_company._id);
-    }
-  }
+  // for (element in nom_farms) {
+  //   try {
+  //     info_farm = await Farm.findOne({ nameFarm: nom_farms[element] });
+  //     id_farm = info_farm._id;
+  //     info_company = await Company.findOne({ farms: id_farm });
+  //   } catch (error) {
+  //     return res.status(500).json({
+  //       message: "Error de conexión",
+  //     });
+  //   }
+  //   if (info_farm) {
+  //     id_farms.push(info_farm._id);
+  //     id_companies.push(info_company._id);
+  //   }
+  // }
 
   //añadir tarea
-  try {
-    info_task = await Task.findOne({ nameTask: nom_task });
-  } catch (error) {
-    return res.status(500).json({
-      message: "Error de conexión",
-    });
-  }
-  if (info_task) {
-    id_task = info_task._id;
-  }
+  // try {
+  //   info_task = await Task.findOne({ nameTask: nom_task });
+  // } catch (error) {
+  //   return res.status(500).json({
+  //     message: "Error de conexión",
+  //   });
+  // }
+  // if (info_task) {
+  //   id_task = info_task._id;
+  // }
 
   //añadir maquinaria
-  for (element in nom_machinerys) {
-    try {
-      info_machinery = await Machine.findOne({
-        nameMachinery: nom_machinerys[element],
-      });
-    } catch (error) {
-      return res.status(500).json({
-        message: "Error de conexión",
-      });
-    }
-    if (info_machinery) {
-      id_machinery.push(info_machinery._id);
-    }
-  }
+  // for (element in nom_machinerys) {
+  //   try {
+  //     info_machinery = await Machine.findOne({
+  //       nameMachinery: nom_machinerys[element],
+  //     });
+  //   } catch (error) {
+  //     return res.status(500).json({
+  //       message: "Error de conexión",
+  //     });
+  //   }
+  //   if (info_machinery) {
+  //     id_machinery.push(info_machinery._id);
+  //   }
+  // }
 
   // //añadir deposito
-  try {
-    info_tank = await Tank.findOne({ nameTank: nom_tank });
-  } catch (error) {
-    return res.status(500).json({
-      message: "Error de conexión",
-    });
-  }
-  if (info_tank) {
-    id_tank = info_tank._id;
-  }
+  // try {
+  //   info_tank = await Tank.findOne({ nameTank: nom_tank });
+  // } catch (error) {
+  //   return res.status(500).json({
+  //     message: "Error de conexión",
+  //   });
+  // }
+  // if (info_tank) {
+  //   id_tank = info_tank._id;
+  // }
 
   //añadir productos
-  for (element in nom_products) {
-    let namepr = nom_products[element];
-    let litrepr = litres_products[element];
-    let new_element = { name_pr: namepr, litres: litrepr };
-    products[element] = new_element;
-  }
+  // for (element in nom_products) {
+  //   let namepr = nom_products[element];
+  //   let litrepr = litres_products[element];
+  //   let new_element = { name_pr: namepr, litres: litrepr };
+  //   products[element] = new_element;
+  // }
 
   //trabajador
   if (rol === "ADMIN") {
-    id_worker = req.body.id_worker;
+    id_worker = req.body.worker;
   } else if (rol === "USER") {
     id_worker = req.body.info.id;
   }
@@ -122,27 +122,31 @@ router.post("/newwork", async (req, res) => {
   let new_work = {
     dateINI,
     dateFIN,
-    farm: id_farms,
-    company: id_companies,
+    farm,
+    company,
     worker: id_worker,
-    task: id_task,
-    machinery: id_machinery,
-    tank: id_tank,
+    task,
+    machinery,
+    tank,
     litres_tank,
     products,
     description,
   };
+  // console.log(new_work)
   try {
     let doc;
     doc = await Work.create(new_work);
     return res.json({
+      success: true,
       message: "Nuevo trabajo creado correctamente",
     });
   } catch (error) {
-    return res.status(500).json({
-      message: error,
+    return res.json({
+      success: false,
+      message: "Error servidor",
     });
   }
+  
 });
 
 //MODIFICAR

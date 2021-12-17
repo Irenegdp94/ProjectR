@@ -10,6 +10,7 @@ import Button from "@mui/material/Button";
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import Divider from '@mui/material/Divider';
 export default function AccountMenu() {
+  let rol_user = window.localStorage.rol;
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
   const handleOpenUserMenu = (event) => {
@@ -50,11 +51,20 @@ export default function AccountMenu() {
         {/* menu desplegable user */}
 
         <MenuItem onClick={handleCloseNavMenu}>
-          <Button style={{ color: "#2E3B55" }} size="small" href="/homeAdmin">
+          {rol_user === "ADMIN" ? (
+            <Button style={{ color: "#2E3B55" }} size="small" href="/homeAdmin">
             <Typography>
               {<img align="center" src="../home.png" height="15" />} Home
             </Typography>
           </Button>
+          ):(
+            <Button style={{ color: "#2E3B55" }} size="small" href="/homeUser">
+            <Typography>
+              {<img align="center" src="../home.png" height="15" />} Home
+            </Typography>
+          </Button>
+          )}
+          
         </MenuItem>
         <MenuItem onClick={handleCloseNavMenu}>
           <Button style={{ color: "#2E3B55" }} href="/">

@@ -26,10 +26,12 @@ const Login = () => {
       let { auth, message, token, rol } = response.data;
       if (auth & (rol === "ADMIN")) {
         localStorage.setItem("token", token);
+        localStorage.setItem("rol", rol);
         window.localStorage.message = "";
         history.push("/homeAdmin");
       } else if (auth & (rol === "USER")) {
         localStorage.setItem("token", token);
+        localStorage.setItem("rol", rol);
         window.localStorage.message = "";
         history.push("/homeUser");
       } else if (!auth) {

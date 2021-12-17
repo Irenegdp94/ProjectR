@@ -1,0 +1,161 @@
+ <Nav></Nav>
+      <h1>Crear trabajo</h1>
+      <Box component="form" Validate autoComplete="off">
+        <FormControl>
+
+        <Box
+          component="form"
+          sx={{
+            "& > :not(style)": { m: 1, width: "25ch" },
+          }}
+          noValidate
+          autoComplete="off"
+        >
+          <LocalizationProvider dateAdapter={AdapterDateFns}>
+            <DatePicker
+              id="datePurchase"
+              inputFormat="dd/MM/yyyy"
+              // views={['day', 'month', 'year']}
+              label="Fecha de compra"
+              value={value}
+              onChange={(newValue) => {
+                setValue(newValue);
+              }}
+              renderInput={(params) => <TextField {...params} />}
+            />
+          </LocalizationProvider>
+        </Box>
+
+
+
+
+          <TextField
+            color="secondary"
+            id="outlined-basic"
+            name="nameFarm"
+            label="Nombre finca"
+            variant="outlined"
+            sx={{ width: 300 }}
+            onChange={handle_change}
+          />
+          <Box sx={{ height: 20 }} />
+
+          <TextField
+            color="secondary"
+            id="outlined-basic"
+            name="area"
+            label="Área"
+            variant="outlined"
+            sx={{ width: 300 }}
+            onChange={handle_change}
+          />
+          <Box sx={{ height: 20 }} />
+
+          <TextField
+            color="secondary"
+            id="outlined-basic"
+            name="cultivo"
+            label="Cultivo"
+            variant="outlined"
+            sx={{ width: 300 }}
+            onChange={handle_change}
+          />
+          <Box sx={{ height: 20 }} />
+
+          <Autocomplete
+            id="asynchronous-demo"
+            sx={{ width: 300 }}
+            open={open}
+            onOpen={() => {
+              setOpen(true);
+            }}
+            onClose={() => {
+              setOpen(false);
+            }}
+            onChange={(event, newInputValue) => {
+              setInputValue({ ...newInputValue });
+
+              //inputValue es el valor del input final
+            }}
+            isOptionEqualToValue={(option, value) => option.name === value.name}
+            getOptionLabel={(option) => option.name}
+            options={options}
+            loading={loading}
+            renderInput={(params) => (
+              <TextField
+                {...params}
+                label="Campaña"
+                InputProps={{
+                  ...params.InputProps,
+                  endAdornment: (
+                    <React.Fragment>
+                      {loading ? (
+                        <CircularProgress color="inherit" size={20} />
+                      ) : null}
+                      {params.InputProps.endAdornment}
+                    </React.Fragment>
+                  ),
+                }}
+              />
+            )}
+          />
+          <Box sx={{ height: 20 }} />
+          <Autocomplete
+            multiple
+            id="asynchronous-demo2"
+            sx={{ width: 300 }}
+            open={open2}
+            onOpen={() => {
+              setOpen2(true);
+            }}
+            onClose={() => {
+              setOpen2(false);
+            }}
+            onChange={(event, newInputValue2) => {
+              setInputValue2({ ...newInputValue2 });
+
+              //inputValue es el valor del input final
+            }}
+            isOptionEqualToValue={(option2, value) =>
+              option2.nameCompany === value.nameCompany
+            }
+            getOptionLabel={(option2) => option2.nameCompany}
+            options={options2}
+            loading={loading2}
+            renderInput={(params) => (
+              <TextField
+                {...params}
+                label="Empresa"
+                InputProps={{
+                  ...params.InputProps,
+                  endAdornment: (
+                    <React.Fragment>
+                      {loading ? (
+                        <CircularProgress color="inherit" size={20} />
+                      ) : null}
+                      {params.InputProps.endAdornment}
+                    </React.Fragment>
+                  ),
+                }}
+              />
+            )}
+          />
+          <Box sx={{ height: 20 }} />
+
+          <Stack spacing={2} direction="row">
+            <Button
+              type="submit"
+              variant="contained"
+              color="secondary"
+              onClick={handle_submit}
+            >
+              Crear
+            </Button>
+          </Stack>
+        </FormControl>
+      </Box>
+      <div>
+        <p className="error" id="message_info">
+          {message_info.message_info}
+        </p>
+      </div>

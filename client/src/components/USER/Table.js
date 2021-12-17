@@ -133,9 +133,7 @@ export default function DenseTable() {
                       </TableCell>
                       <TableCell align="right">
                         {work.company.map((empresa) => {
-                          {
-                            console.log(empresa);
-                          }
+                   
                           return (
                             <TableRow align="right">
                               {empresa.nameCompany}
@@ -145,9 +143,7 @@ export default function DenseTable() {
                       </TableCell>
                       <TableCell align="right">
                         {work.farm.map((finca) => {
-                          {
-                            console.log(finca);
-                          }
+                    
                           return (
                             <TableRow align="right">{finca.nameFarm}</TableRow>
                           );
@@ -165,9 +161,7 @@ export default function DenseTable() {
                       <TableCell align="right">{work.litres_tank}</TableCell>
                       <TableCell align="right">
                         {work.products.map((producto) => {
-                          {
-                            console.log(producto);
-                          }
+                          
                           return (
                             <TableRow align="right">
                               <TableCell align="right">
@@ -180,6 +174,12 @@ export default function DenseTable() {
                           );
                         })}
                       </TableCell>
+                        {console.log(work._id)}
+                      <TableCell align="right">
+                      <Button href={`/userwork/${work._id}`}>
+                        <InfoOutlinedIcon color="secondary"/>
+                      </Button>
+                    </TableCell>
                     </TableRow>
                   );
                 })}

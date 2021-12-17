@@ -20,7 +20,7 @@ export default function NestedList() {
         <ListItemText primary="Ver trabajos" />
       </ListItemButton>
 
-      <ListItemButton component="a" href="/">
+      <ListItemButton component="a" href="/nework">
         <ListItemIcon>
           <AddOutlinedIcon />
         </ListItemIcon>

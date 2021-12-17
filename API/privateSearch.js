@@ -34,6 +34,7 @@ router.get("/sfarms", async (req, res) => {
     info: info_,
     message: "info de fincas",
   });
+  
 });
 
 ////Campañas
@@ -74,4 +75,100 @@ router.get("/scompany", async (req, res) => {
   });
 });
 
+
+////Trabajador
+router.get("/sworker", async (req, res) => {
+  let info_;
+  try {
+    info_ = await User.find(
+      { delete: false },
+      { works: 0, deleted: 0}
+    );
+  } catch (error) {
+    return res.status(500).json({
+      message: "Error de conexión",
+    });
+  }
+  res.json({
+    info: info_,
+    message: "info de trabajadores",
+  });
+});
+
+////Tareas
+router.get("/stasks", async (req, res) => {
+  let info_;
+  try {
+    info_ = await Task.find(
+      { delete: false },
+      { works: 0, deleted: 0}
+    );
+  } catch (error) {
+    return res.status(500).json({
+      message: "Error de conexión",
+    });
+  }
+  res.json({
+    info: info_,
+    message: "info tareas",
+  });
+});
+
+////Machines
+router.get("/smachines", async (req, res) => {
+  let info_;
+  try {
+    info_ = await Machine.find(
+      { delete: false },
+      { works: 0, deleted: 0}
+    );
+  } catch (error) {
+    return res.status(500).json({
+      message: "Error de conexión",
+    });
+  }
+  res.json({
+    info: info_,
+    message: "info maquinas",
+  });
+});
+
+
+////tank
+router.get("/stank", async (req, res) => {
+  let info_;
+  try {
+    info_ = await Tank.find(
+      { delete: false },
+      { works: 0, deleted: 0}
+    );
+  } catch (error) {
+    return res.status(500).json({
+      message: "Error de conexión",
+    });
+  }
+  res.json({
+    info: info_,
+    message: "info maquinas",
+  });
+});
+
+////products
+router.get("/sproduct", async (req, res) => {
+  let info_;
+  try {
+    info_ = await Product.find(
+      { delete: false },
+      { works: 0, deleted: 0}
+    );
+  } catch (error) {
+    return res.status(500).json({
+      message: "Error de conexión",
+    });
+  }
+  res.json({
+    info: info_,
+    message: "info maquinas",
+  });
+});
 module.exports = router;
