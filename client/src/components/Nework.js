@@ -35,6 +35,7 @@ export default function Nework() {
   let id_farms = [];
   let id_company = [];
   let id_machines = [];
+  let rol_user = window.localStorage.rol;
 
   window.localStorage.message = "";
 
@@ -343,7 +344,7 @@ export default function Nework() {
       info.task = inputValue3._id;
 
       for (let i in inputValue4) {
-        id_machines.push(inputValue[i]._id);
+        id_machines.push(inputValue4[i]._id);
       }
       info.machinery = id_machines;
       info.tank = inputValue5._id;
@@ -370,7 +371,12 @@ export default function Nework() {
         setMessage({ message_info: responseF.data.message });
         if (responseF.data.success === true) {
           window.localStorage.message = responseF.data.message;
-          history.push("/homeAdmin");
+          if (rol_user === "ADMIN"){
+            history.push("/homeAdmin");
+          }else{
+            history.push("/homeUser");
+          }
+          
         }
         console.log(responseF)
       } catch (error) {

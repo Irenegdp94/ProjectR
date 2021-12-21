@@ -24,6 +24,8 @@ export default function DenseTable() {
   let [info, setInfo] = useState({ data: [], loading: true });
   let [open, setOpen] = useState(true);
 
+
+
   const fresponse = async () => {
     let token = localStorage.getItem("token");
     let response = await axios.get("http://localhost:5000/api/user/userworks", {
@@ -98,6 +100,7 @@ export default function DenseTable() {
                   <TableCell align="center">Deposito</TableCell>
                   <TableCell align="center">Litros</TableCell>
                   <TableCell align="center">Productos</TableCell>
+                  <TableCell align="center"></TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -163,11 +166,11 @@ export default function DenseTable() {
                         {work.products.map((producto) => {
                           
                           return (
-                            <TableRow align="right">
-                              <TableCell align="right">
+                            <TableRow align="right" >
+                              <TableCell align="right" sx={{border:"0px"}}>
                                 {producto.name_pr}
                               </TableCell>
-                              <TableCell align="right">
+                              <TableCell align="right" sx={{border:"0px"}}>
                                 {producto.litres}
                               </TableCell>
                             </TableRow>
