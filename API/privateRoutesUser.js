@@ -77,6 +77,7 @@ router.get("/userworks", async (req, res) => {
 
 //Ruta para ver un trabajo user
 router.get("/userwork/:idWork", async (req, res) => {
+  console.log("info",req.body.info)
   let rol = req.body.info.rol;
   let id_user = req.body.info.id;
   let info_workUser;

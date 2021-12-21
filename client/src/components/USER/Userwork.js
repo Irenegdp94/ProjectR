@@ -13,8 +13,21 @@ import {
   Grid,
   TextField,
 } from "@mui/material";
+
+import CardActions from "@mui/material/CardActions";
+
+import Typography from "@mui/material/Typography";
 import BinIcon from "@mui/icons-material/DeleteOutlineRounded";
 import { red } from "@mui/material/colors";
+
+import CalendarIcon from "@mui/icons-material/Event";
+import ClockIcon from "@mui/icons-material/AccessTime";
+import TimerIcon from "@mui/icons-material/TimerOutlined";
+import BusinessIcon from "@mui/icons-material/Business";
+import RIcon from "@mui/icons-material/CropOutlined";
+import TractorIcon from "@mui/icons-material/AgricultureOutlined";
+import PetrolIcon from "@mui/icons-material/LocalGasStation";
+import SanitizerIcon from "@mui/icons-material/Sanitizer";
 
 import AdapterDateFns from "@mui/lab/AdapterDateFns";
 import LocalizationProvider from "@mui/lab/LocalizationProvider";
@@ -23,16 +36,27 @@ import ClockPicker from "@mui/lab/ClockPicker";
 
 import Loading from "../Loading";
 import Nav from "../Nav32-basic";
+import getDate from "date-fns/getDate";
+import { getDay, getHours, getMinutes, getMonth, getYear } from "date-fns";
+
+const typ = (
+  <Typography variant="body2">
+    hola <br />
+  </Typography>
+);
 
 export default function Onework() {
+  let history = useHistory();
   // console.log(props)
   //   let id_work = props.id;
   let id_work = useParams().id;
   console.log(id_work);
-  //   let [info, setInfo] = useState({ data: [], loading: true });
-  let [info, setInfo] = useState({ data: [], loading: true });
-  const [valueINI, setValueINI] = React.useState(new Date());
 
+  let [info, setInfo] = useState({ data: [], loading: true });
+  const [valueINI, setValueINI] = React.useState(
+    new Date("2021-12-14T13:24:00.000Z")
+  );
+  // let dI = String(info.data.dateINI)
   const [valueFIN, setValueFIN] = React.useState(new Date());
   //   const valNumRegex = /^\d*\.?\d*$/;
   console.log(info);
@@ -44,14 +68,14 @@ export default function Onework() {
 
   const fresponse = async () => {
     let response = await axios.get(
-      `localhost:5000/api/user/userwork/${id_work}`,
+      `http://localhost:5000/api/user/userwork/${id_work}`,
       {
         headers: { token: token },
       }
     );
 
     let datas = response.data.infoWorkUser;
-    console.log(datas);
+    console.log(info.data);
     setInfo({ data: datas, loading: false });
   };
   useEffect(() => {
@@ -67,9 +91,11 @@ export default function Onework() {
     // });
   };
 
-  const handle_submit = async (event) => {
-    event.preventDefault();
-    console.log("submit");
+  // const handle_submit = async (event) => {
+   
+  //   event.preventDefault();
+  //   console.log("modificar");
+  //   history.push("/modifywork");
 
     // try {
     //   let response_up = await axios.put(
@@ -88,7 +114,7 @@ export default function Onework() {
     // } catch (error) {
     //   setMessage({ message_info: "Error conexion bbdd" });
     // }
-  };
+  // };
 
   const handle_erasing = async () => {
     console.log("borrar");
@@ -117,121 +143,195 @@ export default function Onework() {
     <div>
       <Nav />
 
-      {/* {info.loading === true ? (
+      {info.loading === true ? (
         <Loading />
-      ) : ( */}
-      <form autoComplete="off">
-        <Card>
-          <CardHeader title="Trabajo" />
-
+      ) : (
+        <Card sx={{ minWidth: 275 }}>
           <CardContent>
-            <Grid container spacing={2}>
-              <Grid item md={6} xs={12}>
-                <LocalizationProvider dateAdapter={AdapterDateFns}>
-                  <DateTimePicker
-                    renderInput={(props) => <TextField {...props} />}
-                    label="Fecha / hora inicio"
-                    ampm={false}
-                    value={valueINI}
-                    onChange={(newValue) => {
-                      setValueINI(newValue);
-                    }}
-                  />
-                </LocalizationProvider>
+            <Grid container spacing={1}>
+              <Grid item xs={12} sx={{ textAlign: "center" }}>
+                <Typography sx={{ fontSize: 16 }} variant="body1" gutterBottom>
+                  {`Trabajo: ${info.data.description}`}
+                </Typography>
+              </Grid>
+              <Grid item xs={4} sx={{ textAlign: "center" }}>
+                <Typography
+                  sx={{ fontSize: 14 }}
+                  color="text.secondary"
+                  gutterBottom
+                >
+                  <CalendarIcon />
+                  {`${getDate(new Date(info.data.dateINI))}/${
+                    getMonth(new Date(info.data.dateINI)) + 1
+                  }/${getYear(new Date(info.data.dateINI))}`}
+                </Typography>
+              </Grid>
+              <Grid item xs={4} sx={{ textAlign: "center" }}>
+                <Typography
+                  sx={{ fontSize: 14 }}
+                  color="text.secondary"
+                  gutterBottom
+                >
+                  <ClockIcon />
+                  {`${getHours(new Date(info.data.dateINI))}:${getMinutes(
+                    new Date(info.data.dateINI)
+                  )} a ${getHours(new Date(info.data.dateFIN))}:${getMinutes(
+                    new Date(info.data.dateFIN)
+                  )}`}
+                </Typography>
               </Grid>
 
-              <Grid item md={6} xs={12}>
-                <LocalizationProvider dateAdapter={AdapterDateFns}>
-                  <DateTimePicker
-                    renderInput={(props) => <TextField {...props} />}
-                    label="Fecha / hora fin"
-                    value={valueFIN}
-                    ampm={false}
-                    onChange={(newValue) => {
-                      setValueFIN(newValue);
-                    }}
-                  />
-                </LocalizationProvider>
+              <Grid item xs={4} sx={{ textAlign: "center" }}>
+                <Typography
+                  sx={{ fontSize: 14 }}
+                  color="text.secondary"
+                  gutterBottom
+                >
+                  <TimerIcon />
+                  {`${(
+                    Math.abs(
+                      new Date(info.data.dateFIN) - new Date(info.data.dateINI)
+                    ) / 3600000
+                  ).toFixed(2)} h`}
+                </Typography>
               </Grid>
 
-              <Grid item md={6} xs={12}>
-                <TextField
-                  fullWidth
-                  label="Empresa"
-                  name="company"
-                  onChange={handleChange}
-                  // value={values.nUser}
-                  variant="outlined"
-                />
-              </Grid>
-              <Grid item md={6} xs={12}>
-                <TextField
-                  fullWidth
-                  label="Finca"
-                  name="farm"
-                  onChange={handleChange}
-                  // value={values.nameUser}
-                  variant="outlined"
-                />
-              </Grid>
-
-              <Grid item md={6} xs={12}>
-                <TextField
-                  fullWidth
-                  label="Trabajador"
-                  name="worker"
-                  onChange={handleChange}
-                  // value={values.surnameUser}
-                  variant="outlined"
-                />
-              </Grid>
-
-              <Grid item md={6} xs={12}>
-                <TextField
-                  fullWidth
-                  label="Tarea"
-                  name="task"
-                  onChange={handleChange}
-                  type="number"
-                  // value={values.phone}
-                  variant="outlined"
-                />
-              </Grid>
-
-              <Grid item md={6} xs={12}>
-                <TextField
-                  fullWidth
-                  label="Maquinaria"
-                  name="machinery"
-                  onChange={handleChange}
-                  type="number"
-                  // value={values.phone}
-                  variant="outlined"
-                />
+              <Grid item xs={12} sx={{ textAlign: "center" }}>
+                <Typography
+                  sx={{ fontSize: 14 }}
+                  color="text.secondary"
+                  gutterBottom
+                >
+                  {`${info.data.worker.nameUser}`}
+                </Typography>
               </Grid>
             </Grid>
           </CardContent>
-          <Divider />
-          <Box
-            sx={{
-              display: "flex",
-              justifyContent: "space-between",
-              p: 2,
-            }}
-          >
-            <Button color="primary" variant="text" onClick={handle_erasing}>
-              <BinIcon sx={{ fontSize: 30, color: red[700] }} />
-            </Button>
 
-            <Button color="primary" variant="contained" onClick={handle_submit}>
-              Guardar cambios
-            </Button>
-          </Box>
+          <CardContent>
+            <Grid container spacing={1}>
+              <Grid item xs={6}>
+                <Typography
+                  sx={{ fontSize: 14 }}
+                  color="text.secundary"
+                  gutterBottom
+                >
+                  <BusinessIcon />
+                  Empresa
+                </Typography>
+              </Grid>
+
+              <Grid item xs={6}>
+                {info.data.company.map((company) => {
+                  return (
+                    <Typography variant="body2">
+                      {`-${company.nameCompany}`}
+                    </Typography>
+                  );
+                })}
+              </Grid>
+            </Grid>
+          </CardContent>
+
+          <CardContent>
+            <Grid container spacing={1}>
+              <Grid item xs={6}>
+                <Typography
+                  sx={{ fontSize: 14 }}
+                  color="text.secundary"
+                  gutterBottom
+                >
+                  <RIcon />
+                  Finca
+                </Typography>
+              </Grid>
+
+              <Grid item xs={6}>
+                {info.data.farm.map((farm) => {
+                  return (
+                    <Typography variant="body2">
+                      {`-${farm.nameFarm}`}
+                    </Typography>
+                  );
+                })}
+              </Grid>
+            </Grid>
+          </CardContent>
+
+          <CardContent>
+            <Grid container spacing={1}>
+              <Grid item xs={6}>
+                <Typography
+                  sx={{ fontSize: 14 }}
+                  color="text.secundary"
+                  gutterBottom
+                >
+                  <TractorIcon /> Maquinaria
+                </Typography>
+              </Grid>
+
+              <Grid item xs={6}>
+                {info.data.machinery.map((machinery) => {
+                  return (
+                    <Typography variant="body2">
+                      {`-${machinery.nameMachinery}`}
+                    </Typography>
+                  );
+                })}
+              </Grid>
+            </Grid>
+          </CardContent>
+
+          <CardContent>
+            <Grid container spacing={1}>
+              <Grid item xs={6}>
+                <Typography
+                  sx={{ fontSize: 14 }}
+                  color="text.secundary"
+                  gutterBottom
+                >
+                  <PetrolIcon />
+                  {info.data.tank.nameTank}
+                </Typography>
+              </Grid>
+
+              <Grid item xs={6}>
+                {`${info.data.litres_tank} litros`}
+              </Grid>
+            </Grid>
+          </CardContent>
+
+          <CardContent>
+            <Grid container spacing={1}>
+              <Grid item xs={6}>
+                <Typography
+                  sx={{ fontSize: 14 }}
+                  color="text.secundary"
+                  gutterBottom
+                >
+                  <SanitizerIcon /> Productos
+                </Typography>
+              </Grid>
+
+              <Grid item xs={6}>
+                {info.data.products.map((product) => {
+                  return (
+                    <Typography variant="body2">
+                      {`-${product.name_pr}: ${product.litres} L`}
+                    </Typography>
+                  );
+                })}
+              </Grid>
+            </Grid>
+          </CardContent>
+
+          <CardActions>
+          
+            <Button size="small" href={`/upwork/${id_work}`}>Modificar</Button>
+            {/* <Button size="small" onClick={handle_erasing}>Borrar</Button> */}
+          </CardActions>
         </Card>
-        <Box sx={{ height: 20 }} />
-        <p className="error">{message_info.message_info}</p>
-      </form>
-      {/* )} */}
+      )}
     </div>
   );
 }

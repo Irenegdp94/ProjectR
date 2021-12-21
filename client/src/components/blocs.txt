@@ -1,161 +1,111 @@
- <Nav></Nav>
-      <h1>Crear trabajo</h1>
-      <Box component="form" Validate autoComplete="off">
-        <FormControl>
+ <form autoComplete="off">
+        <Card>
+          <CardHeader title="Trabajo" />
 
-        <Box
-          component="form"
-          sx={{
-            "& > :not(style)": { m: 1, width: "25ch" },
-          }}
-          noValidate
-          autoComplete="off"
-        >
-          <LocalizationProvider dateAdapter={AdapterDateFns}>
-            <DatePicker
-              id="datePurchase"
-              inputFormat="dd/MM/yyyy"
-              // views={['day', 'month', 'year']}
-              label="Fecha de compra"
-              value={value}
-              onChange={(newValue) => {
-                setValue(newValue);
-              }}
-              renderInput={(params) => <TextField {...params} />}
-            />
-          </LocalizationProvider>
-        </Box>
+          <CardContent>
+            <Grid container spacing={2}>
+              <Grid item md={6} xs={12}>
+                <LocalizationProvider dateAdapter={AdapterDateFns}>
+                  <DateTimePicker
+                    renderInput={(props) => <TextField {...props} />}
+                    label="Fecha / hora inicio"
+                    ampm={false}
+                    value={valueINI}
+                    onChange={(newValue) => {
+                      setValueINI(newValue);
+                    }}
+                  />
+                </LocalizationProvider>
+              </Grid>
 
+              <Grid item md={6} xs={12}>
+                <LocalizationProvider dateAdapter={AdapterDateFns}>
+                  <DateTimePicker
+                    renderInput={(props) => <TextField {...props} />}
+                    label="Fecha / hora fin"
+                    value={valueFIN}
+                    ampm={false}
+                    onChange={(newValue) => {
+                      setValueFIN(newValue);
+                    }}
+                  />
+                </LocalizationProvider>
+              </Grid>
 
+              <Grid item md={6} xs={12}>
+                <TextField
+                  fullWidth
+                  label="Empresa"
+                  name="company"
+                  onChange={handleChange}
+                  value={info.data.company}
+                  variant="outlined"
+                />
+              </Grid>
+              <Grid item md={6} xs={12}>
+                <TextField
+                  fullWidth
+                  label="Finca"
+                  name="farm"
+                  onChange={handleChange}
+                  value={info.data.farm}
+                  variant="outlined"
+                />
+              </Grid>
 
+              <Grid item md={6} xs={12}>
+                <TextField
+                  fullWidth
+                  label="Trabajador"
+                  name="worker"
+                  onChange={handleChange}
+                  value={info.data.worker.nameUser}
+                  variant="outlined"
+                />
+              </Grid>
 
-          <TextField
-            color="secondary"
-            id="outlined-basic"
-            name="nameFarm"
-            label="Nombre finca"
-            variant="outlined"
-            sx={{ width: 300 }}
-            onChange={handle_change}
-          />
-          <Box sx={{ height: 20 }} />
+              <Grid item md={6} xs={12}>
+                <TextField
+                  fullWidth
+                  label="Tarea"
+                  name="task"
+                  onChange={handleChange}
+                  type="number"
+                  // value={values.phone}
+                  variant="outlined"
+                />
+              </Grid>
 
-          <TextField
-            color="secondary"
-            id="outlined-basic"
-            name="area"
-            label="Área"
-            variant="outlined"
-            sx={{ width: 300 }}
-            onChange={handle_change}
-          />
-          <Box sx={{ height: 20 }} />
-
-          <TextField
-            color="secondary"
-            id="outlined-basic"
-            name="cultivo"
-            label="Cultivo"
-            variant="outlined"
-            sx={{ width: 300 }}
-            onChange={handle_change}
-          />
-          <Box sx={{ height: 20 }} />
-
-          <Autocomplete
-            id="asynchronous-demo"
-            sx={{ width: 300 }}
-            open={open}
-            onOpen={() => {
-              setOpen(true);
+              <Grid item md={6} xs={12}>
+                <TextField
+                  fullWidth
+                  label="Maquinaria"
+                  name="machinery"
+                  onChange={handleChange}
+                  type="number"
+                  // value={values.phone}
+                  variant="outlined"
+                />
+              </Grid>
+            </Grid>
+          </CardContent>
+          <Divider />
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "space-between",
+              p: 2,
             }}
-            onClose={() => {
-              setOpen(false);
-            }}
-            onChange={(event, newInputValue) => {
-              setInputValue({ ...newInputValue });
-
-              //inputValue es el valor del input final
-            }}
-            isOptionEqualToValue={(option, value) => option.name === value.name}
-            getOptionLabel={(option) => option.name}
-            options={options}
-            loading={loading}
-            renderInput={(params) => (
-              <TextField
-                {...params}
-                label="Campaña"
-                InputProps={{
-                  ...params.InputProps,
-                  endAdornment: (
-                    <React.Fragment>
-                      {loading ? (
-                        <CircularProgress color="inherit" size={20} />
-                      ) : null}
-                      {params.InputProps.endAdornment}
-                    </React.Fragment>
-                  ),
-                }}
-              />
-            )}
-          />
-          <Box sx={{ height: 20 }} />
-          <Autocomplete
-            multiple
-            id="asynchronous-demo2"
-            sx={{ width: 300 }}
-            open={open2}
-            onOpen={() => {
-              setOpen2(true);
-            }}
-            onClose={() => {
-              setOpen2(false);
-            }}
-            onChange={(event, newInputValue2) => {
-              setInputValue2({ ...newInputValue2 });
-
-              //inputValue es el valor del input final
-            }}
-            isOptionEqualToValue={(option2, value) =>
-              option2.nameCompany === value.nameCompany
-            }
-            getOptionLabel={(option2) => option2.nameCompany}
-            options={options2}
-            loading={loading2}
-            renderInput={(params) => (
-              <TextField
-                {...params}
-                label="Empresa"
-                InputProps={{
-                  ...params.InputProps,
-                  endAdornment: (
-                    <React.Fragment>
-                      {loading ? (
-                        <CircularProgress color="inherit" size={20} />
-                      ) : null}
-                      {params.InputProps.endAdornment}
-                    </React.Fragment>
-                  ),
-                }}
-              />
-            )}
-          />
-          <Box sx={{ height: 20 }} />
-
-          <Stack spacing={2} direction="row">
-            <Button
-              type="submit"
-              variant="contained"
-              color="secondary"
-              onClick={handle_submit}
-            >
-              Crear
+          >
+            <Button color="primary" variant="text" onClick={handle_erasing}>
+              <BinIcon sx={{ fontSize: 30, color: red[700] }} />
             </Button>
-          </Stack>
-        </FormControl>
-      </Box>
-      <div>
-        <p className="error" id="message_info">
-          {message_info.message_info}
-        </p>
-      </div>
+
+            <Button color="primary" variant="contained" onClick={handle_submit}>
+              Guardar cambios
+            </Button>
+          </Box>
+        </Card>
+        <Box sx={{ height: 20 }} />
+        <p className="error">{message_info.message_info}</p>
+      </form>

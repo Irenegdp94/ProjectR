@@ -26,6 +26,7 @@ import Newtask from "./components/ADMIN/Newtask"
 import Newproduct from './components/ADMIN/Newproduct';
 import Nework from './components/Nework';
 import Userwork from "./components/USER/Userwork";
+import Modifywork from "./components/USER/Modifywork"
 
 
 
@@ -56,6 +57,7 @@ function App() {
         <PrivateRoute exact path="/newproduct" render={()=>{return <Newproduct/>}}/>
         <PrivateRoute exact path="/nework" render={()=>{return <Nework/>}}/>
         <PrivateRoute exact path="/userwork/:id" render={()=>{return <Userwork/>}}/>
+        <PrivateRoute exact path="/upwork/:id" render={()=>{return <Modifywork/>}}/>
       </Switch>
     </div>
   );
